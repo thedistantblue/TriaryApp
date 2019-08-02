@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TriaryApp</string>
+    <string name="sign_in_button_text">Sign in</string>
+    <string name="local_button_text">Offline use</string>
+    <string name="training_tab_button">Training</string>
+    <string name="running_tab_button">Running</string>
+</resources>
