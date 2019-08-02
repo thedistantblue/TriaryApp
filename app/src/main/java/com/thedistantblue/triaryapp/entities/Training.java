@@ -23,7 +23,7 @@ public class Training {
 
     public Training (long userId) {
         this(UUID.randomUUID(), userId);
-        /*
+
         trainingDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(trainingDate);
@@ -31,7 +31,7 @@ public class Training {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         trainingDate = new GregorianCalendar(year, month, day).getTime();
-        */
+
     }
 
     public UUID getId() {
