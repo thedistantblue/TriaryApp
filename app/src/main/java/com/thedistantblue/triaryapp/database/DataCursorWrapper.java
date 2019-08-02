@@ -39,8 +39,8 @@ public class DataCursorWrapper extends CursorWrapper {
         // По дате надо посмотреть код в DailyWorkout в аналогичном классе и в TrainingLab
         // в методе, который задает ContentValues.
 
-        //Training training = new Training(UUID.fromString(uuid));
-        Training training = new Training(Long.parseLong(uuid));
+        Training training = new Training(UUID.fromString(uuid), Long.parseLong(userUUID));
+        //Training training = new Training(Long.parseLong(uuid));
         training.setTrainingName(name);
         //training.setUserId(UUID.fromString(userUUID));
         training.setUserId(Long.parseLong(userUUID));

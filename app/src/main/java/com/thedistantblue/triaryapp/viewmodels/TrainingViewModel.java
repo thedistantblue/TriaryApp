@@ -35,4 +35,18 @@ public class TrainingViewModel extends BaseObservable {
         training.setTrainingDate(date);
         notifyChange();
     }
+
+    public void setTrainingName(String name) {
+        training.setTrainingName(name);
+        notifyChange();
+    }
+
+    @Bindable
+    public String getTrainingName() {
+        return training.getTrainingName();
+    }
+
+    public void save() {
+        dao.addTraining(training);
+    }
 }
