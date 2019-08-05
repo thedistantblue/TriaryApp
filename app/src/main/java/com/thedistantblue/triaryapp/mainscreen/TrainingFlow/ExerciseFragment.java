@@ -1,0 +1,63 @@
+package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
+import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
+import com.thedistantblue.triaryapp.entities.Exercise;
+import com.thedistantblue.triaryapp.entities.Set;
+import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
+
+import java.util.List;
+import java.util.Optional;
+
+public class ExerciseFragment extends Fragment {
+    private static final String TRAINING_KEY = "training";
+    private static final String EXERCISE_KEY = "exercise";
+    private static final String ACTION_CODE = "action";
+
+    DAO dao;
+    Exercise exercise;
+    List<Set> setList;
+
+    String action = "";
+
+    public static ExerciseFragment newInstance(Training training, Exercise exercise, String action) {
+        Bundle args = new Bundle();
+
+        if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
+        args.putSerializable(ACTION_CODE, action);
+        args.putSerializable(TRAINING_KEY, training);
+
+        ExerciseFragment fragment = new ExerciseFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dao = DAO.get(getActivity());
+        exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
+        action = (String) getArguments().getSerializable(ACTION_CODE);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        ExerciseFragmentLayoutBinding binding =
+                DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
+
+        binding.setViewModel(new ExerciseViewModel());
+
+        return binding.getRoot();
+    }
+
+}

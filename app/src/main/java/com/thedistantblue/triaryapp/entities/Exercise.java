@@ -1,9 +1,10 @@
 package com.thedistantblue.triaryapp.entities;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-public class Exercise {
+public class Exercise implements Serializable {
     private UUID id;
     private UUID trainingId;
     private String exerciseName;
