@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,6 +19,7 @@ import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.ExerciseListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
@@ -50,6 +52,7 @@ public class TrainingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         dao = DAO.get(getActivity());
         user = (User) getArguments().getSerializable(USER_KEY);
+        // Не нужно, потому что в дао уже возвращается пустой список
         try {
             trainingList = dao.getTrainingsList(user);
         } catch (NullPointerException exc) {
@@ -63,7 +66,10 @@ public class TrainingFragment extends Fragment {
                 DataBindingUtil.inflate(inflater, R.layout.training_fragment_layout, parent, false);
 
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.trainingRecyclerView.setAdapter(new TrainingAdapter(dao.getTrainingsList(user)));
+        // Не обратил внимания: я уже беру список в onCreate, значит, здесь можно его не брать. Изменено
+        // Также в дао в любом случае возвращается список, поэтому NullPointerException не будет.
+        // Поэтому код в onCreate не нужен
+        binding.trainingRecyclerView.setAdapter(new TrainingAdapter(trainingList));
         binding.trainingAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,11 +89,16 @@ public class TrainingFragment extends Fragment {
             trainingItemCardBinding.setViewModel(new TrainingViewModel());
         }
 
-        public void bind(Training training) {
+        public void bind(final Training training) {
             trainingItemCardBinding.getViewModel().setTraining(training);
             trainingItemCardBinding.executePendingBindings();
+            trainingItemCardBinding.trainingCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training));
+                }
+            });
         }
-
     }
 
     private class TrainingAdapter extends RecyclerView.Adapter<TrainingHolder> {

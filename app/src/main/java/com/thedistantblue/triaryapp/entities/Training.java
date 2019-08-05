@@ -1,12 +1,13 @@
 package com.thedistantblue.triaryapp.entities;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
-public class Training {
+public class Training implements Serializable {
     private UUID id;
 
     private long userId;
