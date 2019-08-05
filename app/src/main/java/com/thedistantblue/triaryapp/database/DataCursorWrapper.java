@@ -68,9 +68,9 @@ public class DataCursorWrapper extends CursorWrapper {
 
         Set set = new Set(UUID.fromString(uuid));
         set.setExerciseId(UUID.fromString(exerciseUUID));
-        set.setSetNumber(Integer.parseInt(setNumer));
-        set.setSetRepetitions(Integer.parseInt(repetitions));
-        set.setSetWeight(Integer.parseInt(weight));
+        set.setSetNumber(setNumer);
+        set.setSetRepetitions(repetitions);
+        set.setSetWeight(weight);
         return set;
     }
 

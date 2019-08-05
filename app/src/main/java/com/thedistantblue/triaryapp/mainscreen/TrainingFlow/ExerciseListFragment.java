@@ -17,6 +17,7 @@ import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
@@ -44,7 +45,8 @@ public class ExerciseListFragment extends Fragment {
         dao = DAO.get(getActivity());
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         try {
-            exerciseList = dao.getExercisesList(training);
+            //exerciseList = dao.getExercisesList(training);
+            exerciseList = training.getTrainingExercises();
         } catch (NullPointerException exc) {
             exerciseList = new ArrayList<>();
         }
@@ -57,10 +59,13 @@ public class ExerciseListFragment extends Fragment {
 
         binding.exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.exerciseRecyclerView.setAdapter(new ExerciseAdapter(exerciseList));
+        //binding.exerciseRecyclerView.getAdapter().notifyDataSetChanged();
         binding.exerciseAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "New exercise", Toast.LENGTH_SHORT).show();
+                ((MainScreenActivity)getActivity())
+                        .manageFragments(ExerciseFragment.newInstance(training, null, "create"));
             }
         });
 

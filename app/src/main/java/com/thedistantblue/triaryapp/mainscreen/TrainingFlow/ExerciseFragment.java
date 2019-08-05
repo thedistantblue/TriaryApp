@@ -16,6 +16,7 @@ import com.thedistantblue.triaryapp.entities.Set;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +35,9 @@ public class ExerciseFragment extends Fragment {
         Bundle args = new Bundle();
 
         if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
+        else {args.putSerializable(EXERCISE_KEY, new Exercise(training.getId()));}
         args.putSerializable(ACTION_CODE, action);
-        args.putSerializable(TRAINING_KEY, training);
+        if (training != null) {args.putSerializable(TRAINING_KEY, training);}
 
         ExerciseFragment fragment = new ExerciseFragment();
         fragment.setArguments(args);
@@ -55,7 +57,15 @@ public class ExerciseFragment extends Fragment {
         ExerciseFragmentLayoutBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
 
-        binding.setViewModel(new ExerciseViewModel());
+        ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
+        exerciseViewModel.setExercise(exercise);
+        exerciseViewModel.setDao(dao);
+        exerciseViewModel.setActionString(action);
+        if (action.equals("create")) {
+            exerciseViewModel.setEmptyExerciseSets();
+        }
+
+        binding.setViewModel(exerciseViewModel);
 
         return binding.getRoot();
     }

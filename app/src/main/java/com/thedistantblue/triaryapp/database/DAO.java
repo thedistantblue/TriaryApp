@@ -126,6 +126,7 @@ public class DAO {
     }
 
     public User getUser(User user) {
+        User u;
         String userId = String.valueOf(user.getId());
         //String userId = user.getId().toString();
         DataCursorWrapper dcw = this.queryData(
@@ -138,10 +139,12 @@ public class DAO {
                 return null;
             }
             dcw.moveToFirst();
-            return dcw.getUser();
+            u = dcw.getUser();
         } finally {
             dcw.close();
         }
+        u.setUserTrainings(getTrainingsList(u));
+        return u;
     }
 
     // ВОЗМОЖНО НЕПРАВИЛЬНО!
@@ -187,7 +190,9 @@ public class DAO {
         try {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
-                trainingsList.add(dcw.getTraining());
+                Training t = dcw.getTraining();
+                t.setTrainingExercises(getExercisesList(t));
+                trainingsList.add(t);
                 dcw.moveToNext();
             }
         } finally {
@@ -235,7 +240,9 @@ public class DAO {
         try {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
-                exercisesList.add(dcw.getExercise());
+                Exercise e = dcw.getExercise();
+                e.setExerciseSets(getSetsList(e));
+                exercisesList.add(e);
                 dcw.moveToNext();
             }
         } finally {

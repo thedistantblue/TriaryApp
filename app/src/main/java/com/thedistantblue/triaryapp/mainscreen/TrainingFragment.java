@@ -53,8 +53,10 @@ public class TrainingFragment extends Fragment {
         dao = DAO.get(getActivity());
         user = (User) getArguments().getSerializable(USER_KEY);
         // Не нужно, потому что в дао уже возвращается пустой список
+        // Или надо, если берем из юзера (так правильно), а юзера при этом берем из БД
         try {
             trainingList = dao.getTrainingsList(user);
+            //trainingList = user.getUserTrainings();
         } catch (NullPointerException exc) {
             trainingList = new ArrayList<>();
         }
