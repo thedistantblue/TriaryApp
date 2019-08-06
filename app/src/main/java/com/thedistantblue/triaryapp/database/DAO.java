@@ -60,6 +60,7 @@ public class DAO {
         cv.put(DatabaseScheme.ExerciseTable.Columns.UUID, exercise.getId().toString());
         cv.put(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING, exercise.getTrainingId().toString());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Name, exercise.getExerciseName());
+        cv.put(DatabaseScheme.ExerciseTable.Columns.Comments, exercise.getExerciseComments());
         return cv;
     }
 
@@ -152,6 +153,8 @@ public class DAO {
     // при получении самой тренировки, вы должны и получить ассоциированный с ней
     // список упражнений.
     // Сделал так, как должно быть, но возможны ошибки. Перевроверить.
+    // UPD: По-идее, этот метод вообще не нужен, т.к. все необходимое делается в
+    // получении списка, а сама тренировка берется при помощи курсор враппера.
     public Training getTraining(Training training) {
         Training t;
         String trainingId = training.getId().toString();

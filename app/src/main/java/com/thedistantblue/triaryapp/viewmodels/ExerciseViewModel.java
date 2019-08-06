@@ -16,12 +16,14 @@ public class ExerciseViewModel extends BaseObservable {
     private Exercise exercise;
     private DAO dao;
     private String actionString;
+    private List<Set> setList;
 
     public void setEmptyExerciseSets() {
         exercise.setExerciseSets(new ArrayList<Set>(5));
         for (int i = 0; i < 5; i++) {
             exercise.getExerciseSets().add(new Set(exercise.getId()));
         }
+        setList = exercise.getExerciseSets();
     }
 
     public void setActionString(String actionString) {
@@ -66,57 +68,57 @@ public class ExerciseViewModel extends BaseObservable {
 
     //1 set
     public void setFirstSetNumber(String number) {
-        exercise.getExerciseSets().get(1).setSetNumber(number);
+        setList.get(1).setSetNumber(number);
         notifyChange();
     }
 
     @Bindable
     public String getFirstSetNumber() {
-        return exercise.getExerciseSets().get(1).getSetNumber();
+        return setList.get(1).getSetNumber();
     }
 
     //2 set
     public void setSecondSetNumber(String number) {
-        exercise.getExerciseSets().get(2).setSetNumber(number);
+        setList.get(2).setSetNumber(number);
         notifyChange();
     }
 
     @Bindable
     public String getSecondSetNumber() {
-        return exercise.getExerciseSets().get(2).getSetNumber();
+        return setList.get(2).getSetNumber();
     }
 
     //3 set
     public void setThirdSetNumber(String number) {
-        exercise.getExerciseSets().get(3).setSetNumber(number);
+        setList.get(3).setSetNumber(number);
         notifyChange();
     }
 
     @Bindable
     public String getThirdSetNumber() {
-        return exercise.getExerciseSets().get(3).getSetNumber();
+        return setList.get(3).getSetNumber();
     }
 
     //4 set
     public void setFourthSetNumber(String number) {
-        exercise.getExerciseSets().get(4).setSetNumber(number);
+        setList.get(4).setSetNumber(number);
         notifyChange();
     }
 
     @Bindable
     public String getFourthSetNumber() {
-        return exercise.getExerciseSets().get(4).getSetNumber();
+        return setList.get(4).getSetNumber();
     }
 
     //5 set
     public void setFifthSetNumber(String number) {
-        exercise.getExerciseSets().get(5).setSetNumber(number);
+        setList.get(5).setSetNumber(number);
         notifyChange();
     }
 
     @Bindable
     public String getFifthSetNumber() {
-        return exercise.getExerciseSets().get(5).getSetNumber();
+        return setList.get(5).getSetNumber();
     }
 
     public void action() {
@@ -125,10 +127,16 @@ public class ExerciseViewModel extends BaseObservable {
     }
 
     private void save() {
-        //
+        dao.addExercise(exercise);
+        for(Set set : setList) {
+            dao.addSet(set);
+        }
     }
 
     private void update() {
-        //
+        dao.updateExercise(exercise);
+        for(Set set : setList) {
+            dao.updateSet(set);
+        }
     }
 }

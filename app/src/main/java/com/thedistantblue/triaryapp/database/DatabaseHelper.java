@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "_id integer primary key autoincrement, " +
                     DatabaseScheme.ExerciseTable.Columns.UUID + ", " +
                     DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING + ", " +
-                    DatabaseScheme.ExerciseTable.Columns.Name +
+                    DatabaseScheme.ExerciseTable.Columns.Name + ", " +
                     DatabaseScheme.ExerciseTable.Columns.Comments + ")";
 
     private static final String CREATE_SET_TABLE =
