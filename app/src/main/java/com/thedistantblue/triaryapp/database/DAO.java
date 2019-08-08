@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Running;
@@ -100,6 +101,9 @@ public class DAO {
 
     public void addExercise(Exercise exercise) {
         ContentValues cv = getExerciseContentValues(exercise);
+        for (int i = 0; i < exercise.getExerciseSets().size(); i++) {
+            addSet(exercise.getExerciseSets().get(i));
+        }
         mDatabase.insert(DatabaseScheme.ExerciseTable.NAME, null, cv);
     }
 
@@ -335,6 +339,10 @@ public class DAO {
     public void updateExercise(Exercise exercise) {
         String uuid = exercise.getId().toString();
         ContentValues cv = getExerciseContentValues(exercise);
+        for (int i = 0; i < exercise.getExerciseSets().size(); i++) {
+            Log.d("updateExercise(): ", String.valueOf(exercise.getExerciseSets().get(i).getSetWeight()));
+            updateSet(exercise.getExerciseSets().get(i));
+        }
 
         mDatabase.update(
                 DatabaseScheme.ExerciseTable.NAME,
@@ -348,6 +356,8 @@ public class DAO {
     public void updateSet(Set set) {
         String uuid = set.getId().toString();
         ContentValues cv = getSetContentValues(set);
+
+        Log.d("updateSet(): ", String.valueOf(set.getSetWeight()));
 
         mDatabase.update(
                 DatabaseScheme.SetTable.NAME,

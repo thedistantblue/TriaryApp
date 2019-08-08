@@ -52,10 +52,12 @@ public class DataCursorWrapper extends CursorWrapper {
         String uuid = getString(getColumnIndex(DatabaseScheme.ExerciseTable.Columns.UUID));
         String trainingUUID = getString(getColumnIndex(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING));
         String name = getString(getColumnIndex(DatabaseScheme.ExerciseTable.Columns.Name));
+        String comments = getString(getColumnIndex(DatabaseScheme.ExerciseTable.Columns.Comments));
 
-        Exercise exercise = new Exercise(UUID.fromString(uuid));
+        Exercise exercise = new Exercise(UUID.fromString(uuid), UUID.fromString(trainingUUID));
         exercise.setExerciseName(name);
-        exercise.setTrainingId(UUID.fromString(trainingUUID));
+        //exercise.setTrainingId(UUID.fromString(trainingUUID));
+        exercise.setExerciseComments(comments);
         return exercise;
     }
 
@@ -66,11 +68,11 @@ public class DataCursorWrapper extends CursorWrapper {
         String repetitions = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.Repetitions));
         String weight = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.Weight));
 
-        Set set = new Set(UUID.fromString(uuid));
+        Set set = new Set(UUID.fromString(uuid), UUID.fromString(exerciseUUID));
         set.setExerciseId(UUID.fromString(exerciseUUID));
-        set.setSetNumber(setNumer);
-        set.setSetRepetitions(repetitions);
-        set.setSetWeight(weight);
+        set.setSetNumber(Integer.parseInt(setNumer));
+        set.setSetRepetitions(Integer.parseInt(repetitions));
+        set.setSetWeight(Integer.parseInt(weight));
         return set;
     }
 

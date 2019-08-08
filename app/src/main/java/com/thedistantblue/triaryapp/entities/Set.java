@@ -5,9 +5,9 @@ import java.util.UUID;
 public class Set {
     private UUID id;
     private UUID exerciseId;
-    private String setNumber;
-    private String setRepetitions;
-    private String setWeight;
+    private int setNumber;
+    private int setRepetitions;
+    private int setWeight;
 
     public Set(UUID exerciseId) {
         this(UUID.randomUUID(), exerciseId);
@@ -26,35 +26,35 @@ public class Set {
         this.id = id;
     }
 
-    public String getSetNumber() {
-        return setNumber;
-    }
-
-    public void setSetNumber(String setNumber) {
-        this.setNumber = setNumber;
-    }
-
-    public String getSetRepetitions() {
-        return setRepetitions;
-    }
-
-    public void setSetRepetitions(String setRepetitions) {
-        this.setRepetitions = setRepetitions;
-    }
-
-    public String getSetWeight() {
-        return setWeight;
-    }
-
-    public void setSetWeight(String setWeight) {
-        this.setWeight = setWeight;
-    }
-
     public UUID getExerciseId() {
         return exerciseId;
     }
 
     public void setExerciseId(UUID exerciseId) {
         this.exerciseId = exerciseId;
+    }
+
+    public int getSetNumber() {
+        return setNumber;
+    }
+
+    public void setSetNumber(int setNumber) {
+        this.setNumber = setNumber;
+    }
+
+    public int getSetRepetitions() {
+        return setRepetitions;
+    }
+
+    public void setSetRepetitions(int setRepetitions) {
+        this.setRepetitions = setRepetitions;
+    }
+
+    public int getSetWeight() {
+        return setWeight;
+    }
+
+    public void setSetWeight(int setWeight) {
+        this.setWeight = setWeight;
     }
 }
