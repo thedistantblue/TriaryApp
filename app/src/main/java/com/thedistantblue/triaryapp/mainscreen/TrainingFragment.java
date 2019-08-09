@@ -10,10 +10,13 @@ import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.thedistantblue.triaryapp.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
@@ -24,6 +27,7 @@ import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFrag
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,6 +76,13 @@ public class TrainingFragment extends Fragment {
         // Также в дао в любом случае возвращается список, поэтому NullPointerException не будет.
         // Поэтому код в onCreate не нужен
         binding.trainingRecyclerView.setAdapter(new TrainingAdapter(trainingList));
+
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback((TrainingAdapter) binding.trainingRecyclerView.getAdapter());
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(binding.trainingRecyclerView);
+
         binding.trainingAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +93,7 @@ public class TrainingFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private class TrainingHolder extends RecyclerView.ViewHolder {
+    public class TrainingHolder extends RecyclerView.ViewHolder {
         private TrainingItemCardBinding trainingItemCardBinding;
 
         private TrainingHolder(TrainingItemCardBinding ticb) {
@@ -103,7 +114,8 @@ public class TrainingFragment extends Fragment {
         }
     }
 
-    private class TrainingAdapter extends RecyclerView.Adapter<TrainingHolder> {
+    public class TrainingAdapter extends RecyclerView.Adapter<TrainingHolder>
+    implements ItemTouchHelperAdapter {
         List<Training> trainingList;
 
         public TrainingAdapter(List<Training> trainingList) {
@@ -129,6 +141,29 @@ public class TrainingFragment extends Fragment {
         @Override
         public int getItemCount() {
             return trainingList.size();
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            dao.deleteTraining(trainingList.get(position));
+            trainingList.remove(position);
+            //dao.deleteTraining(trainingList.get(position));
+            notifyItemRemoved(position);
+        }
+
+        @Override
+        public boolean onItemMove(int fromPosition, int toPosition) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(trainingList, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(trainingList, i, i - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
         }
     }
 }
