@@ -6,17 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.thedistantblue.triaryapp.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
@@ -29,7 +25,6 @@ import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 // Возможно, создание юзера надо перенести в активность,
 // а потом доставать из аргументов фрагмента, которые будут добавляться

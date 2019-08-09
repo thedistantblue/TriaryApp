@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp;
+package com.thedistantblue.triaryapp.mainscreen;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp;
+package com.thedistantblue.triaryapp.mainscreen;
 
 public interface ItemTouchHelperAdapter {
 
