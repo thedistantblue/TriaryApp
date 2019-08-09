@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,10 +19,14 @@ import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
+import com.thedistantblue.triaryapp.mainscreen.TrainingFragment;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ExerciseListFragment extends Fragment {
@@ -60,6 +65,13 @@ public class ExerciseListFragment extends Fragment {
 
         binding.exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.exerciseRecyclerView.setAdapter(new ExerciseAdapter(exerciseList));
+
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback((ExerciseAdapter) binding.exerciseRecyclerView.getAdapter());
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(binding.exerciseRecyclerView);
+
         binding.exerciseRecyclerView.getAdapter().notifyDataSetChanged();
         binding.exerciseAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,36 +101,16 @@ public class ExerciseListFragment extends Fragment {
         }
 
         public void bind(final Exercise exercise) {
-            //Log.d("asd", "asd");
-            /*
-            Log.d("exercise id", exercise.getId().toString());
-            Log.d("exercise name", exercise.getExerciseName());
-            Log.d("exercise training id", exercise.getTrainingId().toString());
-            Log.d("exercise comments", exercise.getExerciseComments());
 
-            for (int i = 0; i < exercise.getExerciseSets().size(); i++) {
-                Log.d("setlisttag", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetNumber());
-                Log.d("setlisttag", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetRepetitions());
-            }
-            */
             this.exerciseItemCardBinding.getViewModel().setExercise(exercise);
             this.exerciseItemCardBinding.executePendingBindings();
             exerciseItemCardBinding.getViewModel().setExerciseSets(exercise.getExerciseSets());
-            for (int i = 0; i < exercise.getExerciseSets().size(); i++) {
-                Log.d("set number before clic ", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetNumber());
-                Log.d("set weight before clic", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetWeight());
-                Log.d("set reps before clic", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetRepetitions());
-            }
+
 
             this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Exercise details", Toast.LENGTH_SHORT).show();
-                    for (int i = 0; i < exercise.getExerciseSets().size(); i++) {
-                        Log.d("set number ", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetNumber());
-                        Log.d("set weight", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetWeight());
-                        Log.d("set reps", "setList(" + i + "): " + exercise.getExerciseSets().get(i).getSetRepetitions());
-                    }
                     ((MainScreenActivity)getActivity())
                             .manageFragments(ExerciseFragment.newInstance(training, exercise, "update"));
                 }
@@ -126,7 +118,8 @@ public class ExerciseListFragment extends Fragment {
         }
     }
 
-    private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseHolder> {
+    private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseHolder>
+    implements ItemTouchHelperAdapter {
         List<Exercise> exerciseList;
 
         public ExerciseAdapter(List<Exercise> exerciseList) {
@@ -153,6 +146,29 @@ public class ExerciseListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return exerciseList.size();
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            dao.deleteExercise(exerciseList.get(position));
+            exerciseList.remove(position);
+            //dao.deleteTraining(trainingList.get(position));
+            notifyItemRemoved(position);
+        }
+
+        @Override
+        public boolean onItemMove(int fromPosition, int toPosition) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(exerciseList, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(exerciseList, i, i - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
         }
     }
 }
