@@ -79,6 +79,7 @@ public class DataCursorWrapper extends CursorWrapper {
     public Running getRunning() {
         String uuid = getString(getColumnIndex(DatabaseScheme.RunningTable.Columns.UUID));
         String userUUID = getString(getColumnIndex(DatabaseScheme.RunningTable.Columns.UUID_USER));
+        String name = getString(getColumnIndex(DatabaseScheme.RunningTable.Columns.Name));
         long date = getLong(getColumnIndex(DatabaseScheme.RunningTable.Columns.Date));
         double distance = getDouble(getColumnIndex(DatabaseScheme.RunningTable.Columns.Distance));
         double speed = getDouble(getColumnIndex(DatabaseScheme.RunningTable.Columns.Speed));
@@ -86,9 +87,10 @@ public class DataCursorWrapper extends CursorWrapper {
         double calories = getDouble(getColumnIndex(DatabaseScheme.RunningTable.Columns.Calories));
         String comments = getString(getColumnIndex(DatabaseScheme.RunningTable.Columns.Comments));
 
-        Running running = new Running(UUID.fromString(userUUID));
+        Running running = new Running(UUID.fromString(uuid), UUID.fromString(userUUID));
         running.setId(UUID.fromString(uuid));
         running.setDate(new Date(date)); // Переработать
+        running.setRunningName(name);
         running.setDistance(distance);
         running.setSpeed(speed);
         running.setTime(time);

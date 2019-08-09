@@ -51,6 +51,7 @@ public class DatabaseScheme {
         public static final class Columns {
             public static final String UUID = "id";
             public static final String UUID_USER = "id_user";
+            public static final String Name = "name";
             public static final String Date = "date";
             public static final String Distance = "distance";
             public static final String Speed = "speed";

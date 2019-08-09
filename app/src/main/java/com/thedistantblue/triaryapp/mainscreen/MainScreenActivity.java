@@ -50,9 +50,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.switch_to_running_tab:
                         Toast.makeText(getApplicationContext(), "Running tab", Toast.LENGTH_SHORT).show();
-
-                        RunningFragment runningFragment;
-
+                        manageFragments(RunningFragment.newInstance(user));
                         return true;
                     case R.id.switch_to_trainings_tab:
                         Toast.makeText(getApplicationContext(), "Training tab", Toast.LENGTH_SHORT).show();

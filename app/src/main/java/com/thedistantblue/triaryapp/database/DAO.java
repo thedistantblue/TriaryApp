@@ -322,6 +322,28 @@ public class DAO {
         }
     }
 
+    public List<Running> getRunningList(User user) {
+        List<Running> runnings = new ArrayList<>();
+        String uuid = String.valueOf(user.getId());
+        DataCursorWrapper dcw = this.queryData(
+                DatabaseScheme.RunningTable.NAME,
+                DatabaseScheme.RunningTable.Columns.UUID_USER + " =?",
+                new String[] {uuid}
+                );
+
+        try {
+            dcw.moveToFirst();
+            while(!dcw.isAfterLast()) {
+                runnings.add(dcw.getRunning());
+                dcw.moveToNext();
+            }
+        } finally {
+            dcw.close();
+        }
+
+        return runnings;
+    }
+
     // Обновляем тренировку
     public void updateTraining(Training training) {
         String uuid = training.getId().toString();

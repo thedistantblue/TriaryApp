@@ -8,12 +8,21 @@ import java.util.UUID;
 public class Running {
     private UUID id;
     private UUID userId;
+    private String runningName;
     private Date date;
     private double distance;
     private double speed;
     private double time;
     private double calories;
     private String comments;
+
+    public String getRunningName() {
+        return runningName;
+    }
+
+    public void setRunningName(String runningName) {
+        this.runningName = runningName;
+    }
 
     public Running(UUID userId) {
         this(UUID.randomUUID(), userId);

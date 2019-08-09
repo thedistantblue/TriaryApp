@@ -46,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "_id integer primary key autoincrement, " +
                     DatabaseScheme.RunningTable.Columns.UUID + ", " +
                     DatabaseScheme.RunningTable.Columns.UUID_USER + ", " +
+                    DatabaseScheme.RunningTable.Columns.Name + ", " +
                     DatabaseScheme.RunningTable.Columns.Date + ", " +
                     DatabaseScheme.RunningTable.Columns.Distance + ", " +
                     DatabaseScheme.RunningTable.Columns.Speed + ", " +
