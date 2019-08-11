@@ -1,13 +1,14 @@
 package com.thedistantblue.triaryapp.entities;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-public class Running {
+public class Running implements Serializable {
     private UUID id;
-    private UUID userId;
+    private long userId;
     private String runningName;
     private Date date;
     private double distance;
@@ -24,7 +25,7 @@ public class Running {
         this.runningName = runningName;
     }
 
-    public Running(UUID userId) {
+    public Running(long userId) {
         this(UUID.randomUUID(), userId);
         date = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -35,7 +36,7 @@ public class Running {
         date = new GregorianCalendar(year, month, day).getTime();
     }
 
-    public Running(UUID id, UUID userId) {
+    public Running(UUID id, long userId) {
         this.id = id;
         this.userId = userId;
     }
@@ -48,11 +49,11 @@ public class Running {
         this.id = id;
     }
 
-    public UUID getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

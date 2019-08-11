@@ -17,6 +17,7 @@ import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningCreationFragment;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
 import java.util.Collections;
@@ -63,7 +64,9 @@ public class RunningFragment extends Fragment {
         binding.runningAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Something
+                ((MainScreenActivity) getActivity())
+                        .manageFragments
+                                (RunningCreationFragment.newInstance(user, null, "create"));
             }
         });
 
@@ -79,13 +82,15 @@ public class RunningFragment extends Fragment {
             runningItemCardBinding.setViewModel(new RunningViewModel());
         }
 
-        public void bind(Running running) {
+        public void bind(final Running running) {
             runningItemCardBinding.getViewModel().setRunning(running);
             runningItemCardBinding.executePendingBindings();
             runningItemCardBinding.runningCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Something
+                    ((MainScreenActivity) getActivity())
+                            .manageFragments
+                                    (RunningCreationFragment.newInstance(user, running, "update"));
                 }
             });
         }
@@ -105,7 +110,7 @@ public class RunningFragment extends Fragment {
             LayoutInflater inflate = LayoutInflater.from(getActivity());
 
             RunningItemCardBinding runningItemCardBinding =
-                    DataBindingUtil.inflate(inflate, R.layout.training_item_card, parent, false);
+                    DataBindingUtil.inflate(inflate, R.layout.running_item_card, parent, false);
 
             return new RunningHolder(runningItemCardBinding);
         }
@@ -125,7 +130,6 @@ public class RunningFragment extends Fragment {
         public void onItemDismiss(int position) {
             dao.deleteRunning(runningList.get(position));
             runningList.remove(position);
-            //dao.deleteTraining(trainingList.get(position));
             notifyItemRemoved(position);
         }
 

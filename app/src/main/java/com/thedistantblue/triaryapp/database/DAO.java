@@ -79,7 +79,8 @@ public class DAO {
     private static ContentValues getRunningContentValues(Running running) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseScheme.RunningTable.Columns.UUID, running.getId().toString());
-        cv.put(DatabaseScheme.RunningTable.Columns.UUID_USER, running.getUserId().toString());
+        cv.put(DatabaseScheme.RunningTable.Columns.UUID_USER, String.valueOf(running.getUserId()));
+        cv.put(DatabaseScheme.RunningTable.Columns.Name, running.getRunningName());
         cv.put(DatabaseScheme.RunningTable.Columns.Date, String.valueOf(running.getDate().getTime()));
         cv.put(DatabaseScheme.RunningTable.Columns.Distance, running.getDistance());
         cv.put(DatabaseScheme.RunningTable.Columns.Speed, running.getSpeed());
