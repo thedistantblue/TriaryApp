@@ -29,7 +29,7 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_screen_layout);
+        setContentView(R.layout.main_screen_relative_layout);
 
         // Надо брать юзера из базы, если она есть, а не создавать
         // каждый раз нового с одним и тем же id
