@@ -26,10 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// Возможно, создание юзера надо перенести в активность,
-// а потом доставать из аргументов фрагмента, которые будут добавляться
-// во фрагмент в методе newInstance()
-// СДЕЛАНО
 public class TrainingFragment extends Fragment {
     private static final String USER_KEY = "user";
 
@@ -48,11 +44,6 @@ public class TrainingFragment extends Fragment {
         return fragment;
     }
 
-
-    // Обновление списка итемов при возврате назад, т.е. при возвразении фрагмента из стека.
-    // По-идее, так неправильно, потому что создается ещё один адаптер. Надо разобраться,
-    // как можно было бы вызвать его метод и передать туда список.
-    // СДЕЛАНО
     @Override
     public void onResume() {
         super.onResume();
@@ -82,9 +73,6 @@ public class TrainingFragment extends Fragment {
                 DataBindingUtil.inflate(inflater, R.layout.training_fragment_layout, parent, false);
 
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        // Не обратил внимания: я уже беру список в onCreate, значит, здесь можно его не брать. Изменено
-        // Также в дао в любом случае возвращается список, поэтому NullPointerException не будет.
-        // Поэтому код в onCreate не нужен
         binding.trainingRecyclerView.setAdapter(new TrainingAdapter(trainingList));
 
         ItemTouchHelper.Callback callback =
@@ -161,7 +149,6 @@ public class TrainingFragment extends Fragment {
         public void onItemDismiss(int position) {
             dao.deleteTraining(trainingList.get(position));
             trainingList.remove(position);
-            //dao.deleteTraining(trainingList.get(position));
             notifyItemRemoved(position);
         }
 

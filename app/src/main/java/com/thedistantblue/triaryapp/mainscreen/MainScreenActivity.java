@@ -16,9 +16,6 @@ import com.thedistantblue.triaryapp.R;
 
 import com.thedistantblue.triaryapp.entities.User;
 
-// Здесь надо задать текст аппбара, а также обрабатывать нажатия на
-// итемы нижнего меню.
-// Надо ли здесь использовать датабиндинг?
 public class MainScreenActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
@@ -39,7 +36,6 @@ public class MainScreenActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("TriaryApp");
 
         fragmentManager = getSupportFragmentManager();
-        //Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
         BottomNavigationView nav = findViewById(R.id.tab_navigation);
 
