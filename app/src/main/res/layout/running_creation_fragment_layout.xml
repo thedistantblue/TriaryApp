@@ -42,6 +42,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:text="@={viewModel.runningName}"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,6 +55,7 @@
             android:ems="10"
             android:inputType="numberDecimal"
             android:text="@={viewModel.runningDistance}"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_name" />
@@ -66,6 +68,8 @@
             android:ems="10"
 
             android:text="@{viewModel.runningSpeed}"
+            android:textAlignment="center"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_distance" />
@@ -78,6 +82,7 @@
             android:ems="10"
             android:inputType="number"
             android:text="@={viewModel.runningTime}"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_speed" />
@@ -90,6 +95,8 @@
             android:ems="10"
 
             android:text="@{viewModel.runningCalories}"
+            android:textAlignment="center"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_time" />
@@ -102,6 +109,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:text="@={viewModel.runningComments}"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_calories" />

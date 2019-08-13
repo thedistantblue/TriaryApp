@@ -37,6 +37,8 @@ public class TrainingFragment extends Fragment {
     User user;
     List<Training> trainingList;
 
+    TrainingFragmentLayoutBinding binding;
+
     public static TrainingFragment newInstance(User user) {
         Bundle args = new Bundle();
         args.putSerializable(USER_KEY, user);
@@ -44,6 +46,19 @@ public class TrainingFragment extends Fragment {
         TrainingFragment fragment = new TrainingFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    // Обновление списка итемов при возврате назад, т.е. при возвразении фрагмента из стека.
+    // По-идее, так неправильно, потому что создается ещё один адаптер. Надо разобраться,
+    // как можно было бы вызвать его метод и передать туда список.
+    // СДЕЛАНО
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(dao.getTrainingsList(user));
+        ((MainScreenActivity) getActivity()).setTitle("Trainings");
+        //binding.trainingRecyclerView.setAdapter(new TrainingAdapter(dao.getTrainingsList(user)));
     }
 
     @Override
@@ -63,7 +78,7 @@ public class TrainingFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        TrainingFragmentLayoutBinding binding =
+        binding =
                 DataBindingUtil.inflate(inflater, R.layout.training_fragment_layout, parent, false);
 
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -82,7 +97,7 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Create training", Toast.LENGTH_SHORT).show();
-                ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user));
+                ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user), "Create training");
             }
         });
         return binding.getRoot();
@@ -103,7 +118,7 @@ public class TrainingFragment extends Fragment {
             trainingItemCardBinding.trainingCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training));
+                    ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
                 }
             });
         }
@@ -114,6 +129,10 @@ public class TrainingFragment extends Fragment {
         List<Training> trainingList;
 
         public TrainingAdapter(List<Training> trainingList) {
+            this.trainingList = trainingList;
+        }
+
+        public void setTrainingList(List<Training> trainingList) {
             this.trainingList = trainingList;
         }
 

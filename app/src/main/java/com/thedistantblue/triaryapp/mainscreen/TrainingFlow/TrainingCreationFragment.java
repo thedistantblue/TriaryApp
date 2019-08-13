@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
 import java.text.SimpleDateFormat;
@@ -65,6 +67,13 @@ public class TrainingCreationFragment extends Fragment {
                 DateFragment date = DateFragment.getInstance(training.getTrainingDate());
                 date.setTargetFragment(TrainingCreationFragment.this, REQUEST_DATE);
                 date.show(fm, DATE_DIALOG);
+            }
+        });
+        binding.trainingCreationCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trainingViewModel.save();
+                ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
             }
         });
 

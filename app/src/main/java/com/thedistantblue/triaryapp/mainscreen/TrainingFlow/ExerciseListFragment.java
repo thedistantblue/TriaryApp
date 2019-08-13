@@ -35,6 +35,8 @@ public class ExerciseListFragment extends Fragment {
     DAO dao;
     Training training;
     List<Exercise> exerciseList;
+    ExerciseListFragmentLayoutBinding binding;
+
 
     public static ExerciseListFragment newInstance(Training training) {
         Bundle args = new Bundle();
@@ -60,7 +62,7 @@ public class ExerciseListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        ExerciseListFragmentLayoutBinding binding =
+        binding =
                 DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
 
         binding.exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -78,7 +80,7 @@ public class ExerciseListFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "New exercise", Toast.LENGTH_SHORT).show();
                 ((MainScreenActivity)getActivity())
-                        .manageFragments(ExerciseFragment.newInstance(training, null, "create"));
+                        .manageFragments(ExerciseFragment.newInstance(training, null, "create"), "Create exercise");
             }
         });
 
@@ -88,7 +90,8 @@ public class ExerciseListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        ((MainScreenActivity) getActivity()).setTitle("Training exercises");
+        ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(dao.getExercisesList(training));
     }
 
     private class ExerciseHolder extends RecyclerView.ViewHolder {
@@ -112,7 +115,7 @@ public class ExerciseListFragment extends Fragment {
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Exercise details", Toast.LENGTH_SHORT).show();
                     ((MainScreenActivity)getActivity())
-                            .manageFragments(ExerciseFragment.newInstance(training, exercise, "update"));
+                            .manageFragments(ExerciseFragment.newInstance(training, exercise, "update"), "Update exercise");
                 }
             });
         }
@@ -123,6 +126,10 @@ public class ExerciseListFragment extends Fragment {
         List<Exercise> exerciseList;
 
         public ExerciseAdapter(List<Exercise> exerciseList) {
+            this.exerciseList = exerciseList;
+        }
+
+        public void setExerciseList(List<Exercise> exerciseList) {
             this.exerciseList = exerciseList;
         }
 

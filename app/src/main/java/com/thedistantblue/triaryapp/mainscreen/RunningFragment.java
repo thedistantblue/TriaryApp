@@ -29,6 +29,8 @@ public class RunningFragment extends Fragment {
     private DAO dao;
     private User user;
     private List<Running> runningList;
+    RunningFragmentLayoutBinding binding;
+
 
     public static RunningFragment newInstance(User user) {
         Bundle args = new Bundle();
@@ -37,6 +39,13 @@ public class RunningFragment extends Fragment {
         RunningFragment fragment = new RunningFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainScreenActivity) getActivity()).setTitle("Running");
+        ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(dao.getRunningList(user));
     }
 
     @Override
@@ -49,7 +58,7 @@ public class RunningFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        RunningFragmentLayoutBinding binding =
+        binding =
                 DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
 
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,7 +75,7 @@ public class RunningFragment extends Fragment {
             public void onClick(View v) {
                 ((MainScreenActivity) getActivity())
                         .manageFragments
-                                (RunningCreationFragment.newInstance(user, null, "create"));
+                                (RunningCreationFragment.newInstance(user, null, "create"), "Create running");
             }
         });
 
@@ -90,7 +99,7 @@ public class RunningFragment extends Fragment {
                 public void onClick(View v) {
                     ((MainScreenActivity) getActivity())
                             .manageFragments
-                                    (RunningCreationFragment.newInstance(user, running, "update"));
+                                    (RunningCreationFragment.newInstance(user, running, "update"), "Update running");
                 }
             });
         }
@@ -102,6 +111,10 @@ public class RunningFragment extends Fragment {
         List<Running> runningList;
 
         public RunningAdapter(List<Running> runningList) {
+            this.runningList = runningList;
+        }
+
+        public void setRunningList(List<Running> runningList) {
             this.runningList = runningList;
         }
 

@@ -21,8 +21,8 @@
         </activity>
 
         <activity android:name=".mainscreen.MainScreenActivity"
-            android:windowSoftInputMode="adjustPan">
-
+            android:windowSoftInputMode="adjustPan"
+            android:noHistory="true">
         </activity>
     </application>
 

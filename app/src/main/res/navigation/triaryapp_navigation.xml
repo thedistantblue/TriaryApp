@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/triaryapp_navigation"
+    app:startDestination="@id/mainScreenActivity">
+
+    <activity
+        android:id="@+id/mainScreenActivity"
+        android:name="com.thedistantblue.triaryapp.mainscreen.MainScreenActivity"
+        android:label="main_screen_relative_layout"
+        tools:layout="@layout/main_screen_relative_layout" />
+    <fragment
+        android:id="@+id/trainingFragment2"
+        android:name="com.thedistantblue.triaryapp.mainscreen.TrainingFragment"
+        android:label="training_fragment_layout"
+        tools:layout="@layout/training_fragment_layout" />
+    <fragment
+        android:id="@+id/runningFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.RunningFragment"
+        android:label="running_fragment_layout"
+        tools:layout="@layout/running_fragment_layout" />
+</navigation>

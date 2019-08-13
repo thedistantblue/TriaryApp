@@ -6,8 +6,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DateFragment;
-
 import java.util.Date;
 
 public class TrainingViewModel extends BaseObservable {
