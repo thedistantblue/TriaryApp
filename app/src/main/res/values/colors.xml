@@ -10,6 +10,6 @@
     <color name="fabColor">#BA85FA</color>
     <color name="colorCardBackground1">#2D2A2E</color>
     <color name="colorCardBackground">#333341</color>
-
+    <color name="editTextColor">#aaa</color>
     <color name="transparent">#80000000</color>
 </resources>
