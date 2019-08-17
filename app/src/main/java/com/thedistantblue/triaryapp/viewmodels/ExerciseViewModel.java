@@ -235,8 +235,12 @@ public class ExerciseViewModel extends BaseObservable {
     //----------------------------------------------------------------------------------------------
 
     public void action() {
-        if (actionString.equals("create")) {save();}
-        else {update();}
+        if (actionString.equals("create")) {
+            save();
+        }
+        else {
+            update();
+        }
     }
 
     private void save() {

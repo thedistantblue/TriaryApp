@@ -22,7 +22,6 @@ import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
-import com.thedistantblue.triaryapp.mainscreen.TrainingFragment;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;

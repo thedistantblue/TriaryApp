@@ -6,6 +6,7 @@ import androidx.databinding.Bindable;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.entities.Running;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RunningViewModel extends BaseObservable {
@@ -59,7 +60,9 @@ public class RunningViewModel extends BaseObservable {
 
     @Bindable
     public String getRunningDate() {
-        return running.getDate().toString();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return dateFormat.format(running.getDate());
+        //return running.getDate().toString();
     }
 
     public void setRunningDistance(String distance) {

@@ -14,6 +14,7 @@ import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Set;
 import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class ExerciseFragment extends Fragment {
 
     DAO dao;
     Exercise exercise;
+    Training training;
     List<Set> setList;
 
     String action = "";
@@ -48,6 +50,7 @@ public class ExerciseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dao = DAO.get(getActivity());
+        training = (Training) getArguments().getSerializable(TRAINING_KEY);
         exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
         action = (String) getArguments().getSerializable(ACTION_CODE);
     }
@@ -57,13 +60,20 @@ public class ExerciseFragment extends Fragment {
         ExerciseFragmentLayoutBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
 
-        ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
+        final ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
         exerciseViewModel.setExercise(exercise);
         exerciseViewModel.setDao(dao);
         exerciseViewModel.setActionString(action);
         if (action.equals("create")) {
             exerciseViewModel.setEmptyExerciseSets();
         }
+        binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exerciseViewModel.action();
+                ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+            }
+        });
 
         binding.setViewModel(exerciseViewModel);
 

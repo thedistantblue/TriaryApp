@@ -27,15 +27,24 @@ public class TrainingCreationFragment extends Fragment {
     private static final String USER_KEY = "user";
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
+    private static final String ACTION_STRING = "action";
+    private static final String TRAINING_KEY = "training";
 
     private DAO dao;
     private User user;
     Training training;
+    private String actionString;
     private TrainingViewModel trainingViewModel;
 
-    public static TrainingCreationFragment newInstance(User user) {
+    public static TrainingCreationFragment newInstance(User user, Training training, String actionString) {
         Bundle args = new Bundle();
         args.putSerializable(USER_KEY, user);
+        args.putSerializable(ACTION_STRING, actionString);
+        if (training != null) {
+            args.putSerializable(TRAINING_KEY, training);
+        } else {
+            args.putSerializable(TRAINING_KEY, new Training(user.getId()));
+        }
 
         TrainingCreationFragment fragment = new TrainingCreationFragment();
         fragment.setArguments(args);
@@ -47,10 +56,12 @@ public class TrainingCreationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.user = (User) getArguments().getSerializable(USER_KEY);
         dao = DAO.get(getActivity());
-        training = new Training(this.user.getId());
+        actionString = (String)getArguments().getSerializable(ACTION_STRING);
+        training = (Training) getArguments().getSerializable(TRAINING_KEY);
         trainingViewModel = new TrainingViewModel();
         trainingViewModel.setTraining(training);
         trainingViewModel.setDao(dao);
+        trainingViewModel.setActionString(actionString);
     }
 
     @Override
@@ -72,7 +83,13 @@ public class TrainingCreationFragment extends Fragment {
         binding.trainingCreationCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                trainingViewModel.save();
+                if (actionString.equals("create")) {
+                    trainingViewModel.save();
+                } else {
+                    trainingViewModel.action(); // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
+                                                // обязательно переделать,
+                                                // сейчас написано пиздец криво
+                }
                 ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
             }
         });

@@ -47,6 +47,7 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        this.trainingList = dao.getTrainingsList(user);
         ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(dao.getTrainingsList(user));
         ((MainScreenActivity) getActivity()).setTitle("Training");
         //binding.trainingRecyclerView.setAdapter(new TrainingAdapter(dao.getTrainingsList(user)));
@@ -85,7 +86,7 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Create training", Toast.LENGTH_SHORT).show();
-                ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user), "Create training");
+                ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, "create"), "Create training");
             }
         });
         return binding.getRoot();
@@ -93,6 +94,7 @@ public class TrainingFragment extends Fragment {
 
     public class TrainingHolder extends RecyclerView.ViewHolder {
         private TrainingItemCardBinding trainingItemCardBinding;
+        int pos;
 
         private TrainingHolder(TrainingItemCardBinding ticb) {
             super(ticb.getRoot());
@@ -100,13 +102,20 @@ public class TrainingFragment extends Fragment {
             trainingItemCardBinding.setViewModel(new TrainingViewModel());
         }
 
-        public void bind(final Training training) {
+        public void bind(final Training training, final int position) {
+            this.pos = position;
             trainingItemCardBinding.getViewModel().setTraining(training);
             trainingItemCardBinding.executePendingBindings();
             trainingItemCardBinding.trainingCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                }
+            });
+            trainingItemCardBinding.trainingSettingsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), "update"), "Training settings");
                 }
             });
         }
@@ -137,7 +146,7 @@ public class TrainingFragment extends Fragment {
         @Override
         public void onBindViewHolder(TrainingHolder trainingHolder, int position) {
             Training training = trainingList.get(position);
-            trainingHolder.bind(training);
+            trainingHolder.bind(training, position);
         }
 
         @Override

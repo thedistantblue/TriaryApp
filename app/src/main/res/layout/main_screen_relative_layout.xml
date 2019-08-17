@@ -43,6 +43,9 @@
         android:background="@android:color/darker_gray"
         app:elevation="4dp"
         app:menu="@menu/main_screen_tabs"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="ifRoom|withText"
+        app:itemIconTint="@color/selector"
+        app:itemTextColor="@color/selector"
+        />
 
 </RelativeLayout>

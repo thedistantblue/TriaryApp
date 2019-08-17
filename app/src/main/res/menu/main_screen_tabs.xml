@@ -9,5 +9,5 @@
         android:id="@+id/switch_to_running_tab"
         android:title="@string/running_tab_button"
         android:icon="@drawable/tab_running"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="ifRoom|withText" />
 </menu>
