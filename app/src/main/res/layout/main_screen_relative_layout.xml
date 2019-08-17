@@ -13,13 +13,27 @@
         android:layout_alignParentTop="true"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/drop_shadow"
+        android:layout_below="@id/toolbar" />
+
     <LinearLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/tab_navigation"
-        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/shadow_nav"
+        android:layout_below="@+id/shadow"
         android:orientation="vertical" />
+
+    <View
+        android:id="@+id/shadow_nav"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/drop_shadow_navbar"
+        android:layout_above="@id/tab_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/tab_navigation"

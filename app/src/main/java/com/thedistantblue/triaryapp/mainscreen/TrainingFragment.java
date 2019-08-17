@@ -48,7 +48,7 @@ public class TrainingFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(dao.getTrainingsList(user));
-        ((MainScreenActivity) getActivity()).setTitle("Trainings");
+        ((MainScreenActivity) getActivity()).setTitle("Training");
         //binding.trainingRecyclerView.setAdapter(new TrainingAdapter(dao.getTrainingsList(user)));
     }
 

@@ -18,6 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:background="@drawable/drop_shadow"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
     <LinearLayout
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
@@ -26,29 +36,20 @@
         app:layout_constraintBottom_toTopOf="@+id/tab_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shadow"/>
-
-    <View
-        android:id="@+id/shadow"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@drawable/drop_shadow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/shadow" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/tab_navigation"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/darker_gray"
+        app:elevation="4dp"
         app:itemIconTint="@android:color/black"
         app:itemTextColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/main_screen_tabs"
-        app:showAsAction="ifRoom|withText"
-        app:elevation="4dp"/>
+        app:showAsAction="ifRoom|withText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
