@@ -15,4 +15,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DarkTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Add attributes here -->
+        <item name="colorAccent">@android:color/darker_gray</item>
+        <item name="colorPrimaryDark">@color/cardColor</item>
+        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+    </style>
+
 </resources>

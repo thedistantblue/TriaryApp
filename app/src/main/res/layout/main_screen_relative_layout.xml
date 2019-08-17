@@ -8,7 +8,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_primary"
+        android:background="@color/cardColor"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:layout_alignParentTop="true"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/darker_gray"
+        android:background="@color/cardColor"
         app:elevation="4dp"
         app:menu="@menu/main_screen_tabs"
         app:showAsAction="ifRoom|withText"
