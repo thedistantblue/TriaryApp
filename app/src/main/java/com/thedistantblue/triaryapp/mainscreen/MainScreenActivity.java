@@ -46,11 +46,9 @@ public class MainScreenActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.switch_to_running_tab:
-                        Toast.makeText(getApplicationContext(), "Running tab", Toast.LENGTH_SHORT).show();
                         manageFragments(RunningFragment.newInstance(user), "Running");
                         return true;
                     case R.id.switch_to_trainings_tab:
-                        Toast.makeText(getApplicationContext(), "Training tab", Toast.LENGTH_SHORT).show();
                         manageFragments(TrainingFragment.newInstance(user), "Training");
                         return true;
                     default:

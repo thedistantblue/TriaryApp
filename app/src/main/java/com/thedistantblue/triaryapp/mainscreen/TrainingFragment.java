@@ -85,7 +85,6 @@ public class TrainingFragment extends Fragment {
         binding.trainingAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Create training", Toast.LENGTH_SHORT).show();
                 ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, "create"), "Create training");
             }
         });

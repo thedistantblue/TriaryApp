@@ -12,4 +12,8 @@
     <color name="fabColor">#BA85FA</color>
     <color name="editTextColor">#aaa</color>
     <color name="transparent">#80000000</color>
+    <color name="DayNightColor">#7C4DFF</color>
+    <color name="DayNightcardColor">#1D1D1D</color>
+    <color name="DayNightbackgroundColor">#121212</color>
+    <color name="DayNightgreenColor">#99CC00</color>
 </resources>

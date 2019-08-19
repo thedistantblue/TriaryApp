@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,8 @@ import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.RunningFragment;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
 import java.util.Date;
@@ -77,6 +80,20 @@ public class RunningCreationFragment extends Fragment {
                 DateFragment date = DateFragment.getInstance(running.getDate());
                 date.setTargetFragment(RunningCreationFragment.this, REQUEST_DATE);
                 date.show(fm, DATE_DIALOG);
+            }
+        });
+
+        binding.runningCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (actionString.equals("create")) {
+                    runningViewModel.save();
+                    Toast.makeText(getActivity(), "Running successfully created!", Toast.LENGTH_SHORT).show();
+                } else {
+                    runningViewModel.update();
+                    Toast.makeText(getActivity(), "Running successfully updated!", Toast.LENGTH_SHORT).show();
+                }
+                ((MainScreenActivity) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
             }
         });
 

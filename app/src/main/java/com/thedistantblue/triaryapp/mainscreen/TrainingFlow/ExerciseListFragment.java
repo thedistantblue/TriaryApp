@@ -77,7 +77,6 @@ public class ExerciseListFragment extends Fragment {
         binding.exerciseAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "New exercise", Toast.LENGTH_SHORT).show();
                 ((MainScreenActivity)getActivity())
                         .manageFragments(ExerciseFragment.newInstance(training, null, "create"), "Create exercise");
             }
@@ -112,7 +111,6 @@ public class ExerciseListFragment extends Fragment {
             this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Exercise details", Toast.LENGTH_SHORT).show();
                     ((MainScreenActivity)getActivity())
                             .manageFragments(ExerciseFragment.newInstance(training, exercise, "update"), "Update exercise");
                 }
