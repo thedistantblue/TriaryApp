@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@{viewModel.trainingDate}"
-        android:background="@drawable/bordered_button2"
+        android:background="@drawable/bordered_button"
         android:textColor="@color/DayNightColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"

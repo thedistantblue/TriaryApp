@@ -16,6 +16,8 @@ import com.thedistantblue.triaryapp.R;
 
 import com.thedistantblue.triaryapp.entities.User;
 
+import java.util.List;
+
 public class MainScreenActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
@@ -60,6 +62,49 @@ public class MainScreenActivity extends AppCompatActivity {
 
     public void manageFragments(Fragment fragment, String title) {
         String backStackName = fragment.getClass().getName();
+        String trainingFragmentName = "com.thedistantblue.triaryapp.mainscreen.TrainingFragment";
+        String runningFragmentName = "com.thedistantblue.triaryapp.mainscreen.RunningFragment";
+
+        List<Fragment> fragments = fragmentManager.getFragments();
+        int size = fragments.size();
+
+        if (backStackName.equals(trainingFragmentName)) {
+            for (int i = 0; i < size; i++) {
+                if (fragmentManager.getFragments().get(i).getClass().getName().equals(trainingFragmentName)) {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+                    return;
+                } else {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .addToBackStack(backStackName)
+                            .commit();
+                    return;
+                }
+            }
+        }
+
+        if (backStackName.equals(runningFragmentName)) {
+            for (int i = 0; i < size; i++) {
+                if (fragmentManager.getFragments().get(i).getClass().getName().equals(runningFragmentName)) {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+                    return;
+                } else {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .addToBackStack(backStackName)
+                            .commit();
+                    return;
+                }
+            }
+        }
 
         boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStackName, 0);
 

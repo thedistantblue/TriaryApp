@@ -1,8 +1,9 @@
 package com.thedistantblue.triaryapp.entities;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Set {
+public class Set implements Serializable {
     private UUID id;
     private UUID exerciseId;
     private int setNumber;
