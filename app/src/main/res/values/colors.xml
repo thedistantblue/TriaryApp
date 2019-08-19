@@ -5,6 +5,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="cardColor">#373D46</color>
     <color name="backgroundColor">#212730</color>
+    <color name="cardColor2">#2E3949</color>
+    <color name="backgroundColor2">#21273C</color>
     <color name="textColor">#E0E0E0</color>
     <color name="tabsColorOld">#00C853</color>
     <color name="tabsColor">#99CC00</color>
