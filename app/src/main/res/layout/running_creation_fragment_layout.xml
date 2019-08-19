@@ -44,6 +44,8 @@
             android:text="@={viewModel.runningName}"
             android:maxLength="15"
             android:textAlignment="center"
+            android:textColor="@android:color/holo_green_light"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -58,6 +60,8 @@
             android:text="@={viewModel.runningDistance}"
             android:maxLength="10"
             android:textAlignment="center"
+            android:textColor="@android:color/holo_green_light"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_name" />
@@ -86,6 +90,8 @@
             android:text="@={viewModel.runningTime}"
             android:maxLength="10"
             android:textAlignment="center"
+            android:textColor="@android:color/holo_green_light"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_speed" />
@@ -96,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:ems="10"
-
+            android:textColor="@android:color/holo_green_light"
             android:text="@{viewModel.runningCalories}"
             android:textAlignment="center"
             android:textSize="24sp"
@@ -114,6 +120,8 @@
             android:text="@={viewModel.runningComments}"
             android:maxLength="50"
             android:textAlignment="center"
+            android:textColor="@android:color/holo_green_light"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_calories" />
