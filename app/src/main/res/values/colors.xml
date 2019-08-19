@@ -3,8 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="cardColor">#1D1D1D</color>
-    <color name="backgroundColor">#121212</color>
+    <color name="cardColor">#393e46</color>
+    <color name="backgroundColor">#232931</color>
     <color name="textColor">#E0E0E0</color>
     <color name="tabsColorOld">#00C853</color>
     <color name="tabsColor">#99CC00</color>
@@ -12,7 +12,7 @@
     <color name="fabColor">#BA85FA</color>
     <color name="editTextColor">#aaa</color>
     <color name="transparent">#80000000</color>
-    <color name="DayNightColor">#7C4DFF</color>
+    <color name="DayNightColor">#4ecca3</color>
     <color name="DayNightcardColor">#1D1D1D</color>
     <color name="DayNightbackgroundColor">#121212</color>
     <color name="DayNightgreenColor">#99CC00</color>

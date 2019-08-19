@@ -24,7 +24,7 @@
             android:textAlignment="center"
             android:textColor="@color/DayNightColor"
             android:textSize="14sp"
-            android:background="@drawable/bordered_button"
+            android:background="@drawable/bordered_button2"
             app:layout_constraintBottom_toTopOf="@+id/running_create_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -51,7 +51,7 @@
             android:maxLength="15"
             android:text="@={viewModel.runningName}"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/DayNightColor"
             android:textSize="24sp"
             android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
 
         <EditText
             android:id="@+id/running_distance"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:ems="10"
@@ -68,7 +68,7 @@
             android:maxLength="10"
             android:text="@={viewModel.runningDistance}"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/DayNightColor"
             android:textSize="24sp"
             android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -86,14 +86,14 @@
 
         <TextView
             android:id="@+id/running_speed"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:ems="10"
             android:text="@{viewModel.runningSpeed}"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/DayNightColor"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_distance" />
@@ -118,22 +118,19 @@
 
         <EditText
             android:id="@+id/running_time"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
             android:ems="10"
             android:inputType="numberDecimal"
             android:maxLength="10"
             android:text="@={viewModel.runningTime}"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/DayNightColor"
             android:textSize="24sp"
             android:theme="@style/MyEditTextTheme"
-            app:layout_constraintEnd_toStartOf="@+id/running_calories"
-            app:layout_constraintHorizontal_bias="0.418"
-            app:layout_constraintStart_toEndOf="@+id/running_speed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_distance_text" />
 
         <TextView
@@ -148,14 +145,14 @@
 
         <TextView
             android:id="@+id/running_calories"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:text="@{viewModel.runningCalories}"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/DayNightColor"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/running_distance" />
@@ -188,7 +185,7 @@
             android:maxLength="50"
             android:text="@={viewModel.runningComments}"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/DayNightColor"
             android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/running_date_button"
             app:layout_constraintEnd_toEndOf="parent"
