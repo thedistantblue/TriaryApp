@@ -35,6 +35,9 @@
             android:inputType="text"
             android:text="@={viewModel.exerciseName}"
             android:maxLength="15"
+            android:textColor="@color/DayNightColor"
+            android:textSize="18sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +51,9 @@
             android:inputType="textMultiLine"
             android:text="@={viewModel.exerciseComments}"
             android:maxLength="100"
+            android:textColor="@color/DayNightColor"
+            android:textSize="18sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/exercise_action_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -58,7 +64,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
             android:text="@{viewModel.actionString}"
-
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:backgroundTint="@color/DayNightColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -84,6 +92,9 @@
             android:inputType="number"
             android:text="@={viewModel.firstSetReps}"
             android:maxLength="2"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/set_2_reps"
             app:layout_constraintEnd_toStartOf="@+id/set_1_weight"
             app:layout_constraintStart_toEndOf="@+id/set_1" />
@@ -98,6 +109,9 @@
             android:inputType="number"
             android:text="@={viewModel.firstSetWeight}"
             android:maxLength="3"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/set_2_weight"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -122,6 +136,9 @@
             android:inputType="number"
             android:text="@={viewModel.secondSetReps}"
             android:maxLength="2"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/set_3_reps"
             app:layout_constraintEnd_toStartOf="@+id/set_2_weight"
             app:layout_constraintStart_toEndOf="@+id/set_2" />
@@ -136,6 +153,9 @@
             android:inputType="number"
             android:text="@={viewModel.secondSetWeight}"
             android:maxLength="3"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/set_3_weight"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -160,6 +180,9 @@
             android:inputType="number"
             android:text="@={viewModel.thirdSetReps}"
             android:maxLength="2"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/view"
             app:layout_constraintEnd_toStartOf="@+id/set_3_weight"
             app:layout_constraintStart_toEndOf="@+id/set_3" />
@@ -174,6 +197,9 @@
             android:inputType="number"
             android:text="@={viewModel.thirdSetWeight}"
             android:maxLength="3"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintBottom_toTopOf="@+id/view"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -198,6 +224,9 @@
             android:inputType="number"
             android:text="@={viewModel.fourthSetReps}"
             android:maxLength="2"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toStartOf="@+id/set_4_weight"
             app:layout_constraintStart_toEndOf="@+id/set_4"
             app:layout_constraintTop_toBottomOf="@+id/view" />
@@ -212,6 +241,9 @@
             android:inputType="number"
             android:text="@={viewModel.fourthSetWeight}"
             android:maxLength="3"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
@@ -236,6 +268,9 @@
             android:inputType="number"
             android:text="@={viewModel.fifthSetReps}"
             android:maxLength="2"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toStartOf="@+id/set_5_weight"
             app:layout_constraintStart_toEndOf="@+id/set_5"
             app:layout_constraintTop_toBottomOf="@+id/set_4_reps" />
@@ -250,6 +285,9 @@
             android:inputType="number"
             android:text="@={viewModel.fifthSetWeight}"
             android:maxLength="3"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/set_4_weight" />
 
