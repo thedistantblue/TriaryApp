@@ -18,6 +18,7 @@ import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBi
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
 import java.text.SimpleDateFormat;
@@ -90,7 +91,7 @@ public class TrainingCreationFragment extends Fragment {
                                                 // обязательно переделать,
                                                 // сейчас написано пиздец криво
                 }
-                ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
             }
         });
 

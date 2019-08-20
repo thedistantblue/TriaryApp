@@ -3,9 +3,8 @@ package com.thedistantblue.triaryapp.mainscreen;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -16,9 +15,7 @@ import com.thedistantblue.triaryapp.R;
 
 import com.thedistantblue.triaryapp.entities.User;
 
-import java.util.List;
-
-public class MainScreenActivity extends AppCompatActivity implements ActivityCallback {
+public class MainScreenActivity extends AppCompatActivity implements MainScreenActivityCallback {
 
     FragmentManager fragmentManager;
     Toolbar toolbar;

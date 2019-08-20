@@ -44,7 +44,7 @@ public class RunningFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainScreenActivity) getActivity()).setTitle("Running");
+        ((MainScreenActivityCallback) getActivity()).setTitle("Running");
         ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(dao.getRunningList(user));
     }
 
@@ -73,7 +73,7 @@ public class RunningFragment extends Fragment {
         binding.runningAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivity) getActivity())
+                ((MainScreenActivityCallback) getActivity())
                         .manageFragments
                                 (RunningCreationFragment.newInstance(user, null, "create"), "Create running");
             }
@@ -97,7 +97,7 @@ public class RunningFragment extends Fragment {
             runningItemCardBinding.runningCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivity) getActivity())
+                    ((MainScreenActivityCallback) getActivity())
                             .manageFragments
                                     (RunningCreationFragment.newInstance(user, running, "update"), "Update running");
                 }

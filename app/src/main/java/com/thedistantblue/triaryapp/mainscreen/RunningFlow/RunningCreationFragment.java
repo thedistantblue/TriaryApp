@@ -19,6 +19,7 @@ import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBin
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.RunningFragment;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
@@ -93,7 +94,7 @@ public class RunningCreationFragment extends Fragment {
                     runningViewModel.update();
                     Toast.makeText(getActivity(), "Running successfully updated!", Toast.LENGTH_SHORT).show();
                 }
-                ((MainScreenActivity) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
+                ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
             }
         });
 

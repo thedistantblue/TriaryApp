@@ -49,7 +49,7 @@ public class TrainingFragment extends Fragment {
         super.onResume();
         this.trainingList = dao.getTrainingsList(user);
         ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(dao.getTrainingsList(user));
-        ((MainScreenActivity) getActivity()).setTitle("Training");
+        ((MainScreenActivityCallback) getActivity()).setTitle("Training");
         //binding.trainingRecyclerView.setAdapter(new TrainingAdapter(dao.getTrainingsList(user)));
     }
 
@@ -85,7 +85,7 @@ public class TrainingFragment extends Fragment {
         binding.trainingAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, "create"), "Create training");
+                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, "create"), "Create training");
             }
         });
         return binding.getRoot();
@@ -108,13 +108,13 @@ public class TrainingFragment extends Fragment {
             trainingItemCardBinding.trainingCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivity) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
                 }
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivity) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), "update"), "Training settings");
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), "update"), "Training settings");
                 }
             });
         }

@@ -21,6 +21,7 @@ import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
@@ -77,7 +78,7 @@ public class ExerciseListFragment extends Fragment {
         binding.exerciseAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivity)getActivity())
+                ((MainScreenActivityCallback)getActivity())
                         .manageFragments(ExerciseFragment.newInstance(training, null, "create"), "Create exercise");
             }
         });
@@ -88,7 +89,7 @@ public class ExerciseListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainScreenActivity) getActivity()).setTitle("Training exercises");
+        ((MainScreenActivityCallback) getActivity()).setTitle("Training exercises");
         ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(dao.getExercisesList(training));
     }
 
@@ -111,7 +112,7 @@ public class ExerciseListFragment extends Fragment {
             this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivity)getActivity())
+                    ((MainScreenActivityCallback)getActivity())
                             .manageFragments(ExerciseFragment.newInstance(training, exercise, "update"), "Update exercise");
                 }
             });
