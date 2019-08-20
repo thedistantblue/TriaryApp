@@ -18,7 +18,7 @@ import com.thedistantblue.triaryapp.entities.User;
 
 import java.util.List;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class MainScreenActivity extends AppCompatActivity implements ActivityCallback {
 
     FragmentManager fragmentManager;
     Toolbar toolbar;
