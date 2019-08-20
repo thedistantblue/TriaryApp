@@ -68,6 +68,7 @@ public class MainScreenActivity extends AppCompatActivity {
         List<Fragment> fragments = fragmentManager.getFragments();
         int size = fragments.size();
 
+        /*
         if (backStackName.equals(trainingFragmentName)) {
             for (int i = 0; i < size; i++) {
                 if (fragmentManager.getFragments().get(i).getClass().getName().equals(trainingFragmentName)) {
@@ -105,7 +106,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 }
             }
         }
-
+        */
         boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStackName, 0);
 
         /*
@@ -120,6 +121,36 @@ public class MainScreenActivity extends AppCompatActivity {
 
 
         if (!fragmentPopped) {
+            if (backStackName.equals(trainingFragmentName)) {
+                if (fragmentManager.findFragmentByTag("tf")!= null) {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment, "tf")
+                            .commit();
+                    return;
+                }
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragment, "tf")
+                        .addToBackStack(backStackName)
+                        .commit();
+            }
+
+            if (backStackName.equals(runningFragmentName)) {
+                if (fragmentManager.findFragmentByTag("rf")!= null) {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment, "rf")
+                            .commit();
+                    return;
+                }
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragment, "rf")
+                        .addToBackStack(backStackName)
+                        .commit();
+            }
+
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
