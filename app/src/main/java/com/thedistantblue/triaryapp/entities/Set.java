@@ -8,7 +8,7 @@ public class Set implements Serializable {
     private UUID exerciseId;
     private int setNumber;
     private int setRepetitions;
-    private int setWeight;
+    private double setWeight;
 
     public Set(UUID exerciseId) {
         this(UUID.randomUUID(), exerciseId);
@@ -51,11 +51,11 @@ public class Set implements Serializable {
         this.setRepetitions = setRepetitions;
     }
 
-    public int getSetWeight() {
+    public double getSetWeight() {
         return setWeight;
     }
 
-    public void setSetWeight(int setWeight) {
+    public void setSetWeight(double setWeight) {
         this.setWeight = setWeight;
     }
 }

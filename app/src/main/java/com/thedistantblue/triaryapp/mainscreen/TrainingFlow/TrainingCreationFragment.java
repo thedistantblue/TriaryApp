@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.databinding.DataBindingUtil;
@@ -86,8 +87,11 @@ public class TrainingCreationFragment extends Fragment {
             public void onClick(View v) {
                 if (actionString.equals("create")) {
                     trainingViewModel.save();
+                    Toast.makeText(getActivity(), "Training created!", Toast.LENGTH_SHORT).show();
                 } else {
-                    trainingViewModel.action(); // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
+                    trainingViewModel.action();
+                    Toast.makeText(getActivity(), "Training updated!", Toast.LENGTH_SHORT).show();
+                                                // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
                                                 // обязательно переделать,
                                                 // сейчас написано пиздец криво
                 }

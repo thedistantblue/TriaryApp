@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -67,11 +68,14 @@ public class ExerciseFragment extends Fragment {
         exerciseViewModel.setActionString(action);
         if (action.equals("create")) {
             exerciseViewModel.setEmptyExerciseSets();
+        } else {
+            exerciseViewModel.setExerciseSets(exercise.getExerciseSets());
         }
         binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 exerciseViewModel.action();
+                Toast.makeText(getActivity(), "Exercise " + action + "!", Toast.LENGTH_SHORT).show();
                 ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
             }
         });
