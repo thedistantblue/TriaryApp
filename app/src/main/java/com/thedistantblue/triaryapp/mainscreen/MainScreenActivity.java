@@ -19,6 +19,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
 
     FragmentManager fragmentManager;
     Toolbar toolbar;
+    BottomNavigationView nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
 
         fragmentManager = getSupportFragmentManager();
 
-        BottomNavigationView nav = findViewById(R.id.tab_navigation);
+        nav = findViewById(R.id.tab_navigation);
 
         manageFragments(TrainingFragment.newInstance(user), "Training");
 
