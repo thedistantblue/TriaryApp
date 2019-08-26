@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.network.SomeClass;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -29,6 +30,8 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Sign in", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), SomeClass.class);
+                startActivity(intent);
             }
         });
 
