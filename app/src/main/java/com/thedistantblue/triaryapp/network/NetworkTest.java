@@ -15,6 +15,7 @@ import com.thedistantblue.triaryapp.entities.User;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -22,27 +23,67 @@ import java.net.URL;
 import java.util.List;
 import java.util.TreeMap;
 
-public class SomeClass extends AppCompatActivity {
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okio.BufferedSink;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class NetworkTest extends AppCompatActivity {
     private class GetData extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL("http://10.0.2.2:8080/training/add"); // разные адреса, поэтому не берет
+                /*
+                //HTTP GET EXAMPLE
+                OkHttpClient httpClient = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url("http://10.0.2.2:8080/training/all")
+                        .get()
+                        .build();
+                Response response = httpClient.newCall(request).execute();
+                return response.body().string();
+                */
+
+                //HTTP PATCH EXAMPLE
+                OkHttpClient httpClient = new OkHttpClient();
+                RequestBody requestBody =
+                        RequestBody.create(MediaType.get("application/json"), "{123}");
+                Request request = new Request.Builder()
+                        .url("http://10.0.2.2:8080/training/")
+                        .patch(requestBody)
+                        .build();
+                Response response = httpClient.newCall(request).execute();
+                return String.valueOf(response.code());
+                //URL url = new URL("http://10.0.2.2:8080/training/all");
+                /*
+                URL url = new URL("http://10.0.2.2:8080/training/add");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json");
+
                 Gson gson = new Gson();
                 User user = new User(1);
                 List<Training> trainingList = DAO.get(getApplicationContext()).getTrainingsList(user);
-                String trainingString = gson.toJson(trainingList.get(0));
+                String trainingString = gson.toJson(trainingList);
+
                 Log.d("JSON from training: ", trainingString);
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
                 bw.write(trainingString);
                 bw.flush();
-                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String json = br.readLine();
+                */
+                //BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                //String json = br.readLine();
+                /*
+                String json = String.valueOf(connection.getResponseCode());
                 return json;
+                */
             } catch (Exception exc) {
                 System.out.println(exc);
             }

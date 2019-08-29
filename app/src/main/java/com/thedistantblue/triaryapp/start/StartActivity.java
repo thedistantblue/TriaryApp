@@ -1,8 +1,6 @@
 package com.thedistantblue.triaryapp.start;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +10,7 @@ import android.widget.Toast;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
-import com.thedistantblue.triaryapp.network.SomeClass;
+import com.thedistantblue.triaryapp.network.NetworkTest;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -30,7 +28,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Sign in", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), SomeClass.class);
+                Intent intent = new Intent(getApplicationContext(), NetworkTest.class);
                 startActivity(intent);
             }
         });
