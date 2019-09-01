@@ -44,7 +44,7 @@ public class DataCursorWrapper extends CursorWrapper {
         training.setTrainingName(name);
         //training.setUserId(UUID.fromString(userUUID));
         training.setUserId(Long.parseLong(userUUID));
-        training.setTrainingDate(new Date(date)); // Здесь надо будет переработать
+        training.setTrainingDate(date); // Здесь надо будет переработать
         return training;
     }
 

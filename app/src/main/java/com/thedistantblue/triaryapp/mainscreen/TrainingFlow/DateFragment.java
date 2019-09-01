@@ -25,8 +25,9 @@ public class DateFragment extends DialogFragment {
     public static final String EXTRA_DATE = "extra_date";
     private DatePicker mDatePicker;
 
-    public static DateFragment getInstance(Date date) {
+    public static DateFragment getInstance(long dateLong) {
         Bundle args = new Bundle();
+        Date date = new Date(dateLong);
         args.putSerializable(ARG_DATE, date);
 
         DateFragment fragment = new DateFragment();

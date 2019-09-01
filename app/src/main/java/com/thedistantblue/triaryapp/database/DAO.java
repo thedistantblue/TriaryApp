@@ -52,7 +52,7 @@ public class DAO {
         cv.put(DatabaseScheme.TrainingTable.Columns.UUID, training.getId().toString());
         cv.put(DatabaseScheme.TrainingTable.Columns.UUID_USER, String.valueOf(training.getUserId()));
         cv.put(DatabaseScheme.TrainingTable.Columns.Name, training.getTrainingName());
-        cv.put(DatabaseScheme.TrainingTable.Columns.Date, String.valueOf(training.getTrainingDate().getTime()));
+        cv.put(DatabaseScheme.TrainingTable.Columns.Date, training.getTrainingDate());
         return cv;
     }
 

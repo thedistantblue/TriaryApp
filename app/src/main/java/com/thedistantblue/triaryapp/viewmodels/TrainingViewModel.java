@@ -43,7 +43,7 @@ public class TrainingViewModel extends BaseObservable {
     }
 
     public void setTrainingDate(Date date) {
-        training.setTrainingDate(date);
+        training.setTrainingDate(date.getTime());
         notifyChange();
     }
 

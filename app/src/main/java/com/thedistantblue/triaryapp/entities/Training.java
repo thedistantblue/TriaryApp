@@ -14,7 +14,8 @@ public class Training implements Serializable {
     //private UUID userId; // если все-таки будет создаваться пользователь,
                         // то необходимо добавлять его идентификатор
     private String trainingName;
-    private Date trainingDate;
+    //private Date trainingDate;
+    private long trainingDate;
     private List<Exercise> trainingExercises;
 
     public Training(UUID id, long userId) {
@@ -25,14 +26,15 @@ public class Training implements Serializable {
     public Training (long userId) {
         this(UUID.randomUUID(), userId);
 
-        trainingDate = new Date();
+        trainingDate = new Date().getTime();
+        /*
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(trainingDate);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         trainingDate = new GregorianCalendar(year, month, day).getTime();
-
+        */
     }
 
     public UUID getId() {
@@ -51,11 +53,11 @@ public class Training implements Serializable {
         this.trainingName = trainingName;
     }
 
-    public Date getTrainingDate() {
+    public long getTrainingDate() {
         return trainingDate;
     }
 
-    public void setTrainingDate(Date trainingDate) {
+    public void setTrainingDate(long trainingDate) {
         this.trainingDate = trainingDate;
     }
 
