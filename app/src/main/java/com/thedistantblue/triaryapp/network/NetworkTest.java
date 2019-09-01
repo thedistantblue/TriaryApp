@@ -23,19 +23,19 @@ import java.net.URL;
 import java.util.List;
 import java.util.TreeMap;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.BufferedSink;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkTest extends AppCompatActivity {
-    private class GetData extends AsyncTask<String, Void, String> {
+    private class RequestBulder extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -52,6 +52,7 @@ public class NetworkTest extends AppCompatActivity {
                 */
 
                 //HTTP PATCH EXAMPLE
+                /*
                 OkHttpClient httpClient = new OkHttpClient();
                 RequestBody requestBody =
                         RequestBody.create(MediaType.get("application/json"), "{123}");
@@ -61,8 +62,10 @@ public class NetworkTest extends AppCompatActivity {
                         .build();
                 Response response = httpClient.newCall(request).execute();
                 return String.valueOf(response.code());
+                */
+
                 //URL url = new URL("http://10.0.2.2:8080/training/all");
-                /*
+
                 URL url = new URL("http://10.0.2.2:8080/training/add");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
@@ -77,13 +80,13 @@ public class NetworkTest extends AppCompatActivity {
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
                 bw.write(trainingString);
                 bw.flush();
-                */
+
                 //BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 //String json = br.readLine();
-                /*
-                String json = String.valueOf(connection.getResponseCode());
-                return json;
-                */
+                return String.valueOf(connection.getResponseCode());
+                //String json = String.valueOf(connection.getResponseCode());
+                //return json;
+
             } catch (Exception exc) {
                 System.out.println(exc);
             }
@@ -98,14 +101,14 @@ public class NetworkTest extends AppCompatActivity {
     }
 
     TextView textView;
-    GetData getData;
+    RequestBulder getData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.json_data_layout);
         textView = findViewById(R.id.json);
-        getData = new GetData();
+        getData = new RequestBulder();
         getData.execute("blabla");
     }
 }
