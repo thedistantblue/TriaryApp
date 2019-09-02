@@ -35,6 +35,37 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkTest extends AppCompatActivity {
+    public String getData(URL url) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            return br.readLine();
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+        return "";
+    }
+
+    public String sendData(URL url) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+            Gson gson = new Gson();
+            User user = new User(1);
+            List<Training> trainingList = DAO.get(getApplicationContext()).getTrainingsList(user);
+            String trainingString = gson.toJson(trainingList);
+            Log.d("JSON from training: ", trainingString);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+            bw.write(trainingString);
+            bw.flush();
+            return String.valueOf(connection.getResponseCode());
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+        return "";
+    }
+
     private class RequestBulder extends AsyncTask<String, Void, String> {
 
         @Override
@@ -66,26 +97,8 @@ public class NetworkTest extends AppCompatActivity {
 
                 //URL url = new URL("http://10.0.2.2:8080/training/all");
 
-                URL url = new URL("http://10.0.2.2:8080/training/add");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoOutput(true);
-                connection.setRequestProperty("Content-Type", "application/json");
-
-                Gson gson = new Gson();
-                User user = new User(1);
-                List<Training> trainingList = DAO.get(getApplicationContext()).getTrainingsList(user);
-                String trainingString = gson.toJson(trainingList);
-
-                Log.d("JSON from training: ", trainingString);
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-                bw.write(trainingString);
-                bw.flush();
-
-                //BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                //String json = br.readLine();
-                return String.valueOf(connection.getResponseCode());
-                //String json = String.valueOf(connection.getResponseCode());
-                //return json;
+                //return getData(new URL("http://10.0.2.2:8080/training/all"));
+                return sendData(new URL("http://10.0.2.2:8080/training/add"));
 
             } catch (Exception exc) {
                 System.out.println(exc);
