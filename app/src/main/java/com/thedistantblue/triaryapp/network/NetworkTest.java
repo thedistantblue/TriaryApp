@@ -2,12 +2,19 @@ package com.thedistantblue.triaryapp.network;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.entities.Training;
@@ -35,11 +42,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkTest extends AppCompatActivity {
+    public String toPrettyJson(String json) {
+        JsonParser parser = new JsonParser();
+        JsonArray jsonArray = parser.parse(json).getAsJsonArray();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(jsonArray);
+    }
+
     public String getData(URL url) {
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            return br.readLine();
+            String json = br.readLine();
+            String prettyJson = toPrettyJson(json);
+            Log.d("pretty json", prettyJson);
+            return prettyJson;
         } catch (IOException exc) {
             exc.printStackTrace();
         }
@@ -96,10 +114,12 @@ public class NetworkTest extends AppCompatActivity {
                 */
 
                 //URL url = new URL("http://10.0.2.2:8080/training/all");
-
-                //return getData(new URL("http://10.0.2.2:8080/training/all"));
-                return sendData(new URL("http://10.0.2.2:8080/training/add"));
-
+                switch (params[0]) {
+                    case "send":
+                        return sendData(new URL("http://10.0.2.2:8080/training/add"));
+                    case "get":
+                        return getData(new URL("http://10.0.2.2:8080/training/all"));
+                }
             } catch (Exception exc) {
                 System.out.println(exc);
             }
@@ -109,19 +129,39 @@ public class NetworkTest extends AppCompatActivity {
         @Override
         protected void onPostExecute(String param) {
             Log.d("JSON: ", param);
-            textView.setText(param);
+            mJsonTextView.setText(param);
+            this.cancel(true);
         }
     }
 
-    TextView textView;
+    TextView mJsonTextView;
+    Button mSendData;
+    Button mGetData;
     RequestBulder getData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.json_data_layout);
-        textView = findViewById(R.id.json);
-        getData = new RequestBulder();
-        getData.execute("blabla");
+        mJsonTextView = findViewById(R.id.data_text_view);
+        mJsonTextView.setMovementMethod(new ScrollingMovementMethod());
+
+        mSendData = findViewById(R.id.send_button);
+        mSendData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData = new RequestBulder();
+                getData.execute("send");
+            }
+        });
+
+        mGetData = findViewById(R.id.get_button);
+        mGetData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData = new RequestBulder();
+                getData.execute("get");
+            }
+        });
     }
 }
