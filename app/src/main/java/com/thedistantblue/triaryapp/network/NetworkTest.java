@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -57,6 +58,9 @@ public class NetworkTest extends AppCompatActivity {
             String json = br.readLine();
             String prettyJson = toPrettyJson(json);
             Log.d("pretty json", prettyJson);
+            Gson gson = new Gson();
+            List<Training> trainingList = Arrays.asList(gson.fromJson(prettyJson, Training[].class));
+            Log.d("parsed data from server", String.valueOf(trainingList.size()));
             return prettyJson;
         } catch (IOException exc) {
             exc.printStackTrace();
