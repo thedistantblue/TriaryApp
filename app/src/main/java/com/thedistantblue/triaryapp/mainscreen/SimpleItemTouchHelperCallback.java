@@ -1,13 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.thedistantblue.triaryapp.R;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
@@ -45,6 +39,9 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
         //mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
 
+        DeleteAlertDialog cdd=new DeleteAlertDialog(mAdapter, viewHolder.getAdapterPosition());
+        cdd.show();
+        /*
         new AlertDialog.Builder(viewHolder.itemView.getContext())
                 .setMessage("Delete this record?")
                 .setPositiveButton("cancel", new DialogInterface.OnClickListener() {
@@ -59,6 +56,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 })
                 .create()
                 .show();
-
+        */
     }
 }
