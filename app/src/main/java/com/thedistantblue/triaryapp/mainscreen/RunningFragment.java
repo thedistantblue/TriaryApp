@@ -1,5 +1,6 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,7 @@ public class RunningFragment extends Fragment {
                 DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
 
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.runningRecyclerView.setAdapter(new RunningAdapter(runningList));
+        binding.runningRecyclerView.setAdapter(new RunningAdapter(runningList, getActivity()));
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((RunningAdapter) binding.runningRecyclerView.getAdapter());
@@ -109,9 +110,15 @@ public class RunningFragment extends Fragment {
             implements ItemTouchHelperAdapter {
 
         List<Running> runningList;
+        Context context;
 
-        public RunningAdapter(List<Running> runningList) {
+        public RunningAdapter(List<Running> runningList, Context context) {
             this.runningList = runningList;
+            this.context = context;
+        }
+
+        public Context getContext() {
+            return this.context;
         }
 
         public void setRunningList(List<Running> runningList) {

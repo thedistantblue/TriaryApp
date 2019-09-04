@@ -1,5 +1,6 @@
 package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,7 +67,7 @@ public class ExerciseListFragment extends Fragment {
                 DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
 
         binding.exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.exerciseRecyclerView.setAdapter(new ExerciseAdapter(exerciseList));
+        binding.exerciseRecyclerView.setAdapter(new ExerciseAdapter(exerciseList, getActivity()));
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((ExerciseAdapter) binding.exerciseRecyclerView.getAdapter());
@@ -122,9 +123,15 @@ public class ExerciseListFragment extends Fragment {
     private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseHolder>
     implements ItemTouchHelperAdapter {
         List<Exercise> exerciseList;
+        Context context;
 
-        public ExerciseAdapter(List<Exercise> exerciseList) {
+        public ExerciseAdapter(List<Exercise> exerciseList, Context context) {
             this.exerciseList = exerciseList;
+            this.context = context;
+        }
+
+        public Context getContext() {
+            return this.context;
         }
 
         public void setExerciseList(List<Exercise> exerciseList) {

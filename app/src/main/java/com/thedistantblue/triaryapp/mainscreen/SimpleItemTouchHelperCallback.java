@@ -1,10 +1,13 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.thedistantblue.triaryapp.R;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
