@@ -1,6 +1,8 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -43,6 +45,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         //mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
 
         DeleteAlertDialog deleteAlertDialog =new DeleteAlertDialog(mAdapter, viewHolder.getAdapterPosition());
+        deleteAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         deleteAlertDialog.show();
         /*
         new AlertDialog.Builder(viewHolder.itemView.getContext())
