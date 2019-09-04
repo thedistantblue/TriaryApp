@@ -160,5 +160,10 @@ public class RunningFragment extends Fragment {
             notifyItemMoved(fromPosition, toPosition);
             return true;
         }
+
+        @Override
+        public void onRefresh(int position) {
+            this.notifyItemChanged(position);
+        }
     }
 }

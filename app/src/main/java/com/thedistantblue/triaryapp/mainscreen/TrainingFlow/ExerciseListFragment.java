@@ -175,5 +175,10 @@ public class ExerciseListFragment extends Fragment {
             notifyItemMoved(fromPosition, toPosition);
             return true;
         }
+
+        @Override
+        public void onRefresh(int position) {
+            this.notifyItemChanged(position);
+        }
     }
 }

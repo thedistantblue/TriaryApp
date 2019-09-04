@@ -40,21 +40,22 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
-        /*
+        //mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+
         new AlertDialog.Builder(viewHolder.itemView.getContext())
-                .setMessage("Are you sure?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setMessage("Delete this record?")
+                .setPositiveButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        int position = viewHolder.getAdapterPosition();
+                        mAdapter.onRefresh(viewHolder.getAdapterPosition());
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
                     }
                 })
                 .create()
                 .show();
-       */
+
     }
 }
