@@ -86,16 +86,26 @@ public class TrainingCreationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (actionString.equals("create")) {
-                    trainingViewModel.save();
-                    Toast.makeText(getActivity(), "Training created!", Toast.LENGTH_SHORT).show();
+                    if (training.getTrainingName() == null || training.getTrainingName().equals("")) {
+                        Toast.makeText(getActivity(), "Enter training name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        trainingViewModel.save();
+                        Toast.makeText(getActivity(), "Training created!", Toast.LENGTH_SHORT).show();
+                        ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                    }
+
                 } else {
-                    trainingViewModel.action();
-                    Toast.makeText(getActivity(), "Training updated!", Toast.LENGTH_SHORT).show();
-                                                // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
-                                                // обязательно переделать,
-                                                // сейчас написано пиздец криво
+                    if (training.getTrainingName().equals("")) {
+                        Toast.makeText(getActivity(), "Enter training name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        trainingViewModel.action();
+                        Toast.makeText(getActivity(), "Training updated!", Toast.LENGTH_SHORT).show();
+                        ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                        // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
+                        // обязательно переделать,
+                        // сейчас написано пиздец криво
+                    }
                 }
-                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
             }
         });
 

@@ -88,13 +88,18 @@ public class RunningCreationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (actionString.equals("create")) {
-                    runningViewModel.save();
-                    Toast.makeText(getActivity(), "Running successfully created!", Toast.LENGTH_SHORT).show();
+                    if (running.getRunningName() == null || running.getRunningName().equals("")) {
+                        Toast.makeText(getActivity(), "Enter running name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        runningViewModel.save();
+                        Toast.makeText(getActivity(), "Running successfully created!", Toast.LENGTH_SHORT).show();
+                        ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
+                    }
                 } else {
                     runningViewModel.update();
                     Toast.makeText(getActivity(), "Running successfully updated!", Toast.LENGTH_SHORT).show();
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
                 }
-                ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
             }
         });
 

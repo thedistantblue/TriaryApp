@@ -249,6 +249,9 @@ public class ExerciseViewModel extends BaseObservable {
     }
 
     private void save() {
+        if (exercise.getExerciseName() == null || exercise.getExerciseName().equals("")) {
+            exercise.setExerciseName("exercise");
+        }
         dao.addExercise(exercise);
     }
 
