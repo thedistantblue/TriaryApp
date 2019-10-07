@@ -51,17 +51,39 @@ public class NetworkTest extends AppCompatActivity {
         return gson.toJson(jsonArray);
     }
 
-    public String getData(URL url) {
+    public String authUser(URL url) {
+        HttpURLConnection connection;
         try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String json = br.readLine();
-            String prettyJson = toPrettyJson(json);
-            Log.d("pretty json", prettyJson);
-            Gson gson = new Gson();
-            List<Training> trainingList = Arrays.asList(gson.fromJson(prettyJson, Training[].class));
-            Log.d("parsed data from server", String.valueOf(trainingList.size()));
-            return prettyJson;
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+            bw.write("username=user1&password=password1");
+            bw.flush();
+            bw.close();
+            return String.valueOf(connection.getResponseCode());
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+        return "fail";
+    }
+
+    public String getData(URL url) {
+        HttpURLConnection connection;
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            if (connection.getResponseCode() == 200) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String json = br.readLine();
+                String prettyJson = toPrettyJson(json);
+                Log.d("pretty json", prettyJson);
+                Gson gson = new Gson();
+                List<Training> trainingList = Arrays.asList(gson.fromJson(prettyJson, Training[].class));
+                Log.d("parsed data from server", String.valueOf(trainingList.size()));
+                return prettyJson;
+            } else {
+                return String.valueOf(connection.getResponseCode());
+            }
         } catch (IOException exc) {
             exc.printStackTrace();
         }
@@ -123,6 +145,8 @@ public class NetworkTest extends AppCompatActivity {
                         return sendData(new URL("http://10.0.2.2:8080/training/add"));
                     case "get":
                         return getData(new URL("http://10.0.2.2:8080/training/all"));
+                    case "auth":
+                        return authUser(new URL("http://10.0.2.2:8080/login"));
                 }
             } catch (Exception exc) {
                 System.out.println(exc);
@@ -139,6 +163,7 @@ public class NetworkTest extends AppCompatActivity {
     }
 
     TextView mJsonTextView;
+    Button mAuthButton;
     Button mSendData;
     Button mGetData;
     RequestBulder getData;
@@ -165,6 +190,15 @@ public class NetworkTest extends AppCompatActivity {
             public void onClick(View v) {
                 getData = new RequestBulder();
                 getData.execute("get");
+            }
+        });
+
+        mAuthButton = findViewById(R.id.auth_button);
+        mAuthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData = new RequestBulder();
+                getData.execute("auth");
             }
         });
     }
