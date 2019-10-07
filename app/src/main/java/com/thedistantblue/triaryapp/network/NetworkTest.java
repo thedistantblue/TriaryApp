@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import okhttp3.Call;
@@ -61,7 +62,11 @@ public class NetworkTest extends AppCompatActivity {
             bw.write("username=user1&password=password1");
             bw.flush();
             bw.close();
-            return String.valueOf(connection.getResponseCode());
+            Map<String, List<String>> headerFields = connection.getHeaderFields();
+            List<String> cookiesHeader = headerFields.get("Set-Cookie");
+            String cookie = cookiesHeader.get(0);
+            return cookie;
+            //return String.valueOf(connection.getResponseCode());
         } catch (IOException exc) {
             exc.printStackTrace();
         }
