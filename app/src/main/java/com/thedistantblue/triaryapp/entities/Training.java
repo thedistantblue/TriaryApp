@@ -15,8 +15,9 @@ public class Training implements Serializable {
                         // то необходимо добавлять его идентификатор
     private String trainingName;
     //private Date trainingDate;
-    private long trainingDate;
+    //private long trainingDate;
     private List<Exercise> trainingExercises;
+    private List<Dates> trainingDates;
 
     public Training(UUID id, long userId) {
         this.id = id;
@@ -26,7 +27,7 @@ public class Training implements Serializable {
     public Training (long userId) {
         this(UUID.randomUUID(), userId);
 
-        trainingDate = new Date().getTime();
+        //trainingDate = new Date().getTime();
         /*
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(trainingDate);
@@ -35,6 +36,14 @@ public class Training implements Serializable {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         trainingDate = new GregorianCalendar(year, month, day).getTime();
         */
+    }
+
+    public List<Dates> getTrainingDates() {
+        return trainingDates;
+    }
+
+    public void setTrainingDates(List<Dates> trainingDates) {
+        this.trainingDates = trainingDates;
     }
 
     public UUID getId() {
@@ -53,14 +62,16 @@ public class Training implements Serializable {
         this.trainingName = trainingName;
     }
 
+    /*
     public long getTrainingDate() {
         return trainingDate;
     }
 
+
     public void setTrainingDate(long trainingDate) {
         this.trainingDate = trainingDate;
     }
-
+    */
     public List<Exercise> getTrainingExercises() {
         return trainingExercises;
     }

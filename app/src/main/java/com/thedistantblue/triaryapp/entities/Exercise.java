@@ -1,12 +1,24 @@
 package com.thedistantblue.triaryapp.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class Exercise implements Serializable {
     private UUID id;
     private UUID trainingId;
+
+    public long getExerciseDate() {
+        return exerciseDate;
+    }
+
+    public void setExerciseDate(long exerciseDate) {
+        this.exerciseDate = exerciseDate;
+    }
+
+    private long exerciseDate;
+
     private String exerciseName;
     private String exerciseComments;
     private List<Set> exerciseSets;

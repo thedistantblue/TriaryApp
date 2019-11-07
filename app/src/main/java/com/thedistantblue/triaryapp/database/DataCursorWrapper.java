@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.Set;
@@ -34,7 +35,7 @@ public class DataCursorWrapper extends CursorWrapper {
         String uuid = getString(getColumnIndex(DatabaseScheme.TrainingTable.Columns.UUID));
         String userUUID = getString(getColumnIndex(DatabaseScheme.TrainingTable.Columns.UUID_USER));
         String name = getString(getColumnIndex(DatabaseScheme.TrainingTable.Columns.Name));
-        long date = getLong(getColumnIndex(DatabaseScheme.TrainingTable.Columns.Date));
+        //long date = getLong(getColumnIndex(DatabaseScheme.TrainingTable.Columns.Date));
 
         // По дате надо посмотреть код в DailyWorkout в аналогичном классе и в TrainingLab
         // в методе, который задает ContentValues.
@@ -44,8 +45,19 @@ public class DataCursorWrapper extends CursorWrapper {
         training.setTrainingName(name);
         //training.setUserId(UUID.fromString(userUUID));
         training.setUserId(Long.parseLong(userUUID));
-        training.setTrainingDate(date); // Здесь надо будет переработать
+        //training.setTrainingDate(date); // Здесь надо будет переработать
         return training;
+    }
+
+    public Dates getDates() {
+        String trainingUUID = getString(getColumnIndex(DatabaseScheme.DateTable.Columns.UUID_TRAINING));
+        long dates = getLong(getColumnIndex(DatabaseScheme.DateTable.Columns.Dates));
+
+        Dates d = new Dates();
+        d.setDatesTrainingUUID(UUID.fromString(trainingUUID));
+        d.setDatesDate(dates);
+
+        return d;
     }
 
     public Exercise getExercise() {

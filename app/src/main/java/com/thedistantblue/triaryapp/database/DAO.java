@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.Set;
@@ -46,13 +47,20 @@ public class DAO {
         return cv;
     }
 
+    private static ContentValues getDatesContentValues(Dates dates) {
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseScheme.DateTable.Columns.UUID_TRAINING, String.valueOf(dates.getDatesTrainingUUID()));
+        cv.put(DatabaseScheme.DateTable.Columns.Dates, dates.getDatesDate());
+        return cv;
+    }
+
     // Возможно, придется опять шаманить в датой
     private static ContentValues getTrainingContentValues(Training training) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseScheme.TrainingTable.Columns.UUID, training.getId().toString());
         cv.put(DatabaseScheme.TrainingTable.Columns.UUID_USER, String.valueOf(training.getUserId()));
         cv.put(DatabaseScheme.TrainingTable.Columns.Name, training.getTrainingName());
-        cv.put(DatabaseScheme.TrainingTable.Columns.Date, training.getTrainingDate());
+        //cv.put(DatabaseScheme.TrainingTable.Columns.Date, training.getTrainingDate());
         return cv;
     }
 
@@ -62,6 +70,7 @@ public class DAO {
         cv.put(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING, exercise.getTrainingId().toString());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Name, exercise.getExerciseName());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Comments, exercise.getExerciseComments());
+        cv.put(DatabaseScheme.ExerciseTable.Columns.Dates, exercise.getExerciseDate());
         return cv;
     }
 
@@ -98,6 +107,11 @@ public class DAO {
     public void addTraining(Training training) {
         ContentValues cv = getTrainingContentValues(training);
         mDatabase.insert(DatabaseScheme.TrainingTable.NAME, null, cv);
+    }
+
+    public void addDates(Dates dates) {
+        ContentValues cv = getDatesContentValues(dates);
+        mDatabase.insert(DatabaseScheme.DateTable.NAME, null, cv);
     }
 
     public void addExercise(Exercise exercise) {
@@ -200,6 +214,7 @@ public class DAO {
             while (!dcw.isAfterLast()) {
                 Training t = dcw.getTraining();
                 t.setTrainingExercises(getExercisesList(t));
+                t.setTrainingDates(getDates(t));
                 trainingsList.add(t);
                 dcw.moveToNext();
             }
@@ -302,6 +317,28 @@ public class DAO {
         }
 
         return setsList;
+    }
+
+    public List<Dates> getDates(Training training) {
+        String uuid = String.valueOf(training.getId());
+        List<Dates> datesList = new ArrayList<>();
+        DataCursorWrapper dcw = this.queryData(
+                DatabaseScheme.DateTable.NAME,
+                DatabaseScheme.DateTable.Columns.UUID_TRAINING + " =?",
+                new String[] {uuid}
+        );
+
+        try {
+            dcw.moveToFirst();
+            while (!dcw.isAfterLast()) {
+                datesList.add(dcw.getDates());
+                dcw.moveToNext();
+            }
+        } finally {
+            dcw.close();
+        }
+
+        return datesList;
     }
 
     public Running getRunning(Running running) {
