@@ -65,6 +65,8 @@ public class NetworkTest extends AppCompatActivity {
             Map<String, List<String>> headerFields = connection.getHeaderFields();
             List<String> cookiesHeader = headerFields.get("Set-Cookie");
             String cookie = cookiesHeader.get(0);
+            String[] data = cookie.split(";", 2);
+            //return data[0] + "\n" + data[1];
             return cookie;
             //return String.valueOf(connection.getResponseCode());
         } catch (IOException exc) {
@@ -73,10 +75,12 @@ public class NetworkTest extends AppCompatActivity {
         return "fail";
     }
 
-    public String getData(URL url) {
+    public String getData(URL url, String cookie) {
         HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Cookie", cookie);
             if (connection.getResponseCode() == 200) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String json = br.readLine();
@@ -149,7 +153,7 @@ public class NetworkTest extends AppCompatActivity {
                     case "send":
                         return sendData(new URL("http://10.0.2.2:8080/training/add"));
                     case "get":
-                        return getData(new URL("http://10.0.2.2:8080/training/all"));
+                        return getData(new URL("http://10.0.2.2:8080/training/all"), params[1]);
                     case "auth":
                         return authUser(new URL("http://10.0.2.2:8080/login"));
                 }
@@ -163,6 +167,7 @@ public class NetworkTest extends AppCompatActivity {
         protected void onPostExecute(String param) {
             Log.d("JSON: ", param);
             mJsonTextView.setText(param);
+            cookie = param;
             this.cancel(true);
         }
     }
@@ -172,6 +177,7 @@ public class NetworkTest extends AppCompatActivity {
     Button mSendData;
     Button mGetData;
     RequestBulder getData;
+    String cookie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +200,7 @@ public class NetworkTest extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getData = new RequestBulder();
-                getData.execute("get");
+                getData.execute("get", cookie);
             }
         });
 
