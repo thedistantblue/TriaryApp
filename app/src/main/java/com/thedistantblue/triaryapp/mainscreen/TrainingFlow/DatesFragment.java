@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.DatabaseScheme;
+import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Training;
 
 import java.util.Date;
@@ -21,6 +24,9 @@ public class DatesFragment extends Fragment {
     private static final String DATE_DIALOG = "date";
     private static final String TRAINING_KEY = "training";
     private Button datesButton;
+    private Training training;
+    private Dates dates;
+    private DAO dao;
 
     public static DatesFragment newInstance(Training training) {
         Bundle args = new Bundle();
@@ -34,6 +40,10 @@ public class DatesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        training = (Training) getArguments().getSerializable(TRAINING_KEY);
+        dao = DAO.get(getActivity());
+        dates = new Dates(training.getId());
+        dates.setDatesTrainingUUID(training.getId());
     }
 
     @Override
@@ -65,6 +75,8 @@ public class DatesFragment extends Fragment {
             /**
              * Надо сохранять дату и id тренировки в БД
              */
+            dates.setDatesDate(date.getTime());
+            dao.addDates(dates);
         }
     }
 }

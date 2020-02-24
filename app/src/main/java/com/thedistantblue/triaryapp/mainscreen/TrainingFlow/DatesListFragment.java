@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.viewmodels.DateViewModel;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
@@ -76,6 +78,24 @@ public class DatesListFragment extends Fragment {
 
         binding.datesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.datesRecyclerView.setAdapter(new DatesAdapter(datesList, getActivity()));
+
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback((DatesAdapter) binding.datesRecyclerView.getAdapter());
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(binding.datesRecyclerView);
+
+        binding.datesRecyclerView.getAdapter().notifyDataSetChanged();
+        binding.datesAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainScreenActivityCallback)getActivity())
+                        .manageFragments(DatesFragment.newInstance(training), "Create date");
+            }
+        });
+
+        return binding.getRoot();
+
     }
 
     private class DatesHolder extends RecyclerView.ViewHolder {
@@ -89,8 +109,8 @@ public class DatesListFragment extends Fragment {
 
         public void bind(final Dates dates) {
 
-            //this.dateItemCardBinding.getViewModel().setExercise(exercise);
-            //this.dateItemCardBinding.executePendingBindings();
+            this.dateItemCardBinding.getViewModel().setDate(dates);
+            this.dateItemCardBinding.executePendingBindings();
             //dateItemCardBinding.getViewModel().setExerciseSets(exercise.getExerciseSets());
 
 
@@ -146,7 +166,7 @@ public class DatesListFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            dao.deleteDates(datesList.get(position));
+            dao.deleteDate(datesList.get(position));
             datesList.remove(position);
             //dao.deleteTraining(trainingList.get(position));
             notifyItemRemoved(position);
@@ -172,5 +192,4 @@ public class DatesListFragment extends Fragment {
             this.notifyItemChanged(position);
         }
     }
-
 }

@@ -18,6 +18,16 @@ public class Dates implements Serializable {
         this.id = id;
     }
 
+    public Dates(UUID id, UUID datesTrainingUUID) {
+        this.id = id;
+        this.datesTrainingUUID = datesTrainingUUID;
+    }
+
+    public Dates(UUID trainingId)
+    {
+        this(UUID.randomUUID(), trainingId);
+    }
+
     public List<Exercise> getDatesExerciseList() {
         return datesExerciseList;
     }

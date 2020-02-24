@@ -21,6 +21,7 @@ import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.ExerciseListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
@@ -111,7 +112,7 @@ public class TrainingFragment extends Fragment {
             trainingItemCardBinding.trainingCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), "Training dates");
                 }
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(new View.OnClickListener() {

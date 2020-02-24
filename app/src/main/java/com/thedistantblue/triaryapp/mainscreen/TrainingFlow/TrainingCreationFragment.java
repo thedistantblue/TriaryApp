@@ -124,7 +124,7 @@ public class TrainingCreationFragment extends Fragment {
 
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DateFragment.EXTRA_DATE);
-            trainingViewModel.setTrainingDate(date);
+            //trainingViewModel.setTrainingDate(date);
         }
     }
 

@@ -40,7 +40,7 @@ public class ExerciseFragment extends Fragment {
         Bundle args = new Bundle();
 
         if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
-        else {args.putSerializable(EXERCISE_KEY, new Exercise(dates.getDatesTrainingUUID()));}
+        else {args.putSerializable(EXERCISE_KEY, new Exercise(dates.getId()));}
         args.putSerializable(ACTION_CODE, action);
         if (dates != null) {args.putSerializable(DATES_KEY, dates);}
 

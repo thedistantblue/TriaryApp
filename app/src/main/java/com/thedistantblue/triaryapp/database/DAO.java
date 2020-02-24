@@ -15,7 +15,6 @@ import com.thedistantblue.triaryapp.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class DAO {
     private static DAO mDao;
@@ -50,6 +49,7 @@ public class DAO {
     private static ContentValues getDatesContentValues(Dates dates) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseScheme.DateTable.Columns.UUID_TRAINING, String.valueOf(dates.getDatesTrainingUUID()));
+        cv.put(DatabaseScheme.DateTable.Columns.UUID, String.valueOf(dates.getId()));
         cv.put(DatabaseScheme.DateTable.Columns.Dates, dates.getDatesDate());
         return cv;
     }
@@ -67,10 +67,10 @@ public class DAO {
     private static ContentValues getExerciseContentValues(Exercise exercise) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseScheme.ExerciseTable.Columns.UUID, exercise.getId().toString());
-        cv.put(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING, exercise.getTrainingId().toString());
+        cv.put(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING, exercise.getDatesId().toString());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Name, exercise.getExerciseName());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Comments, exercise.getExerciseComments());
-        cv.put(DatabaseScheme.ExerciseTable.Columns.Dates, exercise.getExerciseDate());
+        cv.put(DatabaseScheme.ExerciseTable.Columns.Dates, exercise.getDatesId().toString());
         return cv;
     }
 
@@ -253,7 +253,7 @@ public class DAO {
 
     public List<Exercise> getExercisesList(Dates dates) {
         List<Exercise> exercisesList = new ArrayList<>();
-        String uuid = dates.getDatesTrainingUUID().toString();
+        String uuid = dates.getId().toString();
         DataCursorWrapper dcw = this.queryData(
                 DatabaseScheme.ExerciseTable.NAME,
                 DatabaseScheme.ExerciseTable.Columns.Dates + " =?",
@@ -264,10 +264,10 @@ public class DAO {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
                 Exercise e = dcw.getExercise();
-                if (e.getTrainingId() == dates.getDatesTrainingUUID()) {
+                //if (e.getDatesId() == dates.getDatesTrainingUUID()) {
                     e.setExerciseSets(getSetsList(e));
                     exercisesList.add(e);
-                }
+                //}
                 dcw.moveToNext();
             }
         } finally {
@@ -472,17 +472,19 @@ public class DAO {
             mDatabase.delete(
                     DatabaseScheme.ExerciseTable.NAME,
                     DatabaseScheme.ExerciseTable.Columns.UUID + " =?",
-                    new String[] {training.getTrainingExercises().get(i).getId().toString()}
+                    new String[] {training.getTrainingDates().get(i).getId().toString()}
             );
 
-            int setListSize = training.getTrainingExercises().get(i).getExerciseSets().size();
+            int exListSize = training.getTrainingDates().get(i).getDatesExerciseList().size();
 
-            // Будут ли удаляться сеты, если упражнение уже удалилось?
-            for (int j = 0; j < setListSize; j++) {
+            for (int j = 0; j < exListSize; j++) {
                 mDatabase.delete(
                         DatabaseScheme.SetTable.NAME,
                         DatabaseScheme.SetTable.Columns.UUID + " =?",
-                        new String[] {training.getTrainingExercises().get(i).getExerciseSets().get(j).getId().toString()}
+                        new String[] {training.getTrainingDates().get(i)
+                                .getDatesExerciseList().get(j).getId().toString()}
+                        // TODO: 24.02.2020 Дописать удаление сетов из упражнения
+                        //error
                 );
 
             }
@@ -491,7 +493,22 @@ public class DAO {
 
 
     public void deleteDate(Dates dates) {
-        String uuid = dates
+        String uuid = dates.getId().toString();
+
+        mDatabase.delete(
+                DatabaseScheme.DateTable.NAME,
+                DatabaseScheme.DateTable.Columns.UUID + " =?",
+                new String[] {uuid}
+        );
+
+        int exListSize = dates.getDatesExerciseList().size();
+        for (int i = 0; i < exListSize; i++) {
+            mDatabase.delete(
+                    DatabaseScheme.ExerciseTable.NAME,
+                    DatabaseScheme.ExerciseTable.Columns.UUID + " =?",
+                    new String[] {dates.getDatesExerciseList().get(i).getId().toString()}
+            );
+        }
     }
 
     // Удаляем упражнение из БД и ассоциированные с ним сеты
