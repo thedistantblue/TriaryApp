@@ -193,7 +193,7 @@ public class DAO {
             dcw.close();
         }
 
-        t.setTrainingExercises(this.getExercisesList(t));
+        //t.setTrainingExercises(this.getExercisesList(t));
         return t;
     }
 
@@ -213,7 +213,7 @@ public class DAO {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
                 Training t = dcw.getTraining();
-                t.setTrainingExercises(getExercisesList(t));
+                //t.setTrainingExercises(getExercisesList(t));
                 t.setTrainingDates(getDates(t));
                 trainingsList.add(t);
                 dcw.moveToNext();
@@ -251,12 +251,12 @@ public class DAO {
         return e;
     }
 
-    public List<Exercise> getExercisesList(Training training) {
+    public List<Exercise> getExercisesList(Dates dates) {
         List<Exercise> exercisesList = new ArrayList<>();
-        String uuid = training.getId().toString();
+        String uuid = dates.getDatesTrainingUUID().toString();
         DataCursorWrapper dcw = this.queryData(
                 DatabaseScheme.ExerciseTable.NAME,
-                DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING + " =?",
+                DatabaseScheme.ExerciseTable.Columns.Dates + " =?",
                 new String[] {uuid}
         );
 
@@ -264,8 +264,10 @@ public class DAO {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
                 Exercise e = dcw.getExercise();
-                e.setExerciseSets(getSetsList(e));
-                exercisesList.add(e);
+                if (e.getTrainingId() == dates.getDatesTrainingUUID()) {
+                    e.setExerciseSets(getSetsList(e));
+                    exercisesList.add(e);
+                }
                 dcw.moveToNext();
             }
         } finally {
@@ -331,7 +333,9 @@ public class DAO {
         try {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
-                datesList.add(dcw.getDates());
+                Dates dates = dcw.getDates();
+                dates.setDatesExerciseList(getExercisesList(dates));
+                datesList.add(dates);
                 dcw.moveToNext();
             }
         } finally {
@@ -452,6 +456,8 @@ public class DAO {
     }
 
     // Удаляем тренировку и ассоциированные с ней упражнения и сеты
+    // Пока закомментируем для простоты (работаю над датами для упражнений)
+
     public void deleteTraining(Training training) {
         String uuid = training.getId().toString();
 
@@ -461,7 +467,7 @@ public class DAO {
                 new String[] {uuid}
         );
 
-        int exerciseListSize = training.getTrainingExercises().size();
+        int exerciseListSize = training.getTrainingDates().size();
         for (int i = 0; i < exerciseListSize; i++) {
             mDatabase.delete(
                     DatabaseScheme.ExerciseTable.NAME,
@@ -481,6 +487,11 @@ public class DAO {
 
             }
         }
+    }
+
+
+    public void deleteDate(Dates dates) {
+        String uuid = dates
     }
 
     // Удаляем упражнение из БД и ассоциированные с ним сеты

@@ -16,7 +16,7 @@ public class Training implements Serializable {
     private String trainingName;
     //private Date trainingDate;
     //private long trainingDate;
-    private List<Exercise> trainingExercises;
+    //private List<Exercise> trainingExercises;
     private List<Dates> trainingDates;
 
     public Training(UUID id, long userId) {
@@ -71,7 +71,7 @@ public class Training implements Serializable {
     public void setTrainingDate(long trainingDate) {
         this.trainingDate = trainingDate;
     }
-    */
+
     public List<Exercise> getTrainingExercises() {
         return trainingExercises;
     }
@@ -79,7 +79,7 @@ public class Training implements Serializable {
     public void setTrainingExercises(List<Exercise> trainingExercises) {
         this.trainingExercises = trainingExercises;
     }
-
+    */
     public long getUserId() {
         return userId;
     }

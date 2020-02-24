@@ -66,6 +66,7 @@ public class DatabaseScheme {
         public static final String NAME = "datetable";
 
         public static final class Columns {
+            public static final String UUID = "id";
             public static final String UUID_TRAINING = "id_training";
             public static final String Dates = "date_column";
         }

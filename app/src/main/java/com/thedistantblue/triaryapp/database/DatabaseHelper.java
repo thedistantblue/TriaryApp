@@ -56,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TRAINING_DATES_TABLE =
             "create table " + DatabaseScheme.DateTable.NAME + "(" +
+                    DatabaseScheme.DateTable.Columns.UUID + ", " +
                     DatabaseScheme.DateTable.Columns.UUID_TRAINING + ", " +
                     DatabaseScheme.DateTable.Columns.Dates + ")";
 
