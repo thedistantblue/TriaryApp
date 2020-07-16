@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.Set;
@@ -14,7 +15,6 @@ import com.thedistantblue.triaryapp.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class DAO {
     private static DAO mDao;
@@ -46,22 +46,31 @@ public class DAO {
         return cv;
     }
 
+    private static ContentValues getDatesContentValues(Dates dates) {
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseScheme.DateTable.Columns.UUID_TRAINING, String.valueOf(dates.getDatesTrainingUUID()));
+        cv.put(DatabaseScheme.DateTable.Columns.UUID, String.valueOf(dates.getId()));
+        cv.put(DatabaseScheme.DateTable.Columns.Dates, dates.getDatesDate());
+        return cv;
+    }
+
     // Возможно, придется опять шаманить в датой
     private static ContentValues getTrainingContentValues(Training training) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseScheme.TrainingTable.Columns.UUID, training.getId().toString());
         cv.put(DatabaseScheme.TrainingTable.Columns.UUID_USER, String.valueOf(training.getUserId()));
         cv.put(DatabaseScheme.TrainingTable.Columns.Name, training.getTrainingName());
-        cv.put(DatabaseScheme.TrainingTable.Columns.Date, training.getTrainingDate());
+        //cv.put(DatabaseScheme.TrainingTable.Columns.Date, training.getTrainingDate());
         return cv;
     }
 
     private static ContentValues getExerciseContentValues(Exercise exercise) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseScheme.ExerciseTable.Columns.UUID, exercise.getId().toString());
-        cv.put(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING, exercise.getTrainingId().toString());
+        cv.put(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING, exercise.getDatesId().toString());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Name, exercise.getExerciseName());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Comments, exercise.getExerciseComments());
+        cv.put(DatabaseScheme.ExerciseTable.Columns.Dates, exercise.getDatesId().toString());
         return cv;
     }
 
@@ -98,6 +107,11 @@ public class DAO {
     public void addTraining(Training training) {
         ContentValues cv = getTrainingContentValues(training);
         mDatabase.insert(DatabaseScheme.TrainingTable.NAME, null, cv);
+    }
+
+    public void addDates(Dates dates) {
+        ContentValues cv = getDatesContentValues(dates);
+        mDatabase.insert(DatabaseScheme.DateTable.NAME, null, cv);
     }
 
     public void addExercise(Exercise exercise) {
@@ -179,7 +193,7 @@ public class DAO {
             dcw.close();
         }
 
-        t.setTrainingExercises(this.getExercisesList(t));
+        //t.setTrainingExercises(this.getExercisesList(t));
         return t;
     }
 
@@ -199,7 +213,8 @@ public class DAO {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
                 Training t = dcw.getTraining();
-                t.setTrainingExercises(getExercisesList(t));
+                //t.setTrainingExercises(getExercisesList(t));
+                t.setTrainingDates(getDates(t));
                 trainingsList.add(t);
                 dcw.moveToNext();
             }
@@ -236,12 +251,12 @@ public class DAO {
         return e;
     }
 
-    public List<Exercise> getExercisesList(Training training) {
+    public List<Exercise> getExercisesList(Dates dates) {
         List<Exercise> exercisesList = new ArrayList<>();
-        String uuid = training.getId().toString();
+        String uuid = dates.getId().toString();
         DataCursorWrapper dcw = this.queryData(
                 DatabaseScheme.ExerciseTable.NAME,
-                DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING + " =?",
+                DatabaseScheme.ExerciseTable.Columns.Dates + " =?",
                 new String[] {uuid}
         );
 
@@ -249,8 +264,10 @@ public class DAO {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
                 Exercise e = dcw.getExercise();
-                e.setExerciseSets(getSetsList(e));
-                exercisesList.add(e);
+                //if (e.getDatesId() == dates.getDatesTrainingUUID()) {
+                    e.setExerciseSets(getSetsList(e));
+                    exercisesList.add(e);
+                //}
                 dcw.moveToNext();
             }
         } finally {
@@ -302,6 +319,30 @@ public class DAO {
         }
 
         return setsList;
+    }
+
+    public List<Dates> getDates(Training training) {
+        String uuid = String.valueOf(training.getId());
+        List<Dates> datesList = new ArrayList<>();
+        DataCursorWrapper dcw = this.queryData(
+                DatabaseScheme.DateTable.NAME,
+                DatabaseScheme.DateTable.Columns.UUID_TRAINING + " =?",
+                new String[] {uuid}
+        );
+
+        try {
+            dcw.moveToFirst();
+            while (!dcw.isAfterLast()) {
+                Dates dates = dcw.getDates();
+                dates.setDatesExerciseList(getExercisesList(dates));
+                datesList.add(dates);
+                dcw.moveToNext();
+            }
+        } finally {
+            dcw.close();
+        }
+
+        return datesList;
     }
 
     public Running getRunning(Running running) {
@@ -415,6 +456,8 @@ public class DAO {
     }
 
     // Удаляем тренировку и ассоциированные с ней упражнения и сеты
+    // Пока закомментируем для простоты (работаю над датами для упражнений)
+
     public void deleteTraining(Training training) {
         String uuid = training.getId().toString();
 
@@ -424,25 +467,47 @@ public class DAO {
                 new String[] {uuid}
         );
 
-        int exerciseListSize = training.getTrainingExercises().size();
+        int exerciseListSize = training.getTrainingDates().size();
         for (int i = 0; i < exerciseListSize; i++) {
             mDatabase.delete(
                     DatabaseScheme.ExerciseTable.NAME,
                     DatabaseScheme.ExerciseTable.Columns.UUID + " =?",
-                    new String[] {training.getTrainingExercises().get(i).getId().toString()}
+                    new String[] {training.getTrainingDates().get(i).getId().toString()}
             );
 
-            int setListSize = training.getTrainingExercises().get(i).getExerciseSets().size();
+            int exListSize = training.getTrainingDates().get(i).getDatesExerciseList().size();
 
-            // Будут ли удаляться сеты, если упражнение уже удалилось?
-            for (int j = 0; j < setListSize; j++) {
+            for (int j = 0; j < exListSize; j++) {
                 mDatabase.delete(
                         DatabaseScheme.SetTable.NAME,
                         DatabaseScheme.SetTable.Columns.UUID + " =?",
-                        new String[] {training.getTrainingExercises().get(i).getExerciseSets().get(j).getId().toString()}
+                        new String[] {training.getTrainingDates().get(i)
+                                .getDatesExerciseList().get(j).getId().toString()}
+                        // TODO: 24.02.2020 Дописать удаление сетов из упражнения
+                        //error
                 );
 
             }
+        }
+    }
+
+
+    public void deleteDate(Dates dates) {
+        String uuid = dates.getId().toString();
+
+        mDatabase.delete(
+                DatabaseScheme.DateTable.NAME,
+                DatabaseScheme.DateTable.Columns.UUID + " =?",
+                new String[] {uuid}
+        );
+
+        int exListSize = dates.getDatesExerciseList().size();
+        for (int i = 0; i < exListSize; i++) {
+            mDatabase.delete(
+                    DatabaseScheme.ExerciseTable.NAME,
+                    DatabaseScheme.ExerciseTable.Columns.UUID + " =?",
+                    new String[] {dates.getDatesExerciseList().get(i).getId().toString()}
+            );
         }
     }
 

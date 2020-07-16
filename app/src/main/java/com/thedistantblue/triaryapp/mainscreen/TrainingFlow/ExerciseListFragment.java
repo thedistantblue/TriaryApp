@@ -18,6 +18,7 @@ import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
+import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
@@ -31,17 +32,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class ExerciseListFragment extends Fragment {
-    private static final String TRAINING_KEY = "training";
+    private static final String DATES_KEY = "dates";
 
     DAO dao;
-    Training training;
+    Dates dates;
     List<Exercise> exerciseList;
     ExerciseListFragmentLayoutBinding binding;
 
 
-    public static ExerciseListFragment newInstance(Training training) {
+    public static ExerciseListFragment newInstance(Dates dates) {
         Bundle args = new Bundle();
-        args.putSerializable(TRAINING_KEY, training);
+        args.putSerializable(DATES_KEY, dates);
 
         ExerciseListFragment fragment = new ExerciseListFragment();
         fragment.setArguments(args);
@@ -52,9 +53,9 @@ public class ExerciseListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dao = DAO.get(getActivity());
-        training = (Training) getArguments().getSerializable(TRAINING_KEY);
+        dates = (Dates) getArguments().getSerializable(DATES_KEY);
         try {
-            exerciseList = dao.getExercisesList(training);
+            exerciseList = dao.getExercisesList(dates);
             //exerciseList = training.getTrainingExercises();
         } catch (NullPointerException exc) {
             exerciseList = new ArrayList<>();
@@ -80,7 +81,7 @@ public class ExerciseListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainScreenActivityCallback)getActivity())
-                        .manageFragments(ExerciseFragment.newInstance(training, null, "create"), "Create exercise");
+                        .manageFragments(ExerciseFragment.newInstance(dates, null, "create"), "Create exercise");
             }
         });
 
@@ -91,7 +92,7 @@ public class ExerciseListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle("Training exercises");
-        ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(dao.getExercisesList(training));
+        ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(dao.getExercisesList(dates));
     }
 
     private class ExerciseHolder extends RecyclerView.ViewHolder {
@@ -114,7 +115,7 @@ public class ExerciseListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((MainScreenActivityCallback)getActivity())
-                            .manageFragments(ExerciseFragment.newInstance(training, exercise, "update"), "Update exercise");
+                            .manageFragments(ExerciseFragment.newInstance(dates, exercise, "update"), "Update exercise");
                 }
             });
         }

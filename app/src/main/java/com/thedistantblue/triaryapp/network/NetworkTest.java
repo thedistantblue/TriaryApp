@@ -15,6 +15,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.entities.Training;
@@ -28,6 +31,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -44,6 +48,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkTest extends AppCompatActivity {
+
+    private static final String EXCHANGE_NAME = "testExchange1";
+    private static final String QUEUE_NAME = "testQueue1";
+
     public String toPrettyJson(String json) {
         JsonParser parser = new JsonParser();
         JsonArray jsonArray = parser.parse(json).getAsJsonArray();
@@ -100,6 +108,32 @@ public class NetworkTest extends AppCompatActivity {
     }
 
     public String sendData(URL url) {
+
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("10.0.2.2");
+
+        try (Connection connection = factory.newConnection();
+             Channel channel = connection.createChannel()) {
+
+
+            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+
+            channel.queueDeclare(QUEUE_NAME,
+                                 false,
+                                 false,
+                                 false,
+                                 null);
+
+            channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "test.q1");
+
+            String message = "Hello, world!";
+
+            channel.basicPublish(EXCHANGE_NAME, "test.q1", null, message.getBytes());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
@@ -156,6 +190,7 @@ public class NetworkTest extends AppCompatActivity {
                         return getData(new URL("http://10.0.2.2:8080/training/all"), params[1]);
                     case "auth":
                         return authUser(new URL("http://10.0.2.2:8080/login"));
+                        //return authUser(new URL("http://10.0.2.2:8081/triaryapp/login"));
                 }
             } catch (Exception exc) {
                 System.out.println(exc);
@@ -205,12 +240,9 @@ public class NetworkTest extends AppCompatActivity {
         });
 
         mAuthButton = findViewById(R.id.auth_button);
-        mAuthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getData = new RequestBulder();
-                getData.execute("auth");
-            }
+        mAuthButton.setOnClickListener(v -> {
+            getData = new RequestBulder();
+            getData.execute("auth");
         });
     }
 }

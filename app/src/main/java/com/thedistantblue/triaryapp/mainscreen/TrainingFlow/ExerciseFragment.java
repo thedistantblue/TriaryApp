@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
+import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Set;
 import com.thedistantblue.triaryapp.entities.Training;
@@ -24,24 +25,24 @@ import java.util.List;
 import java.util.Optional;
 
 public class ExerciseFragment extends Fragment {
-    private static final String TRAINING_KEY = "training";
+    private static final String DATES_KEY = "dates";
     private static final String EXERCISE_KEY = "exercise";
     private static final String ACTION_CODE = "action";
 
     DAO dao;
     Exercise exercise;
-    Training training;
+    Dates dates;
     List<Set> setList;
 
     String action = "";
 
-    public static ExerciseFragment newInstance(Training training, Exercise exercise, String action) {
+    public static ExerciseFragment newInstance(Dates dates, Exercise exercise, String action) {
         Bundle args = new Bundle();
 
         if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
-        else {args.putSerializable(EXERCISE_KEY, new Exercise(training.getId()));}
+        else {args.putSerializable(EXERCISE_KEY, new Exercise(dates.getId()));}
         args.putSerializable(ACTION_CODE, action);
-        if (training != null) {args.putSerializable(TRAINING_KEY, training);}
+        if (dates != null) {args.putSerializable(DATES_KEY, dates);}
 
         ExerciseFragment fragment = new ExerciseFragment();
         fragment.setArguments(args);
@@ -52,7 +53,7 @@ public class ExerciseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dao = DAO.get(getActivity());
-        training = (Training) getArguments().getSerializable(TRAINING_KEY);
+        dates = (Dates) getArguments().getSerializable(DATES_KEY);
         exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
         action = (String) getArguments().getSerializable(ACTION_CODE);
     }
@@ -76,7 +77,7 @@ public class ExerciseFragment extends Fragment {
             public void onClick(View v) {
                 exerciseViewModel.action();
                 Toast.makeText(getActivity(), "Exercise " + action + "!", Toast.LENGTH_SHORT).show();
-                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), "Training exercises");
             }
         });
 

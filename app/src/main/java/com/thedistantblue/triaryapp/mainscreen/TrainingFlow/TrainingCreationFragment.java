@@ -73,6 +73,7 @@ public class TrainingCreationFragment extends Fragment {
 
 
         binding.setViewModel(trainingViewModel);
+        /*
         binding.trainingCreationDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +83,7 @@ public class TrainingCreationFragment extends Fragment {
                 date.show(fm, DATE_DIALOG);
             }
         });
+        */
         binding.trainingCreationCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +93,8 @@ public class TrainingCreationFragment extends Fragment {
                     } else {
                         trainingViewModel.save();
                         Toast.makeText(getActivity(), "Training created!", Toast.LENGTH_SHORT).show();
-                        ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                        //((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                        // Будем запускать DatesListFragment
                     }
 
                 } else {
@@ -100,7 +103,8 @@ public class TrainingCreationFragment extends Fragment {
                     } else {
                         trainingViewModel.action();
                         Toast.makeText(getActivity(), "Training updated!", Toast.LENGTH_SHORT).show();
-                        ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                        //((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                        // Будем запускать DatesListFragment
                         // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
                         // обязательно переделать,
                         // сейчас написано пиздец криво
@@ -120,7 +124,7 @@ public class TrainingCreationFragment extends Fragment {
 
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DateFragment.EXTRA_DATE);
-            trainingViewModel.setTrainingDate(date);
+            //trainingViewModel.setTrainingDate(date);
         }
     }
 

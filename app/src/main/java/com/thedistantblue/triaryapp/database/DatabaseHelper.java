@@ -21,8 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "_id integer primary key autoincrement, " +
                     DatabaseScheme.TrainingTable.Columns.UUID + ", " +
                     DatabaseScheme.TrainingTable.Columns.UUID_USER + ", " +
-                    DatabaseScheme.TrainingTable.Columns.Name + ", " +
-                    DatabaseScheme.TrainingTable.Columns.Date + ")";
+                    DatabaseScheme.TrainingTable.Columns.Name + ")";
+                    //DatabaseScheme.TrainingTable.Columns.Date + ")";
 
     private static final String CREATE_EXERCISE_TABLE =
             "create table " + DatabaseScheme.ExerciseTable.NAME + "(" +
@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     DatabaseScheme.ExerciseTable.Columns.UUID + ", " +
                     DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING + ", " +
                     DatabaseScheme.ExerciseTable.Columns.Name + ", " +
+                    DatabaseScheme.ExerciseTable.Columns.Dates + ", " +
                     DatabaseScheme.ExerciseTable.Columns.Comments + ")";
 
     private static final String CREATE_SET_TABLE =
@@ -54,6 +55,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     DatabaseScheme.RunningTable.Columns.Calories + ", " +
                     DatabaseScheme.RunningTable.Columns.Comments + ")";
 
+    private static final String CREATE_TRAINING_DATES_TABLE =
+            "create table " + DatabaseScheme.DateTable.NAME + "(" +
+                    DatabaseScheme.DateTable.Columns.UUID + ", " +
+                    DatabaseScheme.DateTable.Columns.UUID_TRAINING + ", " +
+                    DatabaseScheme.DateTable.Columns.Dates + ")";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -65,6 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_EXERCISE_TABLE);
         db.execSQL(CREATE_SET_TABLE);
         db.execSQL(CREATE_RUNNING_TABLE);
+        db.execSQL(CREATE_TRAINING_DATES_TABLE);
     }
 
     @Override

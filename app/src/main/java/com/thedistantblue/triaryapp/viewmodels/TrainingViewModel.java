@@ -41,17 +41,20 @@ public class TrainingViewModel extends BaseObservable {
         this.dao = dao;
     }
 
+
     @Bindable
     public String getTrainingDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return dateFormat.format(training.getTrainingDate());
+        return "test";
         //return training.getTrainingDate().toString();
     }
 
+    /*
     public void setTrainingDate(Date date) {
         training.setTrainingDate(date.getTime());
         notifyChange();
     }
+    */
+
 
     public void setTrainingName(String name) {
         training.setTrainingName(name);

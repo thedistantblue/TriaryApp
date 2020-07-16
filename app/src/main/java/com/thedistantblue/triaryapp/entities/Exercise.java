@@ -6,19 +6,30 @@ import java.util.UUID;
 
 public class Exercise implements Serializable {
     private UUID id;
-    private UUID trainingId;
+    private UUID datesId;
+
+    public long getExerciseDate() {
+        return exerciseDate;
+    }
+
+    public void setExerciseDate(long exerciseDate) {
+        this.exerciseDate = exerciseDate;
+    }
+
+    private long exerciseDate;
+
     private String exerciseName;
     private String exerciseComments;
     private List<Set> exerciseSets;
 
-    public Exercise(UUID id, UUID trainingId) {
+    public Exercise(UUID id, UUID datesId) {
         this.id = id;
-        this.trainingId = trainingId;
+        this.datesId = datesId;
     }
 
-    public Exercise(UUID trainingId)
+    public Exercise(UUID datesId)
     {
-        this(UUID.randomUUID(), trainingId);
+        this(UUID.randomUUID(), datesId);
     }
 
     public UUID getId() {
@@ -45,12 +56,12 @@ public class Exercise implements Serializable {
         this.exerciseSets = exerciseSets;
     }
 
-    public UUID getTrainingId() {
-        return trainingId;
+    public UUID getDatesId() {
+        return datesId;
     }
 
-    public void setTrainingId(UUID trainingId) {
-        this.trainingId = trainingId;
+    public void setDatesId(UUID datesId) {
+        this.datesId = datesId;
     }
 
     public String getExerciseComments() {

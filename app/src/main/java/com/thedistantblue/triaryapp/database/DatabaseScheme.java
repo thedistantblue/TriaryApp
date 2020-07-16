@@ -17,7 +17,7 @@ public class DatabaseScheme {
         public static final class Columns {
             public static final String UUID = "id";
             public static final String UUID_USER = "id_user";
-            public static final String Date = "date";
+            //public static final String Date = "date";
             public static final String Name = "name";
         }
     }
@@ -29,6 +29,7 @@ public class DatabaseScheme {
             public static final String UUID = "id";
             public static final String UUID_TRAINING = "id_training";
             public static final String Name = "name";
+            public static final String Dates = "date_column";
             public static final String Comments = "comments";
         }
     }
@@ -58,6 +59,16 @@ public class DatabaseScheme {
             public static final String Time = "time";
             public static final String Calories = "calories";
             public static final String Comments = "comments";
+        }
+    }
+
+    public static final class DateTable {
+        public static final String NAME = "datetable";
+
+        public static final class Columns {
+            public static final String UUID = "id";
+            public static final String UUID_TRAINING = "id_training";
+            public static final String Dates = "date_column";
         }
     }
 }
