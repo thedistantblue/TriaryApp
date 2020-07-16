@@ -5,6 +5,9 @@ import androidx.databinding.Bindable;
 
 import com.thedistantblue.triaryapp.entities.Dates;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class DateViewModel extends BaseObservable {
 
     private Dates date;
@@ -12,7 +15,8 @@ public class DateViewModel extends BaseObservable {
 
     public void setDate(Dates dates) {
         this.date = dates;
-        dateName = String.valueOf(dates.getDatesDate());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        dateName = format.format(dates.getDatesDate());
     }
 
     @Bindable

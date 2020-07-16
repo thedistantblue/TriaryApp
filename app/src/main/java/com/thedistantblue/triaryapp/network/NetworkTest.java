@@ -190,6 +190,7 @@ public class NetworkTest extends AppCompatActivity {
                         return getData(new URL("http://10.0.2.2:8080/training/all"), params[1]);
                     case "auth":
                         return authUser(new URL("http://10.0.2.2:8080/login"));
+                        //return authUser(new URL("http://10.0.2.2:8081/triaryapp/login"));
                 }
             } catch (Exception exc) {
                 System.out.println(exc);
@@ -239,12 +240,9 @@ public class NetworkTest extends AppCompatActivity {
         });
 
         mAuthButton = findViewById(R.id.auth_button);
-        mAuthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getData = new RequestBulder();
-                getData.execute("auth");
-            }
+        mAuthButton.setOnClickListener(v -> {
+            getData = new RequestBulder();
+            getData.execute("auth");
         });
     }
 }
