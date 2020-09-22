@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.*;
 import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
@@ -93,7 +93,7 @@ public class TrainingCreationFragment extends Fragment {
                     } else {
                         trainingViewModel.save();
                         Toast.makeText(getActivity(), "Training created!", Toast.LENGTH_SHORT).show();
-                        //((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                        ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), "Training dates");
                         // Будем запускать DatesListFragment
                     }
 
@@ -103,7 +103,7 @@ public class TrainingCreationFragment extends Fragment {
                     } else {
                         trainingViewModel.action();
                         Toast.makeText(getActivity(), "Training updated!", Toast.LENGTH_SHORT).show();
-                        //((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(training), "Training exercises");
+                        ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), "Training dates");
                         // Будем запускать DatesListFragment
                         // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
                         // обязательно переделать,

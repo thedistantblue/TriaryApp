@@ -1,4 +1,6 @@
 package com.thedistantblue.triaryapp.database;
 
-public interface DAOInterface {
+public enum DaoTypes {
+    Local,
+    Remote
 }
