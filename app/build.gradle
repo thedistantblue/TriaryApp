@@ -10,7 +10,7 @@ android {
     }
     defaultConfig {
         applicationId "com.thedistantblue.triaryapp"
-        minSdkVersion 21
+        minSdkVersion 25
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -46,6 +46,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compileOnly "org.projectlombok:lombok:1.18.16"
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
     // JAX-B dependencies for JDK 9+
     //implementation "javax.xml.bind:jaxb-api:2.2.12"

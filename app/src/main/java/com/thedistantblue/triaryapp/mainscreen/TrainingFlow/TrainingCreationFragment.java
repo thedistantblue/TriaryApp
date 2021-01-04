@@ -7,22 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.*;
 import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TrainingCreationFragment extends Fragment {
@@ -30,19 +27,19 @@ public class TrainingCreationFragment extends Fragment {
     private static final String USER_KEY = "user";
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
-    private static final String ACTION_STRING = "action";
+    private static final String ACTION = "action";
     private static final String TRAINING_KEY = "training";
 
     private DAO dao;
     private User user;
     Training training;
-    private String actionString;
+    private ActionEnum action;
     private TrainingViewModel trainingViewModel;
 
-    public static TrainingCreationFragment newInstance(User user, Training training, String actionString) {
+    public static TrainingCreationFragment newInstance(User user, Training training, ActionEnum action) {
         Bundle args = new Bundle();
         args.putSerializable(USER_KEY, user);
-        args.putSerializable(ACTION_STRING, actionString);
+        args.putSerializable(ACTION, action);
         if (training != null) {
             args.putSerializable(TRAINING_KEY, training);
         } else {
@@ -59,12 +56,12 @@ public class TrainingCreationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.user = (User) getArguments().getSerializable(USER_KEY);
         dao = DAO.get(getActivity());
-        actionString = (String)getArguments().getSerializable(ACTION_STRING);
+        action = (ActionEnum) getArguments().getSerializable(ACTION);
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         trainingViewModel = new TrainingViewModel();
         trainingViewModel.setTraining(training);
         trainingViewModel.setDao(dao);
-        trainingViewModel.setActionString(actionString);
+        trainingViewModel.setAction(action);
     }
 
     @Override
@@ -88,7 +85,7 @@ public class TrainingCreationFragment extends Fragment {
         binding.trainingCreationCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (actionString.equals("create")) {
+                if (action.equals("create")) {
                     if (training.getTrainingName() == null || training.getTrainingName().equals("")) {
                         Toast.makeText(getActivity(), R.string.enter_training_name_toast, Toast.LENGTH_SHORT).show();
                     } else {

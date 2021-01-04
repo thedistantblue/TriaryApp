@@ -1,30 +1,24 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
 public class TrainingViewModel extends BaseObservable {
     private Training training;
+
+    @Setter
     private DAO dao;
-    String actionString;
 
-    public void setActionString(String actionString) {
-        this.actionString = actionString;
-    }
-
-    public String getActionString(){
-        return actionString;
-    }
+    @Getter
+    @Setter
+    private ActionEnum action;
 
     public Training getTraining() {
         return training;
@@ -36,11 +30,6 @@ public class TrainingViewModel extends BaseObservable {
                         // И ПОСЛЕДУЮЩЕГО СВАЙПА ДРУГОГО (ВСЕ ЭТО С ОТМЕНАМИ УДАЛЕНИЯ)
                         // ДРУГОЙ ИТЕМ БЫЛ С ДАННЫМИ ПЕРВОГО
     }
-
-    public void setDao(DAO dao) {
-        this.dao = dao;
-    }
-
 
     @Bindable
     public String getTrainingDate() {
@@ -67,10 +56,15 @@ public class TrainingViewModel extends BaseObservable {
     }
 
     public void action() {
-        if (actionString.equals("create")) {
-            this.save();
-        } else {
-            dao.updateTraining(training);
+        switch (action) {
+            case CREATE: {
+                this.save();
+                break;
+            }
+            case UPDATE: {
+                dao.updateTraining(training);
+                break;
+            }
         }
     }
 

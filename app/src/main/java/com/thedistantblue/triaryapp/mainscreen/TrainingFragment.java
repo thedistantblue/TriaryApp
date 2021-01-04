@@ -20,6 +20,7 @@ import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class TrainingFragment extends Fragment {
         binding.trainingAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, "create"), R.string.create_training_fragment_name);
+                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, ActionEnum.CREATE), R.string.create_training_fragment_name);
             }
         });
         return binding.getRoot();
@@ -114,7 +115,7 @@ public class TrainingFragment extends Fragment {
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), "update"), R.string.training_settings_fragment_name);
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), ActionEnum.UPDATE), R.string.training_settings_fragment_name);
                 }
             });
         }

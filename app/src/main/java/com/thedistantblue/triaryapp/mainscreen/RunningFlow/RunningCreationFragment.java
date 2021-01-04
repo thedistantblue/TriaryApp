@@ -19,6 +19,7 @@ import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.RunningFragment;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
 import java.util.Date;
@@ -34,10 +35,10 @@ public class RunningCreationFragment extends Fragment {
     private DAO dao;
     private User user;
     private Running running;
-    private String actionString;
+    private ActionEnum action;
     private RunningViewModel runningViewModel;
 
-    public static RunningCreationFragment newInstance(User user, Running running, String actionString) {
+    public static RunningCreationFragment newInstance(User user, Running running, ActionEnum action) {
         Bundle args = new Bundle();
 
         if (running != null) {
@@ -46,7 +47,7 @@ public class RunningCreationFragment extends Fragment {
             args.putSerializable(RUNNING_KEY, new Running(user.getId()));
         }
         args.putSerializable(USER_KEY, user);
-        args.putSerializable(ACTION_KEY, actionString);
+        args.putSerializable(ACTION_KEY, action);
 
         RunningCreationFragment fragment = new RunningCreationFragment();
         fragment.setArguments(args);
@@ -59,11 +60,11 @@ public class RunningCreationFragment extends Fragment {
         dao = DAO.get(getActivity());
         user = (User) getArguments().getSerializable(USER_KEY);
         running = (Running) getArguments().getSerializable(RUNNING_KEY);
-        actionString = (String) getArguments().getSerializable(ACTION_KEY);
+        action = (ActionEnum) getArguments().getSerializable(ACTION_KEY);
         runningViewModel = new RunningViewModel();
         runningViewModel.setDao(dao);
         runningViewModel.setRunning(running);
-        runningViewModel.setActionString(actionString);
+        runningViewModel.setAction(action);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class RunningCreationFragment extends Fragment {
         });
 
         binding.runningCreateButton.setOnClickListener(v -> {
-            if (actionString.equals("create")) {
+            if (action.equals("create")) {
                 if (running.getRunningName() == null || running.getRunningName().equals("")) {
                     Toast.makeText(getActivity(), R.string.enter_running_name_toast, Toast.LENGTH_SHORT).show();
                 } else {

@@ -1,18 +1,30 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
+import android.content.Context;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.entities.Running;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class RunningViewModel extends BaseObservable {
     private Running running;
+
+    @Setter
     private DAO dao;
-    private String actionString;
+
+    @Getter
+    @Setter
+    private ActionEnum action;
     String distance = "";
     String speed = "";
     String time = "";
@@ -22,25 +34,12 @@ public class RunningViewModel extends BaseObservable {
         return running;
     }
 
-    public void setRunning(Running running)
-    {
+    public void setRunning(Running running) {
         this.running = running;
         distance = String.valueOf(running.getDistance());
         speed = String.valueOf(running.getSpeed());
         time = String.valueOf(running.getTime());
         calories = String.valueOf(running.getCalories());
-    }
-
-    public void setDao(DAO dao) {
-        this.dao = dao;
-    }
-
-    public void setActionString(String actionString) {
-        this.actionString = actionString;
-    }
-
-    public String getActionString() {
-        return actionString;
     }
 
     public void setRunningName(String name) {
@@ -134,10 +133,15 @@ public class RunningViewModel extends BaseObservable {
     }
 
     public void save() {
-        if (actionString.equals("create")) {
-            dao.addRunning(running);
-        } else {
-            update();
+        switch (action) {
+            case CREATE: {
+                dao.addRunning(running);
+                break;
+            }
+            case UPDATE: {
+                update();
+                break;
+            }
         }
     }
 
