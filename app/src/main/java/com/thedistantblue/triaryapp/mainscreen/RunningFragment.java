@@ -30,7 +30,7 @@ public class RunningFragment extends Fragment {
     private DAO dao;
     private User user;
     private List<Running> runningList;
-    RunningFragmentLayoutBinding binding;
+    private RunningFragmentLayoutBinding binding;
 
 
     public static RunningFragment newInstance(User user) {
@@ -45,7 +45,7 @@ public class RunningFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainScreenActivityCallback) getActivity()).setTitle("Running");
+        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.running_tab_button);
         ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(dao.getRunningList(user));
     }
 
@@ -71,14 +71,9 @@ public class RunningFragment extends Fragment {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(binding.runningRecyclerView);
 
-        binding.runningAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainScreenActivityCallback) getActivity())
-                        .manageFragments
-                                (RunningCreationFragment.newInstance(user, null, "create"), "Create running");
-            }
-        });
+        binding.runningAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                .manageFragments
+                        (RunningCreationFragment.newInstance(user, null, "create"), R.string.create_running_fragment_name));
 
         return binding.getRoot();
     }
@@ -95,14 +90,9 @@ public class RunningFragment extends Fragment {
         public void bind(final Running running) {
             runningItemCardBinding.getViewModel().setRunning(running);
             runningItemCardBinding.executePendingBindings();
-            runningItemCardBinding.runningCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity())
-                            .manageFragments
-                                    (RunningCreationFragment.newInstance(user, running, "update"), "Update running");
-                }
-            });
+            runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                    .manageFragments
+                            (RunningCreationFragment.newInstance(user, running, "update"), R.string.update_running_fragment_name));
         }
     }
 

@@ -1,14 +1,11 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -22,7 +19,6 @@ import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
-import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.ExerciseListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
@@ -53,7 +49,7 @@ public class TrainingFragment extends Fragment {
         super.onResume();
         this.trainingList = dao.getTrainingsList(user);
         ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(dao.getTrainingsList(user));
-        ((MainScreenActivityCallback) getActivity()).setTitle("Training");
+        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
         //binding.trainingRecyclerView.setAdapter(new TrainingAdapter(dao.getTrainingsList(user)));
     }
 
@@ -89,7 +85,7 @@ public class TrainingFragment extends Fragment {
         binding.trainingAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, "create"), "Create training");
+                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, "create"), R.string.create_training_fragment_name);
             }
         });
         return binding.getRoot();
@@ -112,13 +108,13 @@ public class TrainingFragment extends Fragment {
             trainingItemCardBinding.trainingCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), "Training dates");
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), R.string.training_dates_fragment_name);
                 }
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), "update"), "Training settings");
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), "update"), R.string.training_settings_fragment_name);
                 }
             });
         }

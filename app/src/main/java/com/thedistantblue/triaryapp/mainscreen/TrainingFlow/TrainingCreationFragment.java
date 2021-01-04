@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TrainingCreationFragment extends Fragment {
+
     private static final String USER_KEY = "user";
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
@@ -89,21 +90,21 @@ public class TrainingCreationFragment extends Fragment {
             public void onClick(View v) {
                 if (actionString.equals("create")) {
                     if (training.getTrainingName() == null || training.getTrainingName().equals("")) {
-                        Toast.makeText(getActivity(), "Enter training name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.enter_training_name_toast, Toast.LENGTH_SHORT).show();
                     } else {
                         trainingViewModel.save();
-                        Toast.makeText(getActivity(), "Training created!", Toast.LENGTH_SHORT).show();
-                        ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), "Training dates");
+                        Toast.makeText(getActivity(), R.string.training_created_toast, Toast.LENGTH_SHORT).show();
+                        ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), R.string.training_dates_fragment_name);
                         // Будем запускать DatesListFragment
                     }
 
                 } else {
                     if (training.getTrainingName().equals("")) {
-                        Toast.makeText(getActivity(), "Enter training name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.enter_training_name_toast, Toast.LENGTH_SHORT).show();
                     } else {
                         trainingViewModel.action();
-                        Toast.makeText(getActivity(), "Training updated!", Toast.LENGTH_SHORT).show();
-                        ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), "Training dates");
+                        Toast.makeText(getActivity(), R.string.training_updated_toast, Toast.LENGTH_SHORT).show();
+                        ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), R.string.training_dates_fragment_name);
                         // Будем запускать DatesListFragment
                         // Вот этот весь код здесь и в ВМ, связанный с апдейтом\сохранением,
                         // обязательно переделать,

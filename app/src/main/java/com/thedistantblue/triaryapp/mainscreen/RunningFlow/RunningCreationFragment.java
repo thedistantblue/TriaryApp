@@ -11,14 +11,12 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.User;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.RunningFragment;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
@@ -26,6 +24,7 @@ import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 import java.util.Date;
 
 public class RunningCreationFragment extends Fragment {
+
     private static final String USER_KEY = "user";
     private static final String RUNNING_KEY = "running";
     private static final String ACTION_KEY = "action";
@@ -74,32 +73,26 @@ public class RunningCreationFragment extends Fragment {
 
         binding.setViewModel(runningViewModel);
 
-        binding.runningDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                DateFragment date = DateFragment.getInstance(running.getDate());
-                date.setTargetFragment(RunningCreationFragment.this, REQUEST_DATE);
-                date.show(fm, DATE_DIALOG);
-            }
+        binding.runningDateButton.setOnClickListener(v -> {
+            FragmentManager fm = getFragmentManager();
+            DateFragment date = DateFragment.getInstance(running.getDate());
+            date.setTargetFragment(RunningCreationFragment.this, REQUEST_DATE);
+            date.show(fm, DATE_DIALOG);
         });
 
-        binding.runningCreateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (actionString.equals("create")) {
-                    if (running.getRunningName() == null || running.getRunningName().equals("")) {
-                        Toast.makeText(getActivity(), "Enter running name", Toast.LENGTH_SHORT).show();
-                    } else {
-                        runningViewModel.save();
-                        Toast.makeText(getActivity(), "Running successfully created!", Toast.LENGTH_SHORT).show();
-                        ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
-                    }
+        binding.runningCreateButton.setOnClickListener(v -> {
+            if (actionString.equals("create")) {
+                if (running.getRunningName() == null || running.getRunningName().equals("")) {
+                    Toast.makeText(getActivity(), R.string.enter_running_name_toast, Toast.LENGTH_SHORT).show();
                 } else {
-                    runningViewModel.update();
-                    Toast.makeText(getActivity(), "Running successfully updated!", Toast.LENGTH_SHORT).show();
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), "Running");
+                    runningViewModel.save();
+                    Toast.makeText(getActivity(), R.string.running_created_toast, Toast.LENGTH_SHORT).show();
+                    ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
                 }
+            } else {
+                runningViewModel.update();
+                Toast.makeText(getActivity(), R.string.running_updated_toast, Toast.LENGTH_SHORT).show();
+                ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
             }
         });
 

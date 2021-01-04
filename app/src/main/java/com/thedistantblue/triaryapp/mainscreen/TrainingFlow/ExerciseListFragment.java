@@ -2,11 +2,9 @@ package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -20,9 +18,7 @@ import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
-import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
@@ -32,13 +28,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class ExerciseListFragment extends Fragment {
+
     private static final String DATES_KEY = "dates";
 
-    DAO dao;
-    Dates dates;
-    List<Exercise> exerciseList;
-    ExerciseListFragmentLayoutBinding binding;
-
+    private DAO dao;
+    private Dates dates;
+    private List<Exercise> exerciseList;
+    private ExerciseListFragmentLayoutBinding binding;
 
     public static ExerciseListFragment newInstance(Dates dates) {
         Bundle args = new Bundle();
@@ -81,7 +77,7 @@ public class ExerciseListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainScreenActivityCallback)getActivity())
-                        .manageFragments(ExerciseFragment.newInstance(dates, null, "create"), "Create exercise");
+                        .manageFragments(ExerciseFragment.newInstance(dates, null, "create"), R.string.create_exercise_fragment_name);
             }
         });
 
@@ -91,7 +87,7 @@ public class ExerciseListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainScreenActivityCallback) getActivity()).setTitle("Training exercises");
+        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_exercises_fragment_name);
         ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(dao.getExercisesList(dates));
     }
 
@@ -115,7 +111,7 @@ public class ExerciseListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((MainScreenActivityCallback)getActivity())
-                            .manageFragments(ExerciseFragment.newInstance(dates, exercise, "update"), "Update exercise");
+                            .manageFragments(ExerciseFragment.newInstance(dates, exercise, "update"), R.string.update_exercise_fragment_name);
                 }
             });
         }

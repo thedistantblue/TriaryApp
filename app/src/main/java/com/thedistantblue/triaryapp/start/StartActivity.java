@@ -27,7 +27,6 @@ public class StartActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Sign in", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), NetworkTest.class);
                 startActivity(intent);
             }
@@ -37,7 +36,6 @@ public class StartActivity extends AppCompatActivity {
         localUseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), "Local use", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
                 startActivity(intent);
             }

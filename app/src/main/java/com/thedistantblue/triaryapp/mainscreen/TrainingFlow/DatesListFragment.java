@@ -30,14 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Передаем сюда айди тренировки
- * Список дат берется из DAO по id тренировки
- * По fab открываем DatesFragment, туда передаем id тренировки
- * Пикаем там дату, она сохраняется в список дат
- * По нажатии на дату в списке запускаем ExerciseListFragment
- * Передаем туда id даты
- */
 public class DatesListFragment extends Fragment {
 
     private static final String TRAINING_KEY = "training_key";
@@ -86,13 +78,8 @@ public class DatesListFragment extends Fragment {
         touchHelper.attachToRecyclerView(binding.datesRecyclerView);
 
         binding.datesRecyclerView.getAdapter().notifyDataSetChanged();
-        binding.datesAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainScreenActivityCallback)getActivity())
-                        .manageFragments(DatesFragment.newInstance(training), "Create date");
-            }
-        });
+        binding.datesAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                .manageFragments(DatesFragment.newInstance(training), R.string.create_date_fragment));
 
         return binding.getRoot();
 
@@ -114,13 +101,8 @@ public class DatesListFragment extends Fragment {
             //dateItemCardBinding.getViewModel().setExerciseSets(exercise.getExerciseSets());
 
 
-            this.dateItemCardBinding.dateCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity())
-                            .manageFragments(ExerciseListFragment.newInstance(dates), "Exercises");
-                }
-            });
+            this.dateItemCardBinding.dateCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                    .manageFragments(ExerciseListFragment.newInstance(dates), R.string.exercises_fragment));
         }
     }
 

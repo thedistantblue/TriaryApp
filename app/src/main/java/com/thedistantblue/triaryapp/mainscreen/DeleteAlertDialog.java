@@ -12,8 +12,8 @@ import com.thedistantblue.triaryapp.R;
 public class DeleteAlertDialog extends Dialog implements View.OnClickListener {
 
     private Button deleteButton, cancelButton;
-    ItemTouchHelperAdapter adapter;
-    int position;
+    private ItemTouchHelperAdapter adapter;
+    private int position;
 
     public DeleteAlertDialog(ItemTouchHelperAdapter adapter, int position) {
         super(adapter.getContext());

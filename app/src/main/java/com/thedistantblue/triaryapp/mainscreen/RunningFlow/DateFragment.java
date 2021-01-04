@@ -19,8 +19,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateFragment extends DialogFragment {
+
     private static final String ARG_DATE = "date";
     public static final String EXTRA_DATE = "extra_date";
+
     private DatePicker mDatePicker;
 
     public static DateFragment getInstance(Date date) {
@@ -57,16 +59,13 @@ public class DateFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setTitle("Date")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int year = mDatePicker.getYear();
-                        int month = mDatePicker.getMonth();
-                        int day = mDatePicker.getDayOfMonth();
-                        Date date = new GregorianCalendar(year, month, day).getTime();
-                        sendResult(Activity.RESULT_OK, date);
-                    }
+                .setTitle(R.string.date_chooser_title)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    Date date1 = new GregorianCalendar(mDatePicker.getYear(),
+                                                       mDatePicker.getMonth(),
+                                                       mDatePicker.getDayOfMonth())
+                                 .getTime();
+                    sendResult(Activity.RESULT_OK, date1);
                 })
                 .create();
     }

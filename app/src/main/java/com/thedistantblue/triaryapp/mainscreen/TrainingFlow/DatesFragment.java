@@ -20,6 +20,7 @@ import com.thedistantblue.triaryapp.entities.Training;
 import java.util.Date;
 
 public class DatesFragment extends Fragment {
+
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
     private static final String TRAINING_KEY = "training";
@@ -51,14 +52,11 @@ public class DatesFragment extends Fragment {
         View view = inflater.inflate(R.layout.dates_layout, parent, false);
 
         datesButton = view.findViewById(R.id.dates_button);
-        datesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                DateFragment date = DateFragment.getInstance(new Date().getTime());
-                date.setTargetFragment(DatesFragment.this, REQUEST_DATE);
-                date.show(fm, DATE_DIALOG);
-            }
+        datesButton.setOnClickListener(v -> {
+            FragmentManager fm = getFragmentManager();
+            DateFragment date = DateFragment.getInstance(new Date().getTime());
+            date.setTargetFragment(DatesFragment.this, REQUEST_DATE);
+            date.show(fm, DATE_DIALOG);
         });
 
         return view;

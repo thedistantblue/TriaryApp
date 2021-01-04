@@ -25,16 +25,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class ExerciseFragment extends Fragment {
+
     private static final String DATES_KEY = "dates";
     private static final String EXERCISE_KEY = "exercise";
     private static final String ACTION_CODE = "action";
 
-    DAO dao;
-    Exercise exercise;
-    Dates dates;
-    List<Set> setList;
+    private DAO dao;
+    private Exercise exercise;
+    private Dates dates;
+    private List<Set> setList;
 
-    String action = "";
+    private String action = "";
 
     public static ExerciseFragment newInstance(Dates dates, Exercise exercise, String action) {
         Bundle args = new Bundle();
@@ -77,7 +78,7 @@ public class ExerciseFragment extends Fragment {
             public void onClick(View v) {
                 exerciseViewModel.action();
                 Toast.makeText(getActivity(), "Exercise " + action + "!", Toast.LENGTH_SHORT).show();
-                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), "Training exercises");
+                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
             }
         });
 
