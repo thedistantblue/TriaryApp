@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:text="@{viewModel.actionString}"
+            android:text="@string/save"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:backgroundTint="@color/DayNightColor"

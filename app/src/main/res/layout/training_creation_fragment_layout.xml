@@ -19,7 +19,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/DayNightColor"
         android:fontFamily="sans-serif"
-        android:text="@{viewModel.actionString}"
+        android:text="@string/save"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

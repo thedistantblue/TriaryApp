@@ -19,10 +19,12 @@ import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.entities.User;
 import com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningCreationFragment;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class RunningFragment extends Fragment {
     private static final String USER_KEY = "user";
@@ -73,7 +75,7 @@ public class RunningFragment extends Fragment {
 
         binding.runningAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
                 .manageFragments
-                        (RunningCreationFragment.newInstance(user, null, "create"), R.string.create_running_fragment_name));
+                        (RunningCreationFragment.newInstance(user, null, ActionEnum.CREATE), R.string.create_running_fragment_name));
 
         return binding.getRoot();
     }
@@ -92,7 +94,7 @@ public class RunningFragment extends Fragment {
             runningItemCardBinding.executePendingBindings();
             runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
                     .manageFragments
-                            (RunningCreationFragment.newInstance(user, running, "update"), R.string.update_running_fragment_name));
+                            (RunningCreationFragment.newInstance(user, running, ActionEnum.UPDATE), R.string.update_running_fragment_name));
         }
     }
 

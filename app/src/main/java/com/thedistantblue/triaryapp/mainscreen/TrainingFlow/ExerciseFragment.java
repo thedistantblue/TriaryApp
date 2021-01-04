@@ -18,6 +18,7 @@ import com.thedistantblue.triaryapp.entities.Set;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class ExerciseFragment extends Fragment {
     private Dates dates;
     private List<Set> setList;
 
-    private String action = "";
+    private ActionEnum action;
 
-    public static ExerciseFragment newInstance(Dates dates, Exercise exercise, String action) {
+    public static ExerciseFragment newInstance(Dates dates, Exercise exercise, ActionEnum action) {
         Bundle args = new Bundle();
 
         if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
@@ -56,7 +57,7 @@ public class ExerciseFragment extends Fragment {
         dao = DAO.get(getActivity());
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
         exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
-        action = (String) getArguments().getSerializable(ACTION_CODE);
+        action = (ActionEnum) getArguments().getSerializable(ACTION_CODE);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class ExerciseFragment extends Fragment {
         final ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
         exerciseViewModel.setExercise(exercise);
         exerciseViewModel.setDao(dao);
-        exerciseViewModel.setActionString(action);
+        exerciseViewModel.setAction(action);
         if (action.equals("create")) {
             exerciseViewModel.setEmptyExerciseSets();
         } else {

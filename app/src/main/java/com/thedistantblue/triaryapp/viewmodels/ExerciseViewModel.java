@@ -8,16 +8,26 @@ import androidx.databinding.Bindable;
 import com.thedistantblue.triaryapp.database.DAO;
 import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Set;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ExerciseViewModel extends BaseObservable {
     private Exercise exercise;
+
+    @Setter
     private DAO dao;
-    private String actionString;
+
+    @Getter
+    @Setter
+    private ActionEnum action;
+
     String weight1 = "";
     String weight2 = "";
     String weight3 = "";
@@ -45,14 +55,6 @@ public class ExerciseViewModel extends BaseObservable {
             set.setSetNumber(i);
             setList.add(set);
         }
-    }
-
-    public void setActionString(String actionString) {
-        this.actionString = actionString;
-    }
-
-    public String getActionString() {
-        return actionString;
     }
 
     public void setExercise(Exercise exercise) {
@@ -240,11 +242,15 @@ public class ExerciseViewModel extends BaseObservable {
     //----------------------------------------------------------------------------------------------
 
     public void action() {
-        if (actionString.equals("create")) {
-            save();
-        }
-        else {
-            update();
+        switch (action) {
+            case CREATE: {
+                save();
+                break;
+            }
+            case UPDATE: {
+                update();
+                break;
+            }
         }
     }
 

@@ -21,6 +21,7 @@ import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
+import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class ExerciseListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainScreenActivityCallback)getActivity())
-                        .manageFragments(ExerciseFragment.newInstance(dates, null, "create"), R.string.create_exercise_fragment_name);
+                        .manageFragments(ExerciseFragment.newInstance(dates, null, ActionEnum.CREATE), R.string.create_exercise_fragment_name);
             }
         });
 
@@ -111,7 +112,7 @@ public class ExerciseListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((MainScreenActivityCallback)getActivity())
-                            .manageFragments(ExerciseFragment.newInstance(dates, exercise, "update"), R.string.update_exercise_fragment_name);
+                            .manageFragments(ExerciseFragment.newInstance(dates, exercise, ActionEnum.UPDATE), R.string.update_exercise_fragment_name);
                 }
             });
         }
