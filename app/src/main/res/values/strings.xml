@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TriaryApp</string>
     <string name="save">Save</string>
+    <string name="exercise">Exercise</string>
     <string name="date_text_view_hint">No date is chosen</string>
     <string name="sign_in_button_text">Sign in</string>
     <string name="local_button_text">Offline use</string>
