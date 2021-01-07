@@ -36,4 +36,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dates_button" />
 
+    <TextView
+        android:id="@+id/date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/date_text_view_hint"
+        android:textColorHint="@color/DayNightColor"
+        android:textColor="@color/DayNightColor"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/dates_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
