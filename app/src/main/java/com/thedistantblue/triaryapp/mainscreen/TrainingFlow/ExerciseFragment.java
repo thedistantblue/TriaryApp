@@ -34,7 +34,6 @@ public class ExerciseFragment extends Fragment {
     private DAO dao;
     private Exercise exercise;
     private Dates dates;
-    private List<Set> setList;
 
     private ActionEnum action;
 
@@ -69,7 +68,7 @@ public class ExerciseFragment extends Fragment {
         exerciseViewModel.setExercise(exercise);
         exerciseViewModel.setDao(dao);
         exerciseViewModel.setAction(action);
-        if (action.equals("create")) {
+        if (action.equals(ActionEnum.CREATE)) {
             exerciseViewModel.setEmptyExerciseSets();
         } else {
             exerciseViewModel.setExerciseSets(exercise.getExerciseSets());
@@ -78,7 +77,6 @@ public class ExerciseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 exerciseViewModel.action();
-                Toast.makeText(getActivity(), "Exercise " + action + "!", Toast.LENGTH_SHORT).show();
                 ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
             }
         });
