@@ -49,19 +49,8 @@ public class DatesListFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        training = (Training) getArguments().getSerializable(TRAINING_KEY);
-        dao = DAO.get(getActivity());
-        try {
-            datesList = dao.getDates(training);
-        } catch (NullPointerException ex) {
-            datesList = new ArrayList<>();
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        init();
 
         binding = DataBindingUtil.inflate(inflater,
                                 R.layout.dates_list_fragment_layout,
@@ -83,6 +72,16 @@ public class DatesListFragment extends Fragment {
 
         return binding.getRoot();
 
+    }
+
+    private void init() {
+        training = (Training) getArguments().getSerializable(TRAINING_KEY);
+        dao = DAO.get(getActivity());
+        try {
+            datesList = dao.getDates(training);
+        } catch (NullPointerException ex) {
+            datesList = new ArrayList<>();
+        }
     }
 
     private class DatesHolder extends RecyclerView.ViewHolder {

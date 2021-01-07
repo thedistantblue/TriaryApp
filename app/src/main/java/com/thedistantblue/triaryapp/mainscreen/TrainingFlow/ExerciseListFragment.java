@@ -47,20 +47,9 @@ public class ExerciseListFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
-        dates = (Dates) getArguments().getSerializable(DATES_KEY);
-        try {
-            exerciseList = dao.getExercisesList(dates);
-            //exerciseList = training.getTrainingExercises();
-        } catch (NullPointerException exc) {
-            exerciseList = new ArrayList<>();
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        init();
+
         binding =
                 DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
 
@@ -83,6 +72,16 @@ public class ExerciseListFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    private void init() {
+        dao = DAO.get(getActivity());
+        dates = (Dates) getArguments().getSerializable(DATES_KEY);
+        try {
+            exerciseList = dao.getExercisesList(dates);
+        } catch (NullPointerException exc) {
+            exerciseList = new ArrayList<>();
+        }
     }
 
     @Override
