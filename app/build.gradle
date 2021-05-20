@@ -30,6 +30,7 @@ android {
 
 dependencies {
     implementation "androidx.room:room-runtime:2.3.0"
+    implementation 'com.google.dagger:dagger:2.x'
     implementation 'com.rabbitmq:amqp-client:5.8.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -47,6 +48,7 @@ dependencies {
     compileOnly "org.projectlombok:lombok:1.18.16"
 
     annotationProcessor "androidx.room:room-compiler:2.3.0"
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.x'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
     testImplementation 'junit:junit:4.12'
