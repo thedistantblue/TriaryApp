@@ -3,7 +3,7 @@ package com.thedistantblue.triaryapp.viewmodels;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 

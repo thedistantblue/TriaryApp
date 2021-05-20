@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Running;
@@ -24,7 +24,6 @@ import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class RunningFragment extends Fragment {
     private static final String USER_KEY = "user";

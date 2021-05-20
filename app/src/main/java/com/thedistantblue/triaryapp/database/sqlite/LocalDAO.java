@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.database;
+package com.thedistantblue.triaryapp.database.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;

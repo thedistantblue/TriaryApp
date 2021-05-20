@@ -4,26 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
-import com.thedistantblue.triaryapp.entities.Set;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class ExerciseFragment extends Fragment {
 

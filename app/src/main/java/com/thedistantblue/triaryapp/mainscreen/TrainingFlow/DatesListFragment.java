@@ -13,18 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
-import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Dates;
-import com.thedistantblue.triaryapp.entities.Exercise;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.viewmodels.DateViewModel;
-import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;

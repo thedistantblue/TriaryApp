@@ -1,17 +1,14 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
-import android.content.Context;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.entities.Running;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import lombok.Getter;
 import lombok.Setter;

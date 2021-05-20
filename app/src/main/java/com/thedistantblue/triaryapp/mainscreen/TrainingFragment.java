@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.Training;

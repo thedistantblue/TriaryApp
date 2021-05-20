@@ -13,14 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.utils.FragmentSwitcher;
 import com.thedistantblue.triaryapp.utils.TriaryDateFormat;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class DatesFragment extends Fragment {
 
