@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.entities;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +12,9 @@ import lombok.Data;
 @Data
 @Entity(tableName = "running_table")
 public class Running implements Serializable {
-    private UUID id;
+    @PrimaryKey
+    private int id;
+    private UUID runningUUID;
     private long userId;
     private String runningName;
     private Date date;
@@ -26,8 +29,8 @@ public class Running implements Serializable {
         this.date = new Date();
     }
 
-    public Running(UUID id, long userId) {
-        this.id = id;
+    public Running(UUID runningUUID, long userId) {
+        this.runningUUID = runningUUID;
         this.userId = userId;
     }
 }

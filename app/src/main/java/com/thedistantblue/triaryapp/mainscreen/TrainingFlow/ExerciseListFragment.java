@@ -104,7 +104,7 @@ public class ExerciseListFragment extends Fragment {
 
             this.exerciseItemCardBinding.getViewModel().setExercise(exercise);
             this.exerciseItemCardBinding.executePendingBindings();
-            exerciseItemCardBinding.getViewModel().setExerciseSets(exercise.getExerciseSets());
+            exerciseItemCardBinding.getViewModel().setExerciseSets(exercise.getExerciseExerciseSets());
 
 
             this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {

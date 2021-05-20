@@ -33,7 +33,7 @@ public class ExerciseFragment extends Fragment {
         Bundle args = new Bundle();
 
         if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
-        else {args.putSerializable(EXERCISE_KEY, new Exercise(dates.getId()));}
+        else {args.putSerializable(EXERCISE_KEY, new Exercise(dates.getDatesUUID()));}
         args.putSerializable(ACTION_CODE, action);
         if (dates != null) {args.putSerializable(DATES_KEY, dates);}
 
@@ -63,7 +63,7 @@ public class ExerciseFragment extends Fragment {
         if (action.equals(ActionEnum.CREATE)) {
             exerciseViewModel.setEmptyExerciseSets();
         } else {
-            exerciseViewModel.setExerciseSets(exercise.getExerciseSets());
+            exerciseViewModel.setExerciseSets(exercise.getExerciseExerciseSets());
         }
         binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

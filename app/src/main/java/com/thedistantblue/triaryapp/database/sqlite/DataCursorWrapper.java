@@ -5,8 +5,8 @@ import android.database.CursorWrapper;
 
 import com.thedistantblue.triaryapp.entities.Dates;
 import com.thedistantblue.triaryapp.entities.Exercise;
+import com.thedistantblue.triaryapp.entities.ExerciseSet;
 import com.thedistantblue.triaryapp.entities.Running;
-import com.thedistantblue.triaryapp.entities.Set;
 import com.thedistantblue.triaryapp.entities.Training;
 import com.thedistantblue.triaryapp.entities.User;
 
@@ -73,19 +73,19 @@ public class DataCursorWrapper extends CursorWrapper {
         return exercise;
     }
 
-    public Set getSet() {
+    public ExerciseSet getSet() {
         String uuid = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.UUID));
         String exerciseUUID = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.UUID_EXERCISE));
         String setNumer = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.Set));
         String repetitions = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.Repetitions));
         String weight = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.Weight));
 
-        Set set = new Set(UUID.fromString(uuid), UUID.fromString(exerciseUUID));
-        set.setExerciseId(UUID.fromString(exerciseUUID));
-        set.setSetNumber(Integer.parseInt(setNumer));
-        set.setSetRepetitions(Integer.parseInt(repetitions));
-        set.setSetWeight(Double.parseDouble(weight));
-        return set;
+        ExerciseSet exerciseSet = new ExerciseSet(UUID.fromString(uuid), UUID.fromString(exerciseUUID));
+        exerciseSet.setExerciseId(UUID.fromString(exerciseUUID));
+        exerciseSet.setSetNumber(Integer.parseInt(setNumer));
+        exerciseSet.setSetRepetitions(Integer.parseInt(repetitions));
+        exerciseSet.setSetWeight(Double.parseDouble(weight));
+        return exerciseSet;
     }
 
     public Running getRunning() {
@@ -100,7 +100,7 @@ public class DataCursorWrapper extends CursorWrapper {
         String comments = getString(getColumnIndex(DatabaseScheme.RunningTable.Columns.Comments));
 
         Running running = new Running(UUID.fromString(uuid), Long.parseLong(userUUID));
-        running.setId(UUID.fromString(uuid));
+        running.setRunningUUID(UUID.fromString(uuid));
         running.setDate(new Date(date)); // Переработать
         running.setRunningName(name);
         running.setDistance(distance);

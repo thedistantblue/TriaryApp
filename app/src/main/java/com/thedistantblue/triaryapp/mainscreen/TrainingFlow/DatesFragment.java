@@ -47,8 +47,8 @@ public class DatesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         dao = DAO.get(getActivity());
-        dates = new Dates(training.getId());
-        dates.setDatesTrainingUUID(training.getId());
+        dates = new Dates(training.getTrainingUUID());
+        dates.setDatesTrainingUUID(training.getTrainingUUID());
     }
 
     @Override

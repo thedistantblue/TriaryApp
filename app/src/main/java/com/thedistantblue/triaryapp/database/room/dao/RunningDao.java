@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.database.room;
+package com.thedistantblue.triaryapp.database.room.dao;
 
 import androidx.room.Dao;
 

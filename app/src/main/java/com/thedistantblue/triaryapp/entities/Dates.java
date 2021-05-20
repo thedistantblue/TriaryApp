@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.entities;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,13 +12,15 @@ import lombok.Data;
 @Data
 @Entity(tableName = "dates_table")
 public class Dates implements Serializable {
-    private UUID id;
+    @PrimaryKey
+    private int id;
+    private UUID datesUUID;
     private UUID datesTrainingUUID;
     private long datesDate;
     private List<Exercise> datesExerciseList;
 
-    public Dates(UUID id, UUID datesTrainingUUID) {
-        this.id = id;
+    public Dates(UUID datesUUID, UUID datesTrainingUUID) {
+        this.datesUUID = datesUUID;
         this.datesTrainingUUID = datesTrainingUUID;
     }
 
