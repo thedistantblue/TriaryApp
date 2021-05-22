@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.thedistantblue.triaryapp.entities.ExerciseSet;
 
@@ -13,6 +14,9 @@ import java.util.List;
 public interface ExerciseSetDao {
     @Insert
     void create(ExerciseSet exerciseSet);
+
+    @Update
+    void save(ExerciseSet exerciseSet);
 
     @Delete
     void delete(ExerciseSet exerciseSet);

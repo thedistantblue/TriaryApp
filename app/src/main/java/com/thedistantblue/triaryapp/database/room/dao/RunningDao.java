@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.thedistantblue.triaryapp.entities.Running;
 
@@ -13,6 +14,9 @@ import java.util.List;
 public interface RunningDao {
     @Insert
     void create(Running running);
+
+    @Update
+    void save(Running running);
 
     @Delete
     void delete(Running running);
