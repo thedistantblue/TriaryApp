@@ -4,13 +4,18 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
+import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
+
 import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 @Data
-@Entity(tableName = "user_table")
+@FieldNameConstants
+@Entity(tableName = DatabaseConstants.USER_TABLE)
 public class User implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -19,7 +24,7 @@ public class User implements Serializable {
     private String userName;
     private String userPassword;
 
-    @Relation(parentColumn = "userID", entityColumn = "userId")
+    @Relation(parentColumn = Fields.userID, entityColumn = Training.Fields.userId)
     private List<Training> userTrainings;
 
     public User() {

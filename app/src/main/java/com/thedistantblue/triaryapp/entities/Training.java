@@ -5,17 +5,21 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
+import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 
 @Data
-@Entity(tableName = "training_table",
+@FieldNameConstants
+@Entity(tableName = DatabaseConstants.TRAINING_TABLE,
         foreignKeys = @ForeignKey(entity = User.class,
-                                  parentColumns = "userID",
-                                  childColumns = "userId",
+                                  parentColumns = User.Fields.userID,
+                                  childColumns = Training.Fields.userId,
                                   onDelete = ForeignKey.CASCADE))
 public class Training implements Serializable {
     @PrimaryKey(autoGenerate = true)
@@ -24,7 +28,7 @@ public class Training implements Serializable {
     private long userId;
     private String trainingName;
 
-    @Relation(parentColumn = "trainingUUID", entityColumn = "datesTrainingUUID")
+    @Relation(parentColumn = Fields.trainingUUID, entityColumn = Dates.Fields.datesTrainingUUID)
     private List<Dates> trainingDates;
 
     public Training(UUID trainingUUID, long userId) {

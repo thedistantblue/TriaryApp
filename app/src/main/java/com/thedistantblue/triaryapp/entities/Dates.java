@@ -3,18 +3,23 @@ package com.thedistantblue.triaryapp.entities;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import androidx.room.Relation;
+
+import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 
 @Data
-@Entity(tableName = "dates_table",
+@FieldNameConstants
+@Entity(tableName = DatabaseConstants.DATES_TABLE,
         foreignKeys = @ForeignKey(entity = Training.class,
-                                  parentColumns = "trainingUUID",
-                                  childColumns = "datesTrainingUUID",
+                                  parentColumns = Training.Fields.trainingUUID,
+                                  childColumns = Dates.Fields.datesTrainingUUID,
                                   onDelete = ForeignKey.CASCADE))
 public class Dates implements Serializable {
     @PrimaryKey(autoGenerate = true)
@@ -22,6 +27,8 @@ public class Dates implements Serializable {
     private UUID datesUUID;
     private UUID datesTrainingUUID;
     private long datesDate;
+
+    @Relation(parentColumn = Fields.datesUUID, entityColumn = Exercise.Fields.datesId)
     private List<Exercise> datesExerciseList;
 
     public Dates(UUID datesUUID, UUID datesTrainingUUID) {

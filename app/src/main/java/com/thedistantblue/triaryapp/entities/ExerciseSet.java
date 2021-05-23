@@ -4,16 +4,20 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
+
 import java.io.Serializable;
 import java.util.UUID;
 
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 
 @Data
-@Entity(tableName = "exercise_set_table",
+@FieldNameConstants
+@Entity(tableName = DatabaseConstants.EXERCISE_SET_TABLE,
         foreignKeys = @ForeignKey(entity = Exercise.class,
-                                  parentColumns = "exerciseUUID",
-                                  childColumns = "exerciseId",
+                                  parentColumns = Exercise.Fields.exerciseUUID,
+                                  childColumns = ExerciseSet.Fields.exerciseId,
                                   onDelete = ForeignKey.CASCADE))
 public class ExerciseSet implements Serializable {
     @PrimaryKey(autoGenerate = true)
