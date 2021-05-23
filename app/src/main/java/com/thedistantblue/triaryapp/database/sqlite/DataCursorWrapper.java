@@ -3,12 +3,12 @@ package com.thedistantblue.triaryapp.database.sqlite;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.thedistantblue.triaryapp.entities.Dates;
-import com.thedistantblue.triaryapp.entities.Exercise;
-import com.thedistantblue.triaryapp.entities.ExerciseSet;
-import com.thedistantblue.triaryapp.entities.Running;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.entities.base.Running;
+import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.entities.base.User;
 
 import java.util.Date;
 import java.util.UUID;

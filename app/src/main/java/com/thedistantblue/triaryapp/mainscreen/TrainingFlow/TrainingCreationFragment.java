@@ -12,10 +12,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
+import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBinding;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
@@ -30,7 +31,7 @@ public class TrainingCreationFragment extends Fragment {
     private static final String ACTION = "action";
     private static final String TRAINING_KEY = "training";
 
-    private DAO dao;
+    private TrainingDao dao;
     private User user;
     Training training;
     private ActionEnum action;
@@ -55,7 +56,7 @@ public class TrainingCreationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.user = (User) getArguments().getSerializable(USER_KEY);
-        dao = DAO.get(getActivity());
+        dao = RoomDataBaseProvider.getDatabase(getActivity()).trainingDao();
         action = (ActionEnum) getArguments().getSerializable(ACTION);
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         trainingViewModel = new TrainingViewModel();

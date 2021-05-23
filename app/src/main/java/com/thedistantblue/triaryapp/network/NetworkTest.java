@@ -19,8 +19,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.entities.base.User;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

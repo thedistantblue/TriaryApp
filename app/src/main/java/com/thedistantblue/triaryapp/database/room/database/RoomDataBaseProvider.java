@@ -7,7 +7,7 @@ import androidx.room.Room;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-class RoomDataBaseProvider {
+public class RoomDataBaseProvider {
     private static TriaryAppDatabase triaryAppDatabase;
 
     public static TriaryAppDatabase getDatabase(Context context) {

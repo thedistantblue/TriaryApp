@@ -3,8 +3,8 @@ package com.thedistantblue.triaryapp.viewmodels;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
-import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
+import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class TrainingViewModel extends BaseObservable {
     private Training training;
 
     @Setter
-    private DAO dao;
+    private TrainingDao dao;
 
     @Getter
     @Setter
@@ -62,13 +62,13 @@ public class TrainingViewModel extends BaseObservable {
                 break;
             }
             case UPDATE: {
-                dao.updateTraining(training);
+                dao.save(training);
                 break;
             }
         }
     }
 
     public void save() {
-        dao.addTraining(training);
+        dao.create(training);
     }
 }

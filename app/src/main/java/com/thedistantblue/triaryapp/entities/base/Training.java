@@ -1,41 +1,45 @@
-package com.thedistantblue.triaryapp.entities;
+package com.thedistantblue.triaryapp.entities.base;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
 
 import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
+import com.thedistantblue.triaryapp.entities.EntityConstants;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
+import lombok.NoArgsConstructor;
 
 @Data
-@FieldNameConstants
+@NoArgsConstructor
 @Entity(tableName = DatabaseConstants.TRAINING_TABLE,
+        primaryKeys = {EntityConstants.PRIMARY_KEY_FIELD_NAME, Training.UUID_FIELD_NAME},
         foreignKeys = @ForeignKey(entity = User.class,
-                                  parentColumns = User.Fields.userID,
-                                  childColumns = Training.Fields.userId,
+                                  parentColumns = "userID",
+                                  childColumns = "userId",
                                   onDelete = ForeignKey.CASCADE))
 public class Training implements Serializable {
+
+    public static final String UUID_FIELD_NAME = "trainingUUID";
+    public static final String USER_ID_FIELD_NAME = "userId";
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     private UUID trainingUUID;
     private long userId;
     private String trainingName;
 
-    @Relation(parentColumn = Fields.trainingUUID, entityColumn = Dates.Fields.datesTrainingUUID)
-    private List<Dates> trainingDates;
-
+    @Ignore
     public Training(UUID trainingUUID, long userId) {
         this.trainingUUID = trainingUUID;
         this.userId = userId;
     }
 
+    @Ignore
     public Training(long userId) {
         this(UUID.randomUUID(), userId);
     }

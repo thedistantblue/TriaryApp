@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.database.room.dao;
+package com.thedistantblue.triaryapp.database.room.dao.base;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -7,7 +7,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.thedistantblue.triaryapp.entities.Dates;
+import com.thedistantblue.triaryapp.entities.base.Dates;
 
 import java.util.List;
 

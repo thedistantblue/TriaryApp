@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
-import com.thedistantblue.triaryapp.entities.Dates;
-import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.utils.FragmentSwitcher;
 import com.thedistantblue.triaryapp.utils.TriaryDateFormat;
 

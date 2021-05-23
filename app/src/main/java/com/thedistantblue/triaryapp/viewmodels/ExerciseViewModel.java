@@ -4,8 +4,8 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
-import com.thedistantblue.triaryapp.entities.Exercise;
-import com.thedistantblue.triaryapp.entities.ExerciseSet;
+import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.util.ArrayList;
