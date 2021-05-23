@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.UserDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
@@ -28,11 +32,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class TrainingFragment extends Fragment {
+
     private static final String USER_KEY = "user";
 
-    DAO dao;
-    User user;
-    List<Training> trainingList;
+    private User user;
+    private List<Training> trainingList;
+
+    private TrainingDao trainingDao;
+    private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
     TrainingFragmentLayoutBinding binding;
 
@@ -46,24 +53,13 @@ public class TrainingFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        this.trainingList = dao.getTrainingsList(user);
-        ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(dao.getTrainingsList(user));
-        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
-        //binding.trainingRecyclerView.setAdapter(new TrainingAdapter(dao.getTrainingsList(user)));
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
+        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                                            .userWithTrainingAndRunningDao();
         user = (User) getArguments().getSerializable(USER_KEY);
-        // Не нужно, потому что в дао уже возвращается пустой список
-        // Или надо, если берем из юзера (так правильно), а юзера при этом берем из БД
         try {
-            trainingList = dao.getTrainingsList(user);
-            //trainingList = user.getUserTrainings();
+            trainingList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getTrainingList();
         } catch (NullPointerException exc) {
             trainingList = new ArrayList<>();
         }
@@ -90,6 +86,14 @@ public class TrainingFragment extends Fragment {
             }
         });
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.trainingList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getTrainingList();
+        ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(this.trainingList);
+        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
     }
 
     public class TrainingHolder extends RecyclerView.ViewHolder {
@@ -162,7 +166,7 @@ public class TrainingFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            dao.deleteTraining(trainingList.get(position));
+            trainingDao.delete(trainingList.get(position));
             trainingList.remove(position);
             notifyItemRemoved(position);
         }
