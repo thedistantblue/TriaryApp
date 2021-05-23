@@ -65,7 +65,7 @@ public class LocalDAO implements DAO {
 
     private static ContentValues getSetContentValues(ExerciseSet exerciseSet) {
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseScheme.SetTable.Columns.UUID, exerciseSet.getSetUUID().toString());
+        cv.put(DatabaseScheme.SetTable.Columns.UUID, exerciseSet.getExerciseSetUUID().toString());
         cv.put(DatabaseScheme.SetTable.Columns.UUID_EXERCISE, exerciseSet.getExerciseId().toString());
         cv.put(DatabaseScheme.SetTable.Columns.Set, exerciseSet.getSetNumber());
         cv.put(DatabaseScheme.SetTable.Columns.Repetitions, exerciseSet.getSetRepetitions());
@@ -434,7 +434,7 @@ public class LocalDAO implements DAO {
     // Обновляем сет
     @Override
     public void updateSet(ExerciseSet exerciseSet) {
-        String uuid = exerciseSet.getSetUUID().toString();
+        String uuid = exerciseSet.getExerciseSetUUID().toString();
         ContentValues cv = getSetContentValues(exerciseSet);
 
         Log.d("updateSet(): ", String.valueOf(exerciseSet.getSetWeight()));
@@ -547,14 +547,14 @@ public class LocalDAO implements DAO {
             mDatabase.delete(
                     DatabaseScheme.SetTable.NAME,
                     DatabaseScheme.SetTable.Columns.UUID + " =?",
-                    new String[] {exercise.getExerciseExerciseSets().get(i).getSetUUID().toString()}
+                    new String[] {exercise.getExerciseExerciseSets().get(i).getExerciseSetUUID().toString()}
             );
         }
     }
 
     @Override
     public void deleteSet(ExerciseSet exerciseSet) {
-        String uuid = exerciseSet.getSetUUID().toString();
+        String uuid = exerciseSet.getExerciseSetUUID().toString();
 
         mDatabase.delete(
                 DatabaseScheme.SetTable.NAME,

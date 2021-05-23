@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.thedistantblue.triaryapp.entities.ExerciseSet;
@@ -21,6 +22,11 @@ public interface ExerciseSetDao {
     @Delete
     void delete(ExerciseSet exerciseSet);
 
+    @Transaction
+    @Query("SELECT * from exercise_set_table where exerciseSetUUID = :exerciseSetId")
+    ExerciseSet findById(String exerciseSetId);
+
+    @Transaction
     @Query("SELECT * FROM exercise_set_table")
     List<ExerciseSet> findAll();
 }

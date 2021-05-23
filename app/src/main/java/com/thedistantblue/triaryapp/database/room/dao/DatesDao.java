@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.thedistantblue.triaryapp.entities.Dates;
@@ -21,6 +22,11 @@ public interface DatesDao {
     @Delete
     void delete(Dates dates);
 
+    @Transaction
+    @Query("SELECT * from dates_table where datesUUID = :datesId")
+    Dates findById(String datesId);
+
+    @Transaction
     @Query("SELECT * FROM dates_table")
     List<Dates> findAll();
 }

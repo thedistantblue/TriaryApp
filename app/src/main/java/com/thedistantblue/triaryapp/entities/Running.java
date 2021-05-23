@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -10,9 +11,13 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-@Entity(tableName = "running_table")
+@Entity(tableName = "running_table",
+        foreignKeys = @ForeignKey(entity = User.class,
+                                  parentColumns = "userID",
+                                  childColumns = "userId",
+                                  onDelete = ForeignKey.CASCADE))
 public class Running implements Serializable {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private UUID runningUUID;
     private long userId;
