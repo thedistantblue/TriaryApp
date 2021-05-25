@@ -8,14 +8,16 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class RoomDataBaseProvider {
-    private static TriaryAppDatabase triaryAppDatabase;
+    private static TriaryAppDatabaseInterface triaryAppDatabase;
 
-    public static TriaryAppDatabase getDatabase(Context context) {
+    public static TriaryAppDatabaseInterface getDatabase(Context context) {
         if (triaryAppDatabase == null) {
-            triaryAppDatabase = Room.databaseBuilder(context,
-                                                     TriaryAppDatabase.class,
-                                                     "triaryapp_database")
-                                    .build();
+            TriaryAppDatabase database = Room.databaseBuilder(context,
+                                                              TriaryAppDatabase.class,
+                                                              "triaryapp_v2_database")
+                                             .build();
+            triaryAppDatabase = new TriaryAppDatabaseProxy(database);
+
         }
         return triaryAppDatabase;
     }

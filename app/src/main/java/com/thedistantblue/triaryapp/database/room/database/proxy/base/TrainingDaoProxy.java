@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.database.room.database.proxy;
+package com.thedistantblue.triaryapp.database.room.database.proxy.base;
 
 import android.os.AsyncTask;
 

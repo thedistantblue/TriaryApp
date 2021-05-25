@@ -10,6 +10,16 @@ import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.UserDao;
+import com.thedistantblue.triaryapp.database.room.database.proxy.DatesWithExerciseDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.ExerciseWithExerciseSetDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.TrainingWithDatesDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.UserWithTrainingAndRunningDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.base.DatesDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.base.ExerciseDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.base.ExerciseSetDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.base.RunningDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.base.TrainingDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.base.UserDaoProxy;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,51 +29,51 @@ public class TriaryAppDatabaseProxy implements TriaryAppDatabaseInterface {
 
     @Override
     public DatesDao datesDao() {
-        return triaryAppDatabase.datesDao();
+        return new DatesDaoProxy(triaryAppDatabase.datesDao());
     }
 
     @Override
     public ExerciseDao exerciseDao() {
-        return triaryAppDatabase.exerciseDao();
+        return new ExerciseDaoProxy(triaryAppDatabase.exerciseDao());
     }
 
     @Override
     public ExerciseSetDao exerciseSetDao() {
-        return triaryAppDatabase.exerciseSetDao();
+        return new ExerciseSetDaoProxy(triaryAppDatabase.exerciseSetDao());
     }
 
     @Override
     public RunningDao runningDao() {
-        return triaryAppDatabase.runningDao();
+        return new RunningDaoProxy(triaryAppDatabase.runningDao());
     }
 
     @Override
     public TrainingDao trainingDao() {
-        return triaryAppDatabase.trainingDao();
+        return new TrainingDaoProxy(triaryAppDatabase.trainingDao());
     }
 
     @Override
     public UserDao userDao() {
-        return triaryAppDatabase.userDao();
+        return new UserDaoProxy(triaryAppDatabase.userDao());
     }
 
     @Override
     public UserWithTrainingAndRunningDao userWithTrainingAndRunningDao() {
-        return triaryAppDatabase.userWithTrainingAndRunningDao();
+        return new UserWithTrainingAndRunningDaoProxy(triaryAppDatabase.userWithTrainingAndRunningDao());
     }
 
     @Override
     public TrainingWithDatesDao trainingWithDatesDao() {
-        return triaryAppDatabase.trainingWithDatesDao();
+        return new TrainingWithDatesDaoProxy(triaryAppDatabase.trainingWithDatesDao());
     }
 
     @Override
     public DatesWithExerciseDao datesWithExerciseDao() {
-        return triaryAppDatabase.datesWithExerciseDao();
+        return new DatesWithExerciseDaoProxy(triaryAppDatabase.datesWithExerciseDao());
     }
 
     @Override
     public ExerciseWithExerciseSetDao exerciseWithExerciseSetDao() {
-        return triaryAppDatabase.exerciseWithExerciseSetDao();
+        return new ExerciseWithExerciseSetDaoProxy(triaryAppDatabase.exerciseWithExerciseSetDao());
     }
 }

@@ -11,7 +11,11 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thedistantblue.triaryapp.R;
 
+import com.thedistantblue.triaryapp.database.room.dao.base.UserDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.entities.base.User;
+
+import java.util.List;
 
 public class MainScreenActivity extends AppCompatActivity implements MainScreenActivityCallback {
 
@@ -20,17 +24,27 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
     private static final String TRAINING_FRAGMENT_NAME = MainScreenActivity.class.getPackage() + "TrainingFragment";
     private static final String RUNNING_FRAGMENT_NAME = MainScreenActivity.class.getPackage() + "RunningFragment";
 
+    private UserDao userDao;
+
     private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_relative_layout);
-
+        userDao = RoomDataBaseProvider.getDatabase(getApplicationContext()).userDao();
         // Надо брать юзера из базы, если она есть, а не создавать
         // каждый раз нового с одним и тем же id
-        final User user = new User();
+        User user;
+        List<User> users = userDao.findAll();
+        if (!users.isEmpty()) {
+            user = users.get(0);
+        } else {
+            user = new User();
+            userDao.create(user);
+        }
 
+        userDao.findAll();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);

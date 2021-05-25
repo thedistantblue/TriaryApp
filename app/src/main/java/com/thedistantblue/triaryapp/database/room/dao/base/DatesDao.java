@@ -22,11 +22,9 @@ public interface DatesDao {
     @Delete
     void delete(Dates dates);
 
-    @Transaction
     @Query("SELECT * from dates_table where datesUUID = :datesId")
     Dates findById(String datesId);
 
-    @Transaction
     @Query("SELECT * FROM dates_table")
     List<Dates> findAll();
 }

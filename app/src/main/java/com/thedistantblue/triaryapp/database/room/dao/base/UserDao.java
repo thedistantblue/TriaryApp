@@ -22,11 +22,9 @@ public interface UserDao {
     @Delete
     void delete(User user);
 
-    @Transaction
     @Query("SELECT * from user_table where user_id = :userId")
     User findById(String userId);
 
-    @Transaction
     @Query("SELECT * FROM user_table")
     List<User> findAll();
 }
