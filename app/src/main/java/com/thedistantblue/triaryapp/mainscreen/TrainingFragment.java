@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
+import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
@@ -58,8 +60,16 @@ public class TrainingFragment extends Fragment {
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
         try {
-            trainingList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getTrainingList();
-        } catch (NullPointerException exc) {
+            AsyncTask.execute(() -> {
+                UserWithTrainingAndRunning userWithTrainingAndRunning = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()));
+                if (userWithTrainingAndRunning == null) {
+                    trainingList = new ArrayList<>();
+                } else {
+                    trainingList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getTrainingList();
+                }
+
+            });
+        } catch (Exception exception) {
             trainingList = new ArrayList<>();
         }
     }

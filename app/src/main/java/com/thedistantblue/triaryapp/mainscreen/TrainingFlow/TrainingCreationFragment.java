@@ -44,7 +44,7 @@ public class TrainingCreationFragment extends Fragment {
         if (training != null) {
             args.putSerializable(TRAINING_KEY, training);
         } else {
-            args.putSerializable(TRAINING_KEY, new Training(user.getId()));
+            args.putSerializable(TRAINING_KEY, new Training(1));
         }
 
         TrainingCreationFragment fragment = new TrainingCreationFragment();

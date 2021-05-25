@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.DATES_TABLE,
-        primaryKeys = {EntityConstants.PRIMARY_KEY_FIELD_NAME, Dates.UUID_FIELD_NAME},
         foreignKeys = @ForeignKey(entity = Training.class,
                                   parentColumns = Training.UUID_FIELD_NAME,
                                   childColumns = Dates.TRAINING_UUID_FIELD_NAME,
@@ -31,10 +30,8 @@ public class Dates implements Serializable {
     public static final String UUID_FIELD_NAME = "datesUUID";
     public static final String TRAINING_UUID_FIELD_NAME = "datesTrainingUUID";
 
-    @ColumnInfo(index = true)
-    private int id;
     @NonNull
-    @ColumnInfo(index = true)
+    @PrimaryKey
     private UUID datesUUID;
     private UUID datesTrainingUUID;
     private long datesDate;

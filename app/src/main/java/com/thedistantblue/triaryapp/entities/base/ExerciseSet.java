@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.EXERCISE_SET_TABLE,
-        primaryKeys = {EntityConstants.PRIMARY_KEY_FIELD_NAME, ExerciseSet.UUID_FIELD_NAME},
         foreignKeys = @ForeignKey(entity = Exercise.class,
                                   parentColumns = Exercise.UUID_FIELD_NAME,
                                   childColumns = ExerciseSet.EXERCISE_UUID_FIELD,
@@ -30,8 +29,8 @@ public class ExerciseSet implements Serializable {
     public static final String UUID_FIELD_NAME = "exerciseSetUUID";
     public static final String EXERCISE_UUID_FIELD = "exerciseId";
 
-    private int id;
     @NonNull
+    @PrimaryKey
     private UUID exerciseSetUUID;
     private UUID exerciseId;
     private int setNumber;

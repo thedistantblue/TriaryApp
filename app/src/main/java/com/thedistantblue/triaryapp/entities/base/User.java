@@ -17,27 +17,20 @@ import lombok.Data;
 
 @Data
 @Entity(tableName = DatabaseConstants.USER_TABLE,
-        primaryKeys = {EntityConstants.USER_PRIMARY_KEY_FIELD_NAME, User.ID_FIELD_NAME},
-        indices = {@Index(value = {EntityConstants.USER_PRIMARY_KEY_FIELD_NAME, User.ID_FIELD_NAME},
+        indices = {@Index(value = User.ID_FIELD_NAME,
                           unique = true)})
 public class User implements Serializable {
 
     public static final String ID_FIELD_NAME = "user_id";
 
-    @ColumnInfo(name = EntityConstants.USER_PRIMARY_KEY_FIELD_NAME)
-    private int id;
     // Изменил id на лонг для того, чтобы можно было поставить просто как 1
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_id")
     private int userID;
     private String userName;
     private String userPassword;
 
     public User() {
-        this(1);
-    }
-
-    @Ignore
-    public User(int userID) {
-        this.userID = userID;
+        this.userID = 1;
     }
 }

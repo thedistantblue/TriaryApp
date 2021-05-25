@@ -46,7 +46,7 @@ public class RunningCreationFragment extends Fragment {
         if (running != null) {
             args.putSerializable(RUNNING_KEY, running);
         } else {
-            args.putSerializable(RUNNING_KEY, new Running(user.getId()));
+            args.putSerializable(RUNNING_KEY, new Running(1));
         }
         args.putSerializable(USER_KEY, user);
         args.putSerializable(ACTION_KEY, action);

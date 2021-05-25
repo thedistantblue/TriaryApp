@@ -24,7 +24,7 @@ public class DataCursorWrapper extends CursorWrapper {
         String password = getString(getColumnIndex(DatabaseScheme.UserTable.Columns.Password));
 
         //User user = new User(UUID.fromString(uuid));
-        User user = new User(Long.parseLong(uuid));
+        User user = new User();
         user.setUserName(name);
         user.setUserPassword(password);
         return user;

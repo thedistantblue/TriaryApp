@@ -29,7 +29,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
 
         // Надо брать юзера из базы, если она есть, а не создавать
         // каждый раз нового с одним и тем же id
-        final User user = new User(1);
+        final User user = new User();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);

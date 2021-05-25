@@ -129,7 +129,7 @@ public class NetworkTest extends AppCompatActivity {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
             Gson gson = new Gson();
-            User user = new User(1);
+            User user = new User();
             UserWithTrainingAndRunning userWithTrainingAndRunning = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()));
             List<Training> trainingList = userWithTrainingAndRunning.getTrainingList();
             String trainingString = gson.toJson(trainingList);

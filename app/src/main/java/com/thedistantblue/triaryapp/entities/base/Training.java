@@ -22,20 +22,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.TRAINING_TABLE,
-        primaryKeys = {EntityConstants.PRIMARY_KEY_FIELD_NAME, Training.UUID_FIELD_NAME},
         foreignKeys = @ForeignKey(entity = User.class,
-                                  parentColumns = "userID",
-                                  childColumns = "userId",
+                                  parentColumns = User.ID_FIELD_NAME,
+                                  childColumns = Training.USER_ID_FIELD_NAME,
                                   onDelete = ForeignKey.CASCADE))
 public class Training implements Serializable {
 
     public static final String UUID_FIELD_NAME = "trainingUUID";
     public static final String USER_ID_FIELD_NAME = "userId";
 
-    @ColumnInfo(index = true)
-    private int id;
     @NonNull
-    @ColumnInfo(index = true)
+    @PrimaryKey
     private UUID trainingUUID;
     private long userId;
     private String trainingName;
