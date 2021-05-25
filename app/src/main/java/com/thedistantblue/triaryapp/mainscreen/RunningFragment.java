@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
@@ -28,7 +31,8 @@ import java.util.List;
 public class RunningFragment extends Fragment {
     private static final String USER_KEY = "user";
 
-    private DAO dao;
+    private RunningDao runningDao;
+    private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
     private User user;
     private List<Running> runningList;
     private RunningFragmentLayoutBinding binding;
@@ -47,15 +51,22 @@ public class RunningFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.running_tab_button);
-        ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(dao.getRunningList(user));
+        ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getRunningList());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
+        initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        runningList = dao.getRunningList(user);
+        runningList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getRunningList();
+    }
+
+    private void initDaos() {
+        runningDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                         .runningDao();
+        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                                            .userWithTrainingAndRunningDao();
     }
 
     @Override
@@ -139,7 +150,7 @@ public class RunningFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            dao.deleteRunning(runningList.get(position));
+            runningDao.delete(runningList.get(position));
             runningList.remove(position);
             notifyItemRemoved(position);
         }

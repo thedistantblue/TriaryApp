@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.entities.composite;
 
 import androidx.room.Embedded;
+import androidx.room.Entity;
 import androidx.room.Relation;
 
 import com.thedistantblue.triaryapp.entities.base.Running;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Entity
 public class UserWithTrainingAndRunning {
     @Embedded private User user;
     @Relation(parentColumn = User.ID_FIELD_NAME, entityColumn = Training.USER_ID_FIELD_NAME)

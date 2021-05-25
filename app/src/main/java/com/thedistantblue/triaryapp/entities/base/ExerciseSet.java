@@ -1,5 +1,6 @@
 package com.thedistantblue.triaryapp.entities.base;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -7,6 +8,8 @@ import androidx.room.PrimaryKey;
 
 import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
 import com.thedistantblue.triaryapp.entities.EntityConstants;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -27,8 +30,8 @@ public class ExerciseSet implements Serializable {
     public static final String UUID_FIELD_NAME = "exerciseSetUUID";
     public static final String EXERCISE_UUID_FIELD = "exerciseId";
 
-    @PrimaryKey(autoGenerate = true)
     private int id;
+    @NonNull
     private UUID exerciseSetUUID;
     private UUID exerciseId;
     private int setNumber;
@@ -41,7 +44,7 @@ public class ExerciseSet implements Serializable {
     }
 
     @Ignore
-    public ExerciseSet(UUID exerciseSetUUID, UUID exerciseId) {
+    public ExerciseSet(@NotNull UUID exerciseSetUUID, UUID exerciseId) {
         this.exerciseSetUUID = exerciseSetUUID;
         this.exerciseId = exerciseId;
     }

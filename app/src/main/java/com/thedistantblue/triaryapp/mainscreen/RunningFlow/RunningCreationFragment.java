@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Running;
@@ -32,7 +34,7 @@ public class RunningCreationFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
 
-    private DAO dao;
+    private RunningDao runningDao;
     private User user;
     private Running running;
     private ActionEnum action;
@@ -57,12 +59,13 @@ public class RunningCreationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
+        runningDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                         .runningDao();
         user = (User) getArguments().getSerializable(USER_KEY);
         running = (Running) getArguments().getSerializable(RUNNING_KEY);
         action = (ActionEnum) getArguments().getSerializable(ACTION_KEY);
         runningViewModel = new RunningViewModel();
-        runningViewModel.setDao(dao);
+        runningViewModel.setRunningDao(runningDao);
         runningViewModel.setRunning(running);
         runningViewModel.setAction(action);
     }

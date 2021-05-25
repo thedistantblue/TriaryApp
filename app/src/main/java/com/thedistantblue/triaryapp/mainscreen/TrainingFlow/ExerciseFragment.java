@@ -9,10 +9,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
@@ -23,7 +27,9 @@ public class ExerciseFragment extends Fragment {
     private static final String EXERCISE_KEY = "exercise";
     private static final String ACTION_CODE = "action";
 
-    private DAO dao;
+    private ExerciseDao exerciseDao;
+    private ExerciseSetDao exerciseSetDao;
+    private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
     private Exercise exercise;
     private Dates dates;
 
@@ -45,10 +51,19 @@ public class ExerciseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
+        initDaos();
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
         exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
         action = (ActionEnum) getArguments().getSerializable(ACTION_CODE);
+    }
+
+    private void initDaos() {
+        exerciseDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                          .exerciseDao();
+        exerciseSetDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                             .exerciseSetDao();
+        exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                                         .exerciseWithExerciseSetDao();
     }
 
     @Override
@@ -57,13 +72,17 @@ public class ExerciseFragment extends Fragment {
                 DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
 
         final ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
-        exerciseViewModel.setExercise(exercise);
-        exerciseViewModel.setDao(dao);
+        ExerciseWithExerciseSet exerciseWithExerciseSet = exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString());
+        exerciseViewModel.setExerciseWithExerciseSet(exerciseWithExerciseSet);
+        exerciseViewModel.setExerciseDao(exerciseDao);
+        exerciseViewModel.setExerciseSetDao(exerciseSetDao);
+        exerciseViewModel.setExerciseWithExerciseSetDao(exerciseWithExerciseSetDao);
         exerciseViewModel.setAction(action);
         if (action.equals(ActionEnum.CREATE)) {
             exerciseViewModel.setEmptyExerciseSets();
         } else {
-            exerciseViewModel.setExerciseSets(exercise.getExerciseExerciseSets());
+            ExerciseWithExerciseSet exerciseWithExerciseSetForDunnoWhat = exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString());
+            exerciseViewModel.setExerciseSets(exerciseWithExerciseSetForDunnoWhat.getExerciseSetList());
         }
         binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

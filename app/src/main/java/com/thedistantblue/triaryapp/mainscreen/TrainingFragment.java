@@ -55,14 +55,20 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabase(getActivity())
-                                                            .userWithTrainingAndRunningDao();
+        initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
         try {
             trainingList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getTrainingList();
         } catch (NullPointerException exc) {
             trainingList = new ArrayList<>();
         }
+    }
+
+    private void initDaos() {
+        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                                            .userWithTrainingAndRunningDao();
+        trainingDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                          .trainingDao();
     }
 
     @Override

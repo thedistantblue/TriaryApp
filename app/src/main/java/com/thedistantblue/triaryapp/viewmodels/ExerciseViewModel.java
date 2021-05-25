@@ -3,9 +3,13 @@ package com.thedistantblue.triaryapp.viewmodels;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.util.ArrayList;
@@ -15,10 +19,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class ExerciseViewModel extends BaseObservable {
-    private Exercise exercise;
+    private ExerciseWithExerciseSet exerciseWithExerciseSet;
 
     @Setter
-    private DAO dao;
+    private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
+
+    @Setter
+    private ExerciseDao exerciseDao;
+
+    @Setter
+    private ExerciseSetDao exerciseSetDao;
 
     @Getter
     @Setter
@@ -44,122 +54,118 @@ public class ExerciseViewModel extends BaseObservable {
     }
 
     public void setEmptyExerciseSets() {
-        exercise.setExerciseExerciseSets(new ArrayList<ExerciseSet>());
-        exerciseSetList = exercise.getExerciseExerciseSets();
+        exerciseWithExerciseSet.setExerciseSetList(new ArrayList<>());
+        exerciseSetList = exerciseWithExerciseSet.getExerciseSetList();
         for (int i = 0; i < 5; i++) {
-            ExerciseSet exerciseSet = new ExerciseSet(exercise.getExerciseUUID());
+            ExerciseSet exerciseSet = new ExerciseSet(exerciseWithExerciseSet.getExercise().getExerciseUUID());
             exerciseSet.setSetNumber(i);
             exerciseSetList.add(exerciseSet);
         }
     }
 
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
+    public void setExerciseWithExerciseSet(ExerciseWithExerciseSet exerciseWithExerciseSet) {
+        this.exerciseWithExerciseSet = exerciseWithExerciseSet;
     }
 
-    public Exercise getExercise() {
-        return exercise;
-    }
-
-    public void setDao(DAO dao) {
-        this.dao = dao;
+    public ExerciseWithExerciseSet getExerciseWithExerciseSet() {
+        return exerciseWithExerciseSet;
     }
 
     public void setExerciseName(String name) {
-        exercise.setExerciseName(name);
+        exerciseWithExerciseSet.getExercise().setExerciseName(name);
         notifyChange();
     }
 
     @Bindable
     public String getExerciseName() {
-        return exercise.getExerciseName();
+        return exerciseWithExerciseSet.getExercise().getExerciseName();
     }
 
     public void setExerciseComments(String comments) {
-        exercise.setExerciseComments(comments);
+        exerciseWithExerciseSet.getExercise().setExerciseComments(comments);
         notifyChange();
     }
 
     @Bindable
     public String getExerciseComments() {
-        return exercise.getExerciseComments();
+        return exerciseWithExerciseSet.getExercise().getExerciseComments();
     }
 
     //1 set
     public void setFirstSetReps(String number) {
         if (!number.equals("")) {
-            exercise.getExerciseExerciseSets().get(0).setSetRepetitions(Integer.parseInt(number));
+            exerciseWithExerciseSet.getExerciseSetList().get(0).setSetRepetitions(Integer.parseInt(number));
         }
         else
-            exercise.getExerciseExerciseSets().get(0).setSetRepetitions(0);
+            exerciseWithExerciseSet.getExerciseSetList().get(0).setSetRepetitions(0);
         notifyChange();
     }
 
     @Bindable
     public String getFirstSetReps() {
-        if (String.valueOf(exercise.getExerciseExerciseSets().get(0).getSetRepetitions()).equals("0")) return "";
-        return String.valueOf(exercise.getExerciseExerciseSets().get(0).getSetRepetitions());
+        if (String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(0).getSetRepetitions()).equals("0")) return "";
+        return String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(0).getSetRepetitions());
     }
 
     //2 set
 
     public void setSecondSetReps(String number) {
         if (!number.equals(""))
-            exercise.getExerciseExerciseSets().get(1).setSetRepetitions(Integer.parseInt(number));
+            exerciseWithExerciseSet.getExerciseSetList().get(1).setSetRepetitions(Integer.parseInt(number));
         else
-            exercise.getExerciseExerciseSets().get(1).setSetRepetitions(0);
+            exerciseWithExerciseSet.getExerciseSetList().get(1).setSetRepetitions(0);
         notifyChange();
     }
 
     @Bindable
     public String getSecondSetReps() {
-        if (String.valueOf(exercise.getExerciseExerciseSets().get(1).getSetRepetitions()).equals("0")) return "";
-        return String.valueOf(exercise.getExerciseExerciseSets().get(1).getSetRepetitions());
+        if (String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(1).getSetRepetitions()).equals("0")) return "";
+        return String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(1).getSetRepetitions());
     }
 
     //3 set
     public void setThirdSetReps(String number) {
         if (!number.equals(""))
-            exercise.getExerciseExerciseSets().get(2).setSetRepetitions(Integer.parseInt(number));
+            exerciseWithExerciseSet.getExerciseSetList().get(2).setSetRepetitions(Integer.parseInt(number));
         else
-            exercise.getExerciseExerciseSets().get(2).setSetRepetitions(0);
+            exerciseWithExerciseSet.getExerciseSetList().get(2).setSetRepetitions(0);
         notifyChange();
     }
 
     @Bindable
     public String getThirdSetReps() {
-        if (String.valueOf(exercise.getExerciseExerciseSets().get(2).getSetRepetitions()).equals("0")) return "";
-        return String.valueOf(exercise.getExerciseExerciseSets().get(2).getSetRepetitions());
+        if (String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(2).getSetRepetitions()).equals("0")) return "";
+        return String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(2).getSetRepetitions());
     }
 
     //4 set
     public void setFourthSetReps(String number) {
         if (!number.equals(""))
-            exercise.getExerciseExerciseSets().get(3).setSetRepetitions(Integer.parseInt(number));
+            exerciseWithExerciseSet.getExerciseSetList().get(3).setSetRepetitions(Integer.parseInt(number));
         else
-            exercise.getExerciseExerciseSets().get(3).setSetRepetitions(0);
+            exerciseWithExerciseSet.getExerciseSetList().get(3).setSetRepetitions(0);
         notifyChange();
     }
 
     @Bindable
     public String getFourthSetReps() {
-        if (String.valueOf(exercise.getExerciseExerciseSets().get(3).getSetRepetitions()).equals("0")) return "";
-        return String.valueOf(exercise.getExerciseExerciseSets().get(3).getSetRepetitions());
+        if (String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(3).getSetRepetitions()).equals("0")) return "";
+        return String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(3).getSetRepetitions());
     }
 
     //5 set
     public void setFifthSetReps(String number) {
         if (!number.equals(""))
-            exercise.getExerciseExerciseSets().get(4).setSetRepetitions(Integer.parseInt(number));
+            exerciseWithExerciseSet.getExerciseSetList().get(4).setSetRepetitions(Integer.parseInt(number));
         else
-            exercise.getExerciseExerciseSets().get(4).setSetRepetitions(0);
+            exerciseWithExerciseSet.getExerciseSetList().get(4).setSetRepetitions(0);
         notifyChange();
     }
 
     @Bindable
     public String getFifthSetReps() {
-        if (String.valueOf(exercise.getExerciseExerciseSets().get(4).getSetRepetitions()).equals("0")) return "";
-        return String.valueOf(exercise.getExerciseExerciseSets().get(4).getSetRepetitions());
+        if (String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(4).getSetRepetitions()).equals("0")) return "";
+        return String.valueOf(exerciseWithExerciseSet.getExerciseSetList().get(4).getSetRepetitions());
     }
 
     //----------------------------------------------------------------------------------------------
@@ -168,7 +174,7 @@ public class ExerciseViewModel extends BaseObservable {
     public void setFirstSetWeight(String number) {
         this.weight1 = number;
         if (!this.weight1.equals(""))
-            exercise.getExerciseExerciseSets().get(0).setSetWeight(Double.parseDouble(weight1));
+            exerciseWithExerciseSet.getExerciseSetList().get(0).setSetWeight(Double.parseDouble(weight1));
         notifyChange();
     }
 
@@ -183,7 +189,7 @@ public class ExerciseViewModel extends BaseObservable {
     public void setSecondSetWeight(String number) {
         this.weight2 = number;
         if (!this.weight2.equals(""))
-            exercise.getExerciseExerciseSets().get(1).setSetWeight(Double.parseDouble(weight2));
+            exerciseWithExerciseSet.getExerciseSetList().get(1).setSetWeight(Double.parseDouble(weight2));
         notifyChange();
     }
 
@@ -197,7 +203,7 @@ public class ExerciseViewModel extends BaseObservable {
     public void setThirdSetWeight(String number) {
         this.weight3 = number;
         if (!this.weight3.equals(""))
-            exercise.getExerciseExerciseSets().get(2).setSetWeight(Double.parseDouble(weight3));
+            exerciseWithExerciseSet.getExerciseSetList().get(2).setSetWeight(Double.parseDouble(weight3));
         notifyChange();
     }
 
@@ -211,7 +217,7 @@ public class ExerciseViewModel extends BaseObservable {
     public void setFourthSetWeight(String number) {
         this.weight4 = number;
         if (!this.weight4.equals(""))
-            exercise.getExerciseExerciseSets().get(3).setSetWeight(Double.parseDouble(weight4));
+            exerciseWithExerciseSet.getExerciseSetList().get(3).setSetWeight(Double.parseDouble(weight4));
         notifyChange();
     }
 
@@ -225,7 +231,7 @@ public class ExerciseViewModel extends BaseObservable {
     public void setFifthSetWeight(String number) {
         this.weight5 = number;
         if (!this.weight5.equals(""))
-            exercise.getExerciseExerciseSets().get(4).setSetWeight(Double.parseDouble(weight5));
+            exerciseWithExerciseSet.getExerciseSetList().get(4).setSetWeight(Double.parseDouble(weight5));
         notifyChange();
     }
 
@@ -251,16 +257,23 @@ public class ExerciseViewModel extends BaseObservable {
     }
 
     private void save() {
-        if (exercise.getExerciseName() == null || exercise.getExerciseName().equals("")) {
-            exercise.setExerciseName("exercise");
+        if (exerciseWithExerciseSet.getExercise().getExerciseName() == null || exerciseWithExerciseSet.getExercise().getExerciseName().equals("")) {
+            exerciseWithExerciseSet.getExercise().setExerciseName("exercise");
         }
-        dao.addExercise(exercise);
+        Exercise exercise = exerciseWithExerciseSet.getExercise();
+        List<ExerciseSet> exerciseSets = exerciseWithExerciseSet.getExerciseSetList();
+
+        exerciseDao.create(exercise);
+        exerciseSets.forEach(exerciseSet -> exerciseSetDao.create(exerciseSet));
     }
 
     private void update() {
-        dao.updateExercise(exercise);
-        for(ExerciseSet exerciseSet : exercise.getExerciseExerciseSets()) {
-            dao.updateSet(exerciseSet);
-        }
+        Exercise exercise = exerciseWithExerciseSet.getExercise();
+        List<ExerciseSet> exerciseSets = exerciseWithExerciseSet.getExerciseSetList();
+
+        exerciseDao.save(exercise);
+        exerciseSets.forEach(exerciseSet -> {
+            exerciseSetDao.save(exerciseSet);
+        });
     }
 }

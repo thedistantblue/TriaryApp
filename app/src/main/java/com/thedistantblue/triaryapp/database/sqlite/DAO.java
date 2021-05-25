@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface DAO {
 
-    static DAO get(Context context) {
+/*    static DAO get(Context context) {
         return LocalDAO.get(context);
-    }
+    }*/
 
     void addUser(User user);
 

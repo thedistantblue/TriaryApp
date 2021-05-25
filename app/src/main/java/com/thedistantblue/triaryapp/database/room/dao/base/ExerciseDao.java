@@ -17,7 +17,7 @@ public interface ExerciseDao {
     void create(Exercise exercise);
 
     @Update
-    void save(Exercise dates);
+    void save(Exercise exercise);
 
     @Delete
     void delete(Exercise exercise);

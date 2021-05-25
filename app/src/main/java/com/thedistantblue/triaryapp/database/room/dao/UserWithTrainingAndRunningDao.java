@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface UserWithTrainingAndRunningDao {
     @Transaction
-    @Query("SELECT * from user_table where userID = :userId")
+    @Query("SELECT * from user_table where user_id = :userId")
     UserWithTrainingAndRunning findById(String userId);
 
     @Transaction

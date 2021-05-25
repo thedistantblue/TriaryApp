@@ -1,7 +1,9 @@
 package com.thedistantblue.triaryapp.entities.base;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
@@ -15,27 +17,27 @@ import lombok.Data;
 
 @Data
 @Entity(tableName = DatabaseConstants.USER_TABLE,
-        primaryKeys = {EntityConstants.PRIMARY_KEY_FIELD_NAME, User.ID_FIELD_NAME})
+        primaryKeys = {EntityConstants.USER_PRIMARY_KEY_FIELD_NAME, User.ID_FIELD_NAME},
+        indices = {@Index(value = {EntityConstants.USER_PRIMARY_KEY_FIELD_NAME, User.ID_FIELD_NAME},
+                          unique = true)})
 public class User implements Serializable {
 
-    public static final String ID_FIELD_NAME = "userID";
+    public static final String ID_FIELD_NAME = "user_id";
 
-    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = EntityConstants.USER_PRIMARY_KEY_FIELD_NAME)
     private int id;
     // Изменил id на лонг для того, чтобы можно было поставить просто как 1
-    private long userID;
+    @ColumnInfo(name = "user_id")
+    private int userID;
     private String userName;
     private String userPassword;
-
-    @Relation(parentColumn = User.ID_FIELD_NAME, entityColumn = Training.USER_ID_FIELD_NAME)
-    private List<Training> userTrainings;
 
     public User() {
         this(1);
     }
 
     @Ignore
-    public User(long userID) {
+    public User(int userID) {
         this.userID = userID;
     }
 }

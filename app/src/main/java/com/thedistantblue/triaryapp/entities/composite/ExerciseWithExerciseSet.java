@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.entities.composite;
 
 import androidx.room.Embedded;
+import androidx.room.Entity;
 import androidx.room.Relation;
 
 import com.thedistantblue.triaryapp.entities.base.Exercise;

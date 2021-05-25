@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.DatesDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
@@ -34,7 +38,8 @@ public class DatesListFragment extends Fragment {
     private DatesListFragmentLayoutBinding binding;
     private List<Dates> datesList;
     private Training training;
-    private DAO dao;
+    private DatesDao datesDao;
+    private TrainingWithDatesDao trainingWithDatesDao;
 
     public static DatesListFragment newInstance(Training training) {
         Bundle args = new Bundle();
@@ -73,12 +78,20 @@ public class DatesListFragment extends Fragment {
 
     private void init() {
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
-        dao = DAO.get(getActivity());
+        initDaos();
         try {
-            datesList = dao.getDates(training);
+            datesList = trainingWithDatesDao.findById(training.getTrainingUUID().toString())
+                                            .getDatesList();
         } catch (NullPointerException ex) {
             datesList = new ArrayList<>();
         }
+    }
+
+    private void initDaos() {
+        datesDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                       .datesDao();
+        trainingWithDatesDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                                   .trainingWithDatesDao();
     }
 
     private class DatesHolder extends RecyclerView.ViewHolder {
@@ -144,7 +157,7 @@ public class DatesListFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            dao.deleteDate(datesList.get(position));
+            datesDao.delete(datesList.get(position));
             datesList.remove(position);
             //dao.deleteTraining(trainingList.get(position));
             notifyItemRemoved(position);

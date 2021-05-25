@@ -18,9 +18,11 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
+import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,6 +39,8 @@ public class NetworkTest extends AppCompatActivity {
 
     private static final String EXCHANGE_NAME = "testExchange1";
     private static final String QUEUE_NAME = "testQueue1";
+
+    private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
     public String toPrettyJson(String json) {
         JsonParser parser = new JsonParser();
@@ -126,7 +130,8 @@ public class NetworkTest extends AppCompatActivity {
             connection.setRequestProperty("Content-Type", "application/json");
             Gson gson = new Gson();
             User user = new User(1);
-            List<Training> trainingList = DAO.get(getApplicationContext()).getTrainingsList(user);
+            UserWithTrainingAndRunning userWithTrainingAndRunning = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()));
+            List<Training> trainingList = userWithTrainingAndRunning.getTrainingList();
             String trainingString = gson.toJson(trainingList);
             Log.d("JSON from training: ", trainingString);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));

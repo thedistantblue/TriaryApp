@@ -16,8 +16,9 @@ import com.thedistantblue.triaryapp.entities.base.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalDAO implements DAO {
-    private static DAO mDao;
+public class LocalDAO { //implements DAO {
+
+/*    private static DAO mDao;
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
@@ -572,5 +573,5 @@ public class LocalDAO implements DAO {
                 DatabaseScheme.RunningTable.Columns.UUID + " =?",
                 new String[] {uuid}
         );
-    }
+    }*/
 }

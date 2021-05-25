@@ -1,8 +1,10 @@
 package com.thedistantblue.triaryapp.database.room.dao;
 
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 

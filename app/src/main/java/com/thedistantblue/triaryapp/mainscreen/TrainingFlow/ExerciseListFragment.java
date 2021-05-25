@@ -13,11 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
+import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
@@ -32,7 +36,9 @@ public class ExerciseListFragment extends Fragment {
 
     private static final String DATES_KEY = "dates";
 
-    private DAO dao;
+    private DatesWithExerciseDao datesWithExerciseDao;
+    private ExerciseDao exerciseDao;
+    private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
     private Dates dates;
     private List<Exercise> exerciseList;
     private ExerciseListFragmentLayoutBinding binding;
@@ -75,20 +81,28 @@ public class ExerciseListFragment extends Fragment {
     }
 
     private void init() {
-        dao = DAO.get(getActivity());
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
         try {
-            exerciseList = dao.getExercisesList(dates);
+            exerciseList = datesWithExerciseDao.findById(dates.getDatesUUID().toString()).getExerciseList();
         } catch (NullPointerException exc) {
             exerciseList = new ArrayList<>();
         }
+    }
+
+    private void initDaos() {
+        exerciseDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                          .exerciseDao();
+        datesWithExerciseDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                                   .datesWithExerciseDao();
+        exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabase(getActivity())
+                                                         .exerciseWithExerciseSetDao();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_exercises_fragment_name);
-        ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(dao.getExercisesList(dates));
+        ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(datesWithExerciseDao.findById(dates.getDatesUUID().toString()).getExerciseList());
     }
 
     private class ExerciseHolder extends RecyclerView.ViewHolder {
@@ -102,9 +116,10 @@ public class ExerciseListFragment extends Fragment {
 
         public void bind(final Exercise exercise) {
 
-            this.exerciseItemCardBinding.getViewModel().setExercise(exercise);
+            ExerciseWithExerciseSet exerciseWithExerciseSet = exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString());
+            this.exerciseItemCardBinding.getViewModel().setExerciseWithExerciseSet(exerciseWithExerciseSet);
             this.exerciseItemCardBinding.executePendingBindings();
-            exerciseItemCardBinding.getViewModel().setExerciseSets(exercise.getExerciseExerciseSets());
+            exerciseItemCardBinding.getViewModel().setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
 
 
             this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +174,7 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            dao.deleteExercise(exerciseList.get(position));
+            exerciseDao.delete(exerciseList.get(position));
             exerciseList.remove(position);
             //dao.deleteTraining(trainingList.get(position));
             notifyItemRemoved(position);

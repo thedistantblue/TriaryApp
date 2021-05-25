@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.entities.base;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -7,6 +9,8 @@ import androidx.room.PrimaryKey;
 
 import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
 import com.thedistantblue.triaryapp.entities.EntityConstants;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -27,8 +31,10 @@ public class Exercise implements Serializable {
     public static final String UUID_FIELD_NAME = "exerciseUUID";
     public static final String DATES_UUID_FIELD_NAME = "datesId";
 
-    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(index = true)
     private int id;
+    @NonNull
+    @ColumnInfo(index = true)
     private UUID exerciseUUID;
     private UUID datesId;
     private long exerciseDate;
@@ -36,7 +42,7 @@ public class Exercise implements Serializable {
     private String exerciseComments;
 
     @Ignore
-    public Exercise(UUID exerciseUUID, UUID datesId) {
+    public Exercise(@NotNull UUID exerciseUUID, UUID datesId) {
         this.exerciseUUID = exerciseUUID;
         this.datesId = datesId;
     }
