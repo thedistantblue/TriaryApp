@@ -56,7 +56,7 @@ public class TrainingCreationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.user = (User) getArguments().getSerializable(USER_KEY);
-        dao = RoomDataBaseProvider.getDatabase(getActivity()).trainingDao();
+        dao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
         action = (ActionEnum) getArguments().getSerializable(ACTION);
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         trainingViewModel = new TrainingViewModel();

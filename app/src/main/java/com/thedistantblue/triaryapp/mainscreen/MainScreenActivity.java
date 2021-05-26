@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,9 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.entities.base.User;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 public class MainScreenActivity extends AppCompatActivity implements MainScreenActivityCallback {
 
@@ -32,28 +36,24 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_relative_layout);
-        userDao = RoomDataBaseProvider.getDatabase(getApplicationContext()).userDao();
-        // Надо брать юзера из базы, если она есть, а не создавать
-        // каждый раз нового с одним и тем же id
-        User user;
-        List<User> users = userDao.findAll();
-        if (!users.isEmpty()) {
-            user = users.get(0);
-        } else {
-            user = new User();
-            userDao.create(user);
-        }
-
-        userDao.findAll();
+        userDao = RoomDataBaseProvider.getDatabaseWithProxy(getApplicationContext()).userDao();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.app_name);
 
         fragmentManager = getSupportFragmentManager();
-
         BottomNavigationView nav = findViewById(R.id.tab_navigation);
 
+        userDao.findAll()
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe((userList -> {
+                   startApplication(userList.get(0), nav);
+               }))
+               .dispose();
+    }
+
+    private void startApplication(User user, BottomNavigationView nav) {
         manageFragments(TrainingFragment.newInstance(user), R.string.training_tab_button);
 
         nav.setOnNavigationItemSelectedListener(menuItem -> {

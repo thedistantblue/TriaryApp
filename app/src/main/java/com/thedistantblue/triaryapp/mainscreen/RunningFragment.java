@@ -16,7 +16,6 @@ import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
 import com.thedistantblue.triaryapp.entities.base.Running;
@@ -63,9 +62,9 @@ public class RunningFragment extends Fragment {
     }
 
     private void initDaos() {
-        runningDao = RoomDataBaseProvider.getDatabase(getActivity())
+        runningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                          .runningDao();
-        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabase(getActivity())
+        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                             .userWithTrainingAndRunningDao();
     }
 

@@ -16,9 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.UserDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
@@ -75,9 +73,9 @@ public class TrainingFragment extends Fragment {
     }
 
     private void initDaos() {
-        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabase(getActivity())
+        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                             .userWithTrainingAndRunningDao();
-        trainingDao = RoomDataBaseProvider.getDatabase(getActivity())
+        trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                           .trainingDao();
     }
 

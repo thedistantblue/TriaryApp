@@ -9,42 +9,37 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RunningDaoProxy implements RunningDao {
     private final RunningDao runningDao;
 
-    private void doInAsync(Consumer<Running> action, Running ex) {
-        AsyncTask.execute(() -> action.accept(ex));
+    @Override
+    public Completable create(Running running) {
+        return runningDao.create(running);
     }
 
     @Override
-    public void create(Running running) {
-        doInAsync(runningDao::create, running);
+    public Completable save(Running running) {
+        return runningDao.save(running);
     }
 
     @Override
-    public void save(Running running) {
-        doInAsync(runningDao::save, running);
+    public Completable delete(Running running) {
+        return runningDao.delete(running);
     }
 
     @Override
-    public void delete(Running running) {
-        doInAsync(runningDao::delete, running);
+    public Single<Running> findById(String runningId) {
+        return runningDao.findById(runningId);
     }
 
     @Override
-    public Running findById(String exerciseSetId) {
-        AtomicReference<Running> runningAtomicReference = new AtomicReference<>();
-        AsyncTask.execute(() -> runningAtomicReference.set(runningDao.findById(exerciseSetId)));
-        return runningAtomicReference.get();
-    }
-
-    @Override
-    public List<Running> findAll() {
-        AtomicReference<List<Running>> runningList = new AtomicReference<>();
-        AsyncTask.execute(() -> runningList.set(runningDao.findAll()));
-        return runningList.get();
+    public Single<List<Running>> findAll() {
+        return runningDao.findAll();
     }
 }

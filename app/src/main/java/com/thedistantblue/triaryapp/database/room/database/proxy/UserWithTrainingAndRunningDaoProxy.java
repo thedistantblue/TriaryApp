@@ -8,6 +8,8 @@ import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunnin
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -15,16 +17,12 @@ public class UserWithTrainingAndRunningDaoProxy implements UserWithTrainingAndRu
     private final UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
     @Override
-    public UserWithTrainingAndRunning findById(String datesId) {
-        AtomicReference<UserWithTrainingAndRunning> atomicReference = new AtomicReference<>();
-        AsyncTask.execute(() -> atomicReference.set(userWithTrainingAndRunningDao.findById(datesId)));
-        return atomicReference.get();
+    public Single<UserWithTrainingAndRunning> findById(String userId) {
+        return userWithTrainingAndRunningDao.findById(userId);
     }
 
     @Override
-    public List<UserWithTrainingAndRunning> findAll() {
-        AtomicReference<List<UserWithTrainingAndRunning>> atomicReference = new AtomicReference<>();
-        AsyncTask.execute(() -> atomicReference.set(userWithTrainingAndRunningDao.findAll()));
-        return atomicReference.get();
+    public Single<List<UserWithTrainingAndRunning>> findAll() {
+        return userWithTrainingAndRunningDao.findAll();
     }
 }

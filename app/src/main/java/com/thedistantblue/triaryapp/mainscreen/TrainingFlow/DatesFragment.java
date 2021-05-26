@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.DatesDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.entities.base.Dates;
@@ -54,7 +53,7 @@ public class DatesFragment extends Fragment {
     }
 
     private void initDaos() {
-        datesDao = RoomDataBaseProvider.getDatabase(getActivity())
+        datesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                        .datesDao();
     }
 

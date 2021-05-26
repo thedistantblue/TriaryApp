@@ -9,42 +9,37 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ExerciseSetDaoProxy implements ExerciseSetDao {
     private final ExerciseSetDao exerciseSetDao;
 
-    private void doInAsync(Consumer<ExerciseSet> action, ExerciseSet ex) {
-        AsyncTask.execute(() -> action.accept(ex));
+    @Override
+    public Completable create(ExerciseSet exerciseSet) {
+        return exerciseSetDao.create(exerciseSet);
     }
 
     @Override
-    public void create(ExerciseSet exerciseSet) {
-        doInAsync(exerciseSetDao::create, exerciseSet);
+    public Completable save(ExerciseSet exerciseSet) {
+        return exerciseSetDao.save(exerciseSet);
     }
 
     @Override
-    public void save(ExerciseSet exerciseSet) {
-        doInAsync(exerciseSetDao::save, exerciseSet);
+    public Completable delete(ExerciseSet exerciseSet) {
+        return exerciseSetDao.delete(exerciseSet);
     }
 
     @Override
-    public void delete(ExerciseSet exerciseSet) {
-        doInAsync(exerciseSetDao::delete, exerciseSet);
+    public Single<ExerciseSet> findById(String exerciseSetId) {
+        return exerciseSetDao.findById(exerciseSetId);
     }
 
     @Override
-    public ExerciseSet findById(String exerciseSetId) {
-        AtomicReference<ExerciseSet> exerciseAtomicReference = new AtomicReference<>();
-        AsyncTask.execute(() -> exerciseAtomicReference.set(exerciseSetDao.findById(exerciseSetId)));
-        return exerciseAtomicReference.get();
-    }
-
-    @Override
-    public List<ExerciseSet> findAll() {
-        AtomicReference<List<ExerciseSet>> exerciseSetList = new AtomicReference<>();
-        AsyncTask.execute(() -> exerciseSetList.set(exerciseSetDao.findAll()));
-        return exerciseSetList.get();
+    public Single<List<ExerciseSet>> findAll() {
+        return exerciseSetDao.findAll();
     }
 }

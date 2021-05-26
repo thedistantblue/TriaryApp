@@ -8,6 +8,8 @@ import com.thedistantblue.triaryapp.entities.composite.DatesWithExercise;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -15,16 +17,12 @@ public class DatesWithExerciseDaoProxy implements DatesWithExerciseDao {
     private final DatesWithExerciseDao datesWithExerciseDao;
 
     @Override
-    public DatesWithExercise findById(String datesId) {
-        AtomicReference<DatesWithExercise> datesWithExerciseAtomicReference = new AtomicReference<>();
-        AsyncTask.execute(() -> datesWithExerciseAtomicReference.set(datesWithExerciseDao.findById(datesId)));
-        return datesWithExerciseAtomicReference.get();
+    public Single<DatesWithExercise> findById(String datesId) {
+        return datesWithExerciseDao.findById(datesId);
     }
 
     @Override
-    public List<DatesWithExercise> findAll() {
-        AtomicReference<List<DatesWithExercise>> datesWithExerciseListAtomicReference = new AtomicReference<>();
-        AsyncTask.execute(() -> datesWithExerciseListAtomicReference.set(datesWithExerciseDao.findAll()));
-        return datesWithExerciseListAtomicReference.get();
+    public Single<List<DatesWithExercise>> findAll() {
+        return datesWithExerciseDao.findAll();
     }
 }

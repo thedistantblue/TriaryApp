@@ -11,22 +11,24 @@ import com.thedistantblue.triaryapp.entities.base.Exercise;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface ExerciseDao {
     @Insert
-    void create(Exercise exercise);
+    Completable create(Exercise exercise);
 
     @Update
-    void save(Exercise exercise);
+    Completable save(Exercise exercise);
 
     @Delete
-    void delete(Exercise exercise);
+    Completable delete(Exercise exercise);
 
-    @Transaction
     @Query("SELECT * from exercise_table where exerciseUUID = :exerciseId")
-    Exercise findById(String exerciseId);
+    Single<Exercise> findById(String exerciseId);
 
-    @Transaction
     @Query("SELECT * FROM exercise_table")
-    List<Exercise> findAll();
+    Single<List<Exercise>> findAll();
 }

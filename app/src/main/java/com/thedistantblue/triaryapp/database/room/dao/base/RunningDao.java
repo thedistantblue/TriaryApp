@@ -11,22 +11,24 @@ import com.thedistantblue.triaryapp.entities.base.Running;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface RunningDao {
     @Insert
-    void create(Running running);
+    Completable create(Running running);
 
     @Update
-    void save(Running running);
+    Completable save(Running running);
 
     @Delete
-    void delete(Running running);
+    Completable delete(Running running);
 
-    @Transaction
     @Query("SELECT * from running_table where runningUUID = :runningId")
-    Running findById(String runningId);
+    Single<Running> findById(String runningId);
 
-    @Transaction
     @Query("SELECT * FROM running_table")
-    List<Running> findAll();
+    Single<List<Running>> findAll();
 }

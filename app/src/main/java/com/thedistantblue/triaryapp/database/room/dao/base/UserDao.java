@@ -11,20 +11,24 @@ import com.thedistantblue.triaryapp.entities.base.User;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface UserDao {
     @Insert
-    void create(User user);
+    Completable create(User user);
 
     @Update
-    void save(User user);
+    Completable save(User user);
 
     @Delete
-    void delete(User user);
+    Completable delete(User user);
 
     @Query("SELECT * from user_table where user_id = :userId")
-    User findById(String userId);
+    Single<User> findById(String userId);
 
     @Query("SELECT * FROM user_table")
-    List<User> findAll();
+    Single<List<User>> findAll();
 }

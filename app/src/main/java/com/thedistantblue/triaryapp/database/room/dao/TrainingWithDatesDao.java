@@ -8,13 +8,16 @@ import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface TrainingWithDatesDao {
     @Transaction
     @Query("SELECT * from training_table where trainingUUID = :trainingId")
-    TrainingWithDates findById(String trainingId);
+    Single<TrainingWithDates> findById(String trainingId);
 
     @Transaction
     @Query("SELECT * from training_table")
-    List<TrainingWithDates> findAll();
+    Single<List<TrainingWithDates>> findAll();
 }

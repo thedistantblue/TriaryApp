@@ -90,11 +90,11 @@ public class ExerciseListFragment extends Fragment {
     }
 
     private void initDaos() {
-        exerciseDao = RoomDataBaseProvider.getDatabase(getActivity())
+        exerciseDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                           .exerciseDao();
-        datesWithExerciseDao = RoomDataBaseProvider.getDatabase(getActivity())
+        datesWithExerciseDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                    .datesWithExerciseDao();
-        exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabase(getActivity())
+        exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                          .exerciseWithExerciseSetDao();
     }
 

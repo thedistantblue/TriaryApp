@@ -8,13 +8,16 @@ import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunnin
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface UserWithTrainingAndRunningDao {
     @Transaction
     @Query("SELECT * from user_table where user_id = :userId")
-    UserWithTrainingAndRunning findById(String userId);
+    Single<UserWithTrainingAndRunning> findById(String userId);
 
     @Transaction
     @Query("SELECT * from user_table")
-    List<UserWithTrainingAndRunning> findAll();
+    Single<List<UserWithTrainingAndRunning>> findAll();
 }

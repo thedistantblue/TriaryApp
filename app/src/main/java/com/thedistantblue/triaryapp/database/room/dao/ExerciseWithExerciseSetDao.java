@@ -10,13 +10,16 @@ import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface ExerciseWithExerciseSetDao {
     @Transaction
     @Query("SELECT * from exercise_table where exerciseUUID = :exerciseId")
-    ExerciseWithExerciseSet findById(String exerciseId);
+    Single<ExerciseWithExerciseSet> findById(String exerciseId);
 
     @Transaction
     @Query("SELECT * from exercise_table")
-    List<ExerciseWithExerciseSet> findAll();
+    Single<List<ExerciseWithExerciseSet>> findAll();
 }

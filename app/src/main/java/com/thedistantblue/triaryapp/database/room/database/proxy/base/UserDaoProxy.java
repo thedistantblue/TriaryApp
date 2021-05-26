@@ -9,42 +9,37 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class UserDaoProxy implements UserDao {
     private final UserDao userDao;
 
-    private void doInAsync(Consumer<User> action, User ex) {
-        AsyncTask.execute(() -> action.accept(ex));
+    @Override
+    public Completable create(User user) {
+        return userDao.create(user);
     }
 
     @Override
-    public void create(User user) {
-        doInAsync(userDao::create, user);
+    public Completable save(User user) {
+        return userDao.save(user);
     }
 
     @Override
-    public void save(User user) {
-        doInAsync(userDao::save, user);
+    public Completable delete(User user) {
+        return userDao.delete(user);
     }
 
     @Override
-    public void delete(User user) {
-        doInAsync(userDao::delete, user);
+    public Single<User> findById(String userId) {
+        return userDao.findById(userId);
     }
 
     @Override
-    public User findById(String exerciseSetId) {
-        AtomicReference<User> userAtomicReference = new AtomicReference<>();
-        AsyncTask.execute(() -> userAtomicReference.set(userDao.findById(exerciseSetId)));
-        return userAtomicReference.get();
-    }
-
-    @Override
-    public List<User> findAll() {
-        AtomicReference<List<User>> userList = new AtomicReference<>();
-        AsyncTask.execute(() -> userList.set(userDao.findAll()));
-        return userList.get();
+    public Single<List<User>> findAll() {
+        return userDao.findAll();
     }
 }

@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
@@ -59,7 +58,7 @@ public class RunningCreationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        runningDao = RoomDataBaseProvider.getDatabase(getActivity())
+        runningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                          .runningDao();
         user = (User) getArguments().getSerializable(USER_KEY);
         running = (Running) getArguments().getSerializable(RUNNING_KEY);

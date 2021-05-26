@@ -13,11 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.DatesDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
@@ -88,9 +86,9 @@ public class DatesListFragment extends Fragment {
     }
 
     private void initDaos() {
-        datesDao = RoomDataBaseProvider.getDatabase(getActivity())
+        datesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                        .datesDao();
-        trainingWithDatesDao = RoomDataBaseProvider.getDatabase(getActivity())
+        trainingWithDatesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                    .trainingWithDatesDao();
     }
 
