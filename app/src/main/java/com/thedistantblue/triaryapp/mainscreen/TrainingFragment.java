@@ -41,6 +41,8 @@ public class TrainingFragment extends Fragment {
 
     private static final String USER_KEY = "user";
 
+    private TrainingAdapter trainingAdapter;
+
     private User user;
     private List<Training> trainingList = new ArrayList<>();
 
@@ -75,6 +77,8 @@ public class TrainingFragment extends Fragment {
                                          @Override
                                          public void onSuccess(@NonNull UserWithTrainingAndRunning userWithTrainingAndRunning) {
                                              trainingList = userWithTrainingAndRunning.getTrainingList();
+                                             trainingAdapter.setTrainingList(trainingList);
+                                             trainingAdapter.notifyDataSetChanged();
                                          }
 
                                          @Override
@@ -85,19 +89,20 @@ public class TrainingFragment extends Fragment {
     }
 
     private void initDaos() {
-        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                                            .userWithTrainingAndRunningDao();
-        trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                          .trainingDao();
+        this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                                                 .userWithTrainingAndRunningDao();
+        this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                               .trainingDao();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        binding =
+        this.binding =
                 DataBindingUtil.inflate(inflater, R.layout.training_fragment_layout, parent, false);
 
-        binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.trainingRecyclerView.setAdapter(new TrainingAdapter(trainingList, getActivity()));
+        this.trainingAdapter = new TrainingAdapter(trainingList, getActivity());
+        this.binding.trainingRecyclerView.setAdapter(this.trainingAdapter);
+        this.binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((TrainingAdapter) binding.trainingRecyclerView.getAdapter());
@@ -105,11 +110,11 @@ public class TrainingFragment extends Fragment {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(binding.trainingRecyclerView);
 
-        binding.trainingAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, null, ActionEnum.CREATE), R.string.create_training_fragment_name);
-            }
+        this.binding.trainingAddButton.setOnClickListener(v -> {
+            ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user,
+                                                                                                              null,
+                                                                                                              ActionEnum.CREATE),
+                                                                         R.string.create_training_fragment_name);
         });
         return binding.getRoot();
     }
@@ -129,7 +134,8 @@ public class TrainingFragment extends Fragment {
                                          @Override
                                          public void onSuccess(@NonNull UserWithTrainingAndRunning userWithTrainingAndRunning) {
                                              trainingList = userWithTrainingAndRunning.getTrainingList();
-                                             ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(trainingList);
+                                             trainingAdapter.setTrainingList(trainingList);
+                                             trainingAdapter.notifyDataSetChanged();
                                          }
 
                                          @Override
@@ -137,7 +143,6 @@ public class TrainingFragment extends Fragment {
 
                                          }
                                      });
-        //((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(this.trainingList);
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
     }
 
