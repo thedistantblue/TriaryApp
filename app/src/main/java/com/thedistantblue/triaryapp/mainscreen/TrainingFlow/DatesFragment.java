@@ -22,6 +22,9 @@ import com.thedistantblue.triaryapp.utils.TriaryDateFormat;
 
 import java.util.Date;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class DatesFragment extends Fragment {
 
     private static final int REQUEST_DATE = 0;
@@ -73,8 +76,10 @@ public class DatesFragment extends Fragment {
 
         confirmButton = view.findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(v -> {
-            datesDao.create(dates);
-            FragmentSwitcher.showFragment(this, DatesListFragment.newInstance(training), R.string.training_dates_fragment_name);
+            datesDao.create(dates)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> FragmentSwitcher.showFragment(this, DatesListFragment.newInstance(training), R.string.training_dates_fragment_name));
         });
 
         return view;

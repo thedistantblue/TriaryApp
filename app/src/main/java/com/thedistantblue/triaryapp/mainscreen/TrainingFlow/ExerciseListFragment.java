@@ -21,6 +21,7 @@ import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.composite.DatesWithExercise;
 import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
@@ -31,6 +32,12 @@ import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ExerciseListFragment extends Fragment {
 
@@ -82,11 +89,25 @@ public class ExerciseListFragment extends Fragment {
 
     private void init() {
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
-        try {
-            exerciseList = datesWithExerciseDao.findById(dates.getDatesUUID().toString()).getExerciseList();
-        } catch (NullPointerException exc) {
-            exerciseList = new ArrayList<>();
-        }
+        datesWithExerciseDao.findById(dates.getDatesUUID().toString())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new SingleObserver<DatesWithExercise>() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(@NonNull DatesWithExercise datesWithExercise) {
+                                    exerciseList = datesWithExercise.getExerciseList();
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+                                    exerciseList = new ArrayList<>();
+                                }
+                            });
     }
 
     private void initDaos() {
@@ -102,7 +123,12 @@ public class ExerciseListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_exercises_fragment_name);
-        ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(datesWithExerciseDao.findById(dates.getDatesUUID().toString()).getExerciseList());
+        datesWithExerciseDao.findById(dates.getDatesUUID().toString())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(datesWithExercise -> {
+                                ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(datesWithExercise.getExerciseList());
+                            });
     }
 
     private class ExerciseHolder extends RecyclerView.ViewHolder {
@@ -116,19 +142,23 @@ public class ExerciseListFragment extends Fragment {
 
         public void bind(final Exercise exercise) {
 
-            ExerciseWithExerciseSet exerciseWithExerciseSet = exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString());
-            this.exerciseItemCardBinding.getViewModel().setExerciseWithExerciseSet(exerciseWithExerciseSet);
-            this.exerciseItemCardBinding.executePendingBindings();
-            exerciseItemCardBinding.getViewModel().setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
+            exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
+                                      .subscribeOn(Schedulers.io())
+                                      .observeOn(AndroidSchedulers.mainThread())
+                                      .subscribe(exerciseWithExerciseSet -> {
+                                          this.exerciseItemCardBinding.getViewModel().setExerciseWithExerciseSet(exerciseWithExerciseSet);
+                                          this.exerciseItemCardBinding.executePendingBindings();
+                                          exerciseItemCardBinding.getViewModel().setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
 
 
-            this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainScreenActivityCallback)getActivity())
-                            .manageFragments(ExerciseFragment.newInstance(dates, exercise, ActionEnum.UPDATE), R.string.update_exercise_fragment_name);
-                }
-            });
+                                          this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
+                                              @Override
+                                              public void onClick(View v) {
+                                                  ((MainScreenActivityCallback)getActivity())
+                                                          .manageFragments(ExerciseFragment.newInstance(dates, exercise, ActionEnum.UPDATE), R.string.update_exercise_fragment_name);
+                                              }
+                                          });
+                                      });
         }
     }
 
@@ -174,10 +204,13 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            exerciseDao.delete(exerciseList.get(position));
-            exerciseList.remove(position);
-            //dao.deleteTraining(trainingList.get(position));
-            notifyItemRemoved(position);
+            exerciseDao.delete(exerciseList.get(position))
+                       .subscribeOn(Schedulers.io())
+                       .observeOn(AndroidSchedulers.mainThread())
+                       .subscribe(() -> {
+                           exerciseList.remove(position);
+                           notifyItemRemoved(position);
+                       });
         }
 
         @Override

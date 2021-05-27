@@ -16,10 +16,14 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
-import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ExerciseFragment extends Fragment {
 
@@ -72,28 +76,37 @@ public class ExerciseFragment extends Fragment {
                 DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
 
         final ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
-        ExerciseWithExerciseSet exerciseWithExerciseSet = exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString());
-        exerciseViewModel.setExerciseWithExerciseSet(exerciseWithExerciseSet);
-        exerciseViewModel.setExerciseDao(exerciseDao);
-        exerciseViewModel.setExerciseSetDao(exerciseSetDao);
-        exerciseViewModel.setExerciseWithExerciseSetDao(exerciseWithExerciseSetDao);
-        exerciseViewModel.setAction(action);
-        if (action.equals(ActionEnum.CREATE)) {
-            exerciseViewModel.setEmptyExerciseSets();
-        } else {
-            ExerciseWithExerciseSet exerciseWithExerciseSetForDunnoWhat = exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString());
-            exerciseViewModel.setExerciseSets(exerciseWithExerciseSetForDunnoWhat.getExerciseSetList());
-        }
-        binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exerciseViewModel.action();
-                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
-            }
-        });
+        AtomicBoolean isCompleted = new AtomicBoolean(false);
+        exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
+                                  .subscribeOn(Schedulers.io())
+                                  .observeOn(AndroidSchedulers.mainThread())
+                                  .subscribe(exerciseWithExerciseSet -> {
+                                      exerciseViewModel.setExerciseWithExerciseSet(exerciseWithExerciseSet);
+                                      exerciseViewModel.setExerciseDao(exerciseDao);
+                                      exerciseViewModel.setExerciseSetDao(exerciseSetDao);
+                                      exerciseViewModel.setExerciseWithExerciseSetDao(exerciseWithExerciseSetDao);
+                                      exerciseViewModel.setAction(action);
 
-        binding.setViewModel(exerciseViewModel);
+                                      if (action.equals(ActionEnum.CREATE)) {
+                                          exerciseViewModel.setEmptyExerciseSets();
+                                      } else {
+                                          exerciseViewModel.setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
+                                      }
 
+                                      binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+                                              exerciseViewModel.action();
+                                              ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
+                                          }
+                                      });
+
+                                      binding.setViewModel(exerciseViewModel);
+
+                                      isCompleted.set(true);
+                                  });
+
+        while(!isCompleted.get()) { }
         return binding.getRoot();
     }
 

@@ -15,6 +15,8 @@ import com.thedistantblue.triaryapp.utils.ActionEnum;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -263,17 +265,21 @@ public class ExerciseViewModel extends BaseObservable {
         Exercise exercise = exerciseWithExerciseSet.getExercise();
         List<ExerciseSet> exerciseSets = exerciseWithExerciseSet.getExerciseSetList();
 
-        exerciseDao.create(exercise);
-        exerciseSets.forEach(exerciseSet -> exerciseSetDao.create(exerciseSet));
+        exerciseDao.create(exercise)
+                   .subscribeOn(Schedulers.io())
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribe(() -> {
+                       exerciseSets.forEach(exerciseSet -> exerciseSetDao.create(exerciseSet));
+                   });
     }
 
     private void update() {
         Exercise exercise = exerciseWithExerciseSet.getExercise();
         List<ExerciseSet> exerciseSets = exerciseWithExerciseSet.getExerciseSetList();
 
-        exerciseDao.save(exercise);
-        exerciseSets.forEach(exerciseSet -> {
-            exerciseSetDao.save(exerciseSet);
-        });
+        exerciseDao.save(exercise)
+                   .subscribeOn(Schedulers.io())
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribe(() -> exerciseSets.forEach(exerciseSet -> exerciseSetDao.save(exerciseSet)));
     }
 }

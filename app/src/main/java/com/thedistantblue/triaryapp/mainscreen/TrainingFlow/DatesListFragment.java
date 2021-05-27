@@ -20,6 +20,7 @@ import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
@@ -29,12 +30,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class DatesListFragment extends Fragment {
 
     private static final String TRAINING_KEY = "training_key";
 
     private DatesListFragmentLayoutBinding binding;
-    private List<Dates> datesList;
+    private List<Dates> datesList = new ArrayList<>();
     private Training training;
     private DatesDao datesDao;
     private TrainingWithDatesDao trainingWithDatesDao;
@@ -77,12 +84,25 @@ public class DatesListFragment extends Fragment {
     private void init() {
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         initDaos();
-        try {
-            datesList = trainingWithDatesDao.findById(training.getTrainingUUID().toString())
-                                            .getDatesList();
-        } catch (NullPointerException ex) {
-            datesList = new ArrayList<>();
-        }
+        trainingWithDatesDao.findById(training.getTrainingUUID().toString())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new SingleObserver<TrainingWithDates>() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(@NonNull TrainingWithDates trainingWithDates) {
+                                    datesList = trainingWithDates.getDatesList();
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
     }
 
     private void initDaos() {

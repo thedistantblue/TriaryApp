@@ -35,6 +35,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class NetworkTest extends AppCompatActivity {
 
     private static final String EXCHANGE_NAME = "testExchange1";
@@ -130,13 +133,17 @@ public class NetworkTest extends AppCompatActivity {
             connection.setRequestProperty("Content-Type", "application/json");
             Gson gson = new Gson();
             User user = new User();
-            UserWithTrainingAndRunning userWithTrainingAndRunning = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()));
-            List<Training> trainingList = userWithTrainingAndRunning.getTrainingList();
-            String trainingString = gson.toJson(trainingList);
-            Log.d("JSON from training: ", trainingString);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            bw.write(trainingString);
-            bw.flush();
+            userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                         .subscribeOn(Schedulers.io())
+                                         .observeOn(AndroidSchedulers.mainThread())
+                                         .subscribe(userWithTrainingAndRunning -> {
+                                             List<Training> trainingList = userWithTrainingAndRunning.getTrainingList();
+                                             String trainingString = gson.toJson(trainingList);
+                                             Log.d("JSON from training: ", trainingString);
+                                             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+                                             bw.write(trainingString);
+                                             bw.flush();
+                                         });
             return String.valueOf(connection.getResponseCode());
         } catch (IOException exc) {
             exc.printStackTrace();

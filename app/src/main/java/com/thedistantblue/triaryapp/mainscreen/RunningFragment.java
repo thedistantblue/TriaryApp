@@ -24,8 +24,12 @@ import com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningCreationFragme
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class RunningFragment extends Fragment {
     private static final String USER_KEY = "user";
@@ -33,7 +37,7 @@ public class RunningFragment extends Fragment {
     private RunningDao runningDao;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
     private User user;
-    private List<Running> runningList;
+    private List<Running> runningList = new ArrayList<>();
     private RunningFragmentLayoutBinding binding;
 
 
@@ -50,7 +54,12 @@ public class RunningFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.running_tab_button);
-        ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getRunningList());
+        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                     .subscribeOn(Schedulers.io())
+                                     .observeOn(AndroidSchedulers.mainThread())
+                                     .subscribe(user -> {
+                                         ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(user.getRunningList());
+                                     });
     }
 
     @Override
@@ -58,7 +67,12 @@ public class RunningFragment extends Fragment {
         super.onCreate(savedInstanceState);
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        runningList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getRunningList();
+        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                     .subscribeOn(Schedulers.io())
+                                     .observeOn(AndroidSchedulers.mainThread())
+                                     .subscribe(user -> {
+                                        runningList = user.getRunningList();
+                                     });
     }
 
     private void initDaos() {

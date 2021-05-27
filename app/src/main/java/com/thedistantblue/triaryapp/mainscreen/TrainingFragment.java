@@ -31,12 +31,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class TrainingFragment extends Fragment {
 
     private static final String USER_KEY = "user";
 
     private User user;
-    private List<Training> trainingList;
+    private List<Training> trainingList = new ArrayList<>();
 
     private TrainingDao trainingDao;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
@@ -57,19 +63,25 @@ public class TrainingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        try {
-            AsyncTask.execute(() -> {
-                UserWithTrainingAndRunning userWithTrainingAndRunning = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()));
-                if (userWithTrainingAndRunning == null) {
-                    trainingList = new ArrayList<>();
-                } else {
-                    trainingList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getTrainingList();
-                }
+        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                     .subscribeOn(Schedulers.io())
+                                     .observeOn(AndroidSchedulers.mainThread())
+                                     .subscribeWith(new SingleObserver<UserWithTrainingAndRunning>() {
+                                         @Override
+                                         public void onSubscribe(@NonNull Disposable d) {
 
-            });
-        } catch (Exception exception) {
-            trainingList = new ArrayList<>();
-        }
+                                         }
+
+                                         @Override
+                                         public void onSuccess(@NonNull UserWithTrainingAndRunning userWithTrainingAndRunning) {
+                                             trainingList = userWithTrainingAndRunning.getTrainingList();
+                                         }
+
+                                         @Override
+                                         public void onError(@NonNull Throwable e) {
+
+                                         }
+                                     });
     }
 
     private void initDaos() {
@@ -105,8 +117,27 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        this.trainingList = userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID())).getTrainingList();
-        ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(this.trainingList);
+        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                     .subscribeOn(Schedulers.io())
+                                     .observeOn(AndroidSchedulers.mainThread())
+                                     .subscribeWith(new SingleObserver<UserWithTrainingAndRunning>() {
+                                         @Override
+                                         public void onSubscribe(@NonNull Disposable d) {
+
+                                         }
+
+                                         @Override
+                                         public void onSuccess(@NonNull UserWithTrainingAndRunning userWithTrainingAndRunning) {
+                                             trainingList = userWithTrainingAndRunning.getTrainingList();
+                                             ((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(trainingList);
+                                         }
+
+                                         @Override
+                                         public void onError(@NonNull Throwable e) {
+
+                                         }
+                                     });
+        //((TrainingAdapter)binding.trainingRecyclerView.getAdapter()).setTrainingList(this.trainingList);
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
     }
 
