@@ -4,9 +4,8 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
-import com.thedistantblue.triaryapp.database.sqlite.DAO;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;

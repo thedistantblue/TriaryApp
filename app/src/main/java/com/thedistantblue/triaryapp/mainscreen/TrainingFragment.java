@@ -1,7 +1,6 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;

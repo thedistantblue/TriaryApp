@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.DatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;

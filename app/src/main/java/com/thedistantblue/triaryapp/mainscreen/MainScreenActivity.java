@@ -1,7 +1,6 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,12 +12,9 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thedistantblue.triaryapp.R;
 
-import com.thedistantblue.triaryapp.database.room.dao.base.UserDao;
+import com.thedistantblue.triaryapp.database.room.dao.UserDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.entities.base.User;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;

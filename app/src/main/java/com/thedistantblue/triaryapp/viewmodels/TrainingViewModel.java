@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 

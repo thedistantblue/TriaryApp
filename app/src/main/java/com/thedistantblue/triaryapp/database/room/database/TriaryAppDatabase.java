@@ -4,12 +4,12 @@ import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.DatesDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.UserDao;
+import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.UserDao;
 
 public interface TriaryAppDatabase {
     DatesDao datesDao();

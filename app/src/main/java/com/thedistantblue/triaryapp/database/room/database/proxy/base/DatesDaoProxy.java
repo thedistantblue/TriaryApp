@@ -1,12 +1,11 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy.base;
 
-import com.thedistantblue.triaryapp.database.room.dao.base.DatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 

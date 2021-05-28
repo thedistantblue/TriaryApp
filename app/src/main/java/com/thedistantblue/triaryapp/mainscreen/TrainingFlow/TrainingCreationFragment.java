@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;

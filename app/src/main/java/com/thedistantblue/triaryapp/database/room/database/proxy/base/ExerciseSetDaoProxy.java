@@ -1,16 +1,11 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy.base;
 
-import android.os.AsyncTask;
-
-import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 

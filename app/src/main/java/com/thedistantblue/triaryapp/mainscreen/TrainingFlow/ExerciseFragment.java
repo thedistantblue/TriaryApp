@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseDao;
-import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;

@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.database.room.dao.base;
+package com.thedistantblue.triaryapp.database.room.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
+import com.thedistantblue.triaryapp.database.room.dao.base.BaseDao;
 import com.thedistantblue.triaryapp.entities.base.Training;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 
 @Dao
-public interface TrainingDao {
+public interface TrainingDao extends BaseDao<Training> {
     @Insert
     Completable create(Training training);
 

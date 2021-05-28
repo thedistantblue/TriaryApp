@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Running;
