@@ -1,23 +1,26 @@
 package com.thedistantblue.triaryapp.database.room.database;
 
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
+import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.DatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.RunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.UserDao;
 
-import com.thedistantblue.triaryapp.entities.base.Dates;
-import com.thedistantblue.triaryapp.entities.base.Exercise;
-import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
-import com.thedistantblue.triaryapp.entities.base.Running;
-import com.thedistantblue.triaryapp.entities.base.Training;
-import com.thedistantblue.triaryapp.entities.base.User;
+public interface TriaryAppDatabase {
+    DatesDao datesDao();
+    ExerciseDao exerciseDao();
+    ExerciseSetDao exerciseSetDao();
+    RunningDao runningDao();
+    TrainingDao trainingDao();
+    UserDao userDao();
 
-@Database(entities = { Dates.class,
-                       Exercise.class,
-                       ExerciseSet.class,
-                       Running.class,
-                       Training.class,
-                       User.class },
-          version = 1)
-@TypeConverters(Converters.class)
-public abstract class TriaryAppDatabase extends RoomDatabase implements TriaryAppDatabaseInterface {
+    UserWithTrainingAndRunningDao userWithTrainingAndRunningDao();
+    TrainingWithDatesDao trainingWithDatesDao();
+    DatesWithExerciseDao datesWithExerciseDao();
+    ExerciseWithExerciseSetDao exerciseWithExerciseSetDao();
 }

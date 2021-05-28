@@ -24,8 +24,8 @@ import com.thedistantblue.triaryapp.database.room.database.proxy.base.UserDaoPro
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class TriaryAppDatabaseProxy implements TriaryAppDatabaseInterface {
-    private final TriaryAppDatabase triaryAppDatabase;
+public class TriaryAppDatabaseProxy implements TriaryAppDatabase {
+    private final TriaryAppRoomDatabase triaryAppDatabase;
 
     @Override
     public DatesDao datesDao() {
