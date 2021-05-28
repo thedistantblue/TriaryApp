@@ -1,5 +1,8 @@
 package com.thedistantblue.triaryapp.database.room.database;
 
+import com.thedistantblue.triaryapp.database.room.dao.base.BaseDao;
+import com.thedistantblue.triaryapp.database.room.dao.base.ReadOnlyDao;
+
 import java.util.Collection;
 import java.util.function.Consumer;
 
@@ -46,37 +49,37 @@ public class DatabaseCallerImpl implements DatabaseCaller {
     }
 
     @Override
-    public void create(Completable completable, Action onCompleteAction) {
-        completableAction(completable, onCompleteAction);
+    public <T> void create(BaseDao<T> dao, T entity, Action onCompleteAction) {
+        completableAction(dao.create(entity), onCompleteAction);
     }
 
     @Override
-    public void save(Completable completable, Action onCompleteAction) {
-        completableAction(completable, onCompleteAction);
+    public <T> void save(BaseDao<T> dao, T entity, Action onCompleteAction) {
+        completableAction(dao.save(entity), onCompleteAction);
     }
 
     @Override
-    public void delete(Completable completable, Action onCompleteAction) {
-        completableAction(completable, onCompleteAction);
+    public <T> void delete(BaseDao<T> dao, T entity, Action onCompleteAction) {
+        completableAction(dao.delete(entity), onCompleteAction);
     }
 
     @Override
-    public <T> void findById(Single<T> single, Consumer<T> onSuccessConsumer) {
-        singleAction(single, onSuccessConsumer, null);
+    public <T> void findById(ReadOnlyDao<T> dao, String id, Consumer<T> onSuccessConsumer) {
+        singleAction(dao.findById(id), onSuccessConsumer, null);
     }
 
     @Override
-    public <T> void findById(Single<T> single, Consumer<T> onSuccessConsumer, Consumer<Throwable> onErrorConsumer) {
-        singleAction(single, onSuccessConsumer, onErrorConsumer);
+    public <T> void findById(ReadOnlyDao<T> dao, String id, Consumer<T> onSuccessConsumer, Consumer<Throwable> onErrorConsumer) {
+        singleAction(dao.findById(id), onSuccessConsumer, onErrorConsumer);
     }
 
     @Override
-    public <T extends Collection<T>> void findAll(Single<T> single, Consumer<T> onSuccessConsumer) {
-        singleAction(single, onSuccessConsumer, null);
+    public <T extends Collection<T>> void findAll(ReadOnlyDao<T> dao, Consumer<T> onSuccessConsumer) {
+        singleAction(dao.findAll(), onSuccessConsumer, null);
     }
 
     @Override
-    public <T extends Collection<T>> void findAll(Single<T> single, Consumer<T> onSuccessConsumer, Consumer<Throwable> onErrorConsumer) {
-        singleAction(single, onSuccessConsumer, onErrorConsumer);
+    public <T extends Collection<T>> void findAll(ReadOnlyDao<T> dao, Consumer<T> onSuccessConsumer, Consumer<Throwable> onErrorConsumer) {
+        singleAction(dao.findAll(), onSuccessConsumer, onErrorConsumer);
     }
 }
