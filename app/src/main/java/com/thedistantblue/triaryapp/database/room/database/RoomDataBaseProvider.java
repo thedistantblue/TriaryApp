@@ -9,6 +9,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class RoomDataBaseProvider {
     private static TriaryAppDatabase triaryAppDatabaseWithProxy;
+    private static DatabaseCaller databaseCaller;
 
     public static TriaryAppDatabase getDatabaseWithProxy(Context context) {
         if (triaryAppDatabaseWithProxy == null) {
@@ -20,5 +21,12 @@ public class RoomDataBaseProvider {
 
         }
         return triaryAppDatabaseWithProxy;
+    }
+
+    public static DatabaseCaller getDatabaseCaller() {
+        if (databaseCaller == null) {
+            databaseCaller = new DatabaseCallerImpl();
+        }
+        return databaseCaller;
     }
 }
