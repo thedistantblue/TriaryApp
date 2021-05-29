@@ -3,7 +3,7 @@ package com.thedistantblue.triaryapp.database.room.database;
 import com.thedistantblue.triaryapp.database.room.dao.base.BaseDao;
 import com.thedistantblue.triaryapp.database.room.dao.base.ReadOnlyDao;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -74,12 +74,12 @@ public class DatabaseCallerImpl implements DatabaseCaller {
     }
 
     @Override
-    public <T extends Collection<T>> void findAll(ReadOnlyDao<T> dao, Consumer<T> onSuccessConsumer) {
+    public <T> void findAll(ReadOnlyDao<T> dao, Consumer<List<T>> onSuccessConsumer) {
         singleAction(dao.findAll(), onSuccessConsumer, null);
     }
 
     @Override
-    public <T extends Collection<T>> void findAll(ReadOnlyDao<T> dao, Consumer<T> onSuccessConsumer, Consumer<Throwable> onErrorConsumer) {
+    public <T> void findAll(ReadOnlyDao<T> dao, Consumer<List<T>> onSuccessConsumer, Consumer<Throwable> onErrorConsumer) {
         singleAction(dao.findAll(), onSuccessConsumer, onErrorConsumer);
     }
 }
