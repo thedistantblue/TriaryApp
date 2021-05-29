@@ -6,6 +6,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 
@@ -19,6 +20,8 @@ public class TrainingViewModel extends BaseObservable {
 
     @Setter
     private TrainingDao dao;
+    @Setter
+    private DatabaseCaller databaseCaller;
 
     @Getter
     @Setter
@@ -62,26 +65,20 @@ public class TrainingViewModel extends BaseObservable {
     public void action() {
         switch (action) {
             case CREATE: {
-                dao.create(training)
-                   .subscribeOn(Schedulers.io())
-                   .observeOn(AndroidSchedulers.mainThread())
-                   .subscribe(() -> Log.d("TRAINING_CREATED_TAG", "action: training created"));
+                databaseCaller.create(dao, training,
+                                      () -> Log.d("TRAINING_CREATED_TAG", "action: training created"));
                 break;
             }
             case UPDATE: {
-                dao.save(training)
-                   .subscribeOn(Schedulers.io())
-                   .observeOn(AndroidSchedulers.mainThread())
-                   .subscribe(() -> Log.d("TRAINING_UPDATED_TAG", "action: training updated"));
+                databaseCaller.save(dao, training,
+                                    () -> Log.d("TRAINING_UPDATED_TAG", "action: training updated"));
                 break;
             }
         }
     }
 
     public void save() {
-        dao.create(training)
-           .subscribeOn(Schedulers.io())
-           .observeOn(AndroidSchedulers.mainThread())
-           .subscribe(() -> Log.d("TRAINING_CREATED_TAG", "action: training created"));
+        databaseCaller.create(dao, training,
+                              () -> Log.d("TRAINING_CREATED_TAG", "action: training created"));
     }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
+import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
@@ -36,6 +37,7 @@ public class DatesFragment extends Fragment {
     private Training training;
     private Dates dates;
     private DatesDao datesDao;
+    private DatabaseCaller databaseCaller;
 
     public static DatesFragment newInstance(Training training) {
         Bundle args = new Bundle();

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
@@ -47,6 +48,7 @@ public class TrainingFragment extends Fragment {
 
     private TrainingDao trainingDao;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
+    private DatabaseCaller databaseCaller;
 
     TrainingFragmentLayoutBinding binding;
 
@@ -64,27 +66,12 @@ public class TrainingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
-                                     .subscribeWith(new SingleObserver<UserWithTrainingAndRunning>() {
-                                         @Override
-                                         public void onSubscribe(@NonNull Disposable d) {
-
-                                         }
-
-                                         @Override
-                                         public void onSuccess(@NonNull UserWithTrainingAndRunning userWithTrainingAndRunning) {
-                                             trainingList = userWithTrainingAndRunning.getTrainingList();
-                                             trainingAdapter.setTrainingList(trainingList);
-                                             trainingAdapter.notifyDataSetChanged();
-                                         }
-
-                                         @Override
-                                         public void onError(@NonNull Throwable e) {
-
-                                         }
-                                     });
+        databaseCaller.findById(userWithTrainingAndRunningDao, String.valueOf(user.getUserID()),
+                                userWithTrainingAndRunning -> {
+                                    trainingList = userWithTrainingAndRunning.getTrainingList();
+                                    trainingAdapter.setTrainingList(trainingList);
+                                    trainingAdapter.notifyDataSetChanged();
+                                });
     }
 
     private void initDaos() {
@@ -92,6 +79,7 @@ public class TrainingFragment extends Fragment {
                                                                  .userWithTrainingAndRunningDao();
         this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                .trainingDao();
+        this.databaseCaller = RoomDataBaseProvider.getDatabaseCaller();
     }
 
     @Override
@@ -121,27 +109,12 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
-                                     .subscribeWith(new SingleObserver<UserWithTrainingAndRunning>() {
-                                         @Override
-                                         public void onSubscribe(@NonNull Disposable d) {
-
-                                         }
-
-                                         @Override
-                                         public void onSuccess(@NonNull UserWithTrainingAndRunning userWithTrainingAndRunning) {
-                                             trainingList = userWithTrainingAndRunning.getTrainingList();
-                                             trainingAdapter.setTrainingList(trainingList);
-                                             trainingAdapter.notifyDataSetChanged();
-                                         }
-
-                                         @Override
-                                         public void onError(@NonNull Throwable e) {
-
-                                         }
-                                     });
+        databaseCaller.findById(userWithTrainingAndRunningDao, String.valueOf(user.getUserID()),
+                                userWithTrainingAndRunning -> {
+                                    trainingList = userWithTrainingAndRunning.getTrainingList();
+                                    trainingAdapter.setTrainingList(trainingList);
+                                    trainingAdapter.notifyDataSetChanged();
+                                });
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
     }
 
@@ -215,9 +188,11 @@ public class TrainingFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            trainingDao.delete(trainingList.get(position));
-            trainingList.remove(position);
-            notifyItemRemoved(position);
+            databaseCaller.delete(trainingDao, trainingList.get(position),
+                                  () -> {
+                                      trainingList.remove(position);
+                                      notifyItemRemoved(position);
+                                  });
         }
 
         @Override

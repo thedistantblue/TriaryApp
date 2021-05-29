@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
@@ -32,6 +33,7 @@ public class TrainingCreationFragment extends Fragment {
     private static final String TRAINING_KEY = "training";
 
     private TrainingDao dao;
+    private DatabaseCaller databaseCaller;
     private User user;
     Training training;
     private ActionEnum action;
@@ -57,11 +59,13 @@ public class TrainingCreationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.user = (User) getArguments().getSerializable(USER_KEY);
         dao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
+        databaseCaller = RoomDataBaseProvider.getDatabaseCaller();
         action = (ActionEnum) getArguments().getSerializable(ACTION);
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         trainingViewModel = new TrainingViewModel();
         trainingViewModel.setTraining(training);
         trainingViewModel.setDao(dao);
+        trainingViewModel.setDatabaseCaller(databaseCaller);
         trainingViewModel.setAction(action);
     }
 

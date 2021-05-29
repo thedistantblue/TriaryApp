@@ -13,7 +13,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thedistantblue.triaryapp.R;
 
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
+import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
+import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.User;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -27,6 +29,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
     private static final String RUNNING_FRAGMENT_NAME = MainScreenActivity.class.getPackage() + "RunningFragment";
 
     private UserDao userDao;
+    private DatabaseCaller databaseCaller;
 
     private FragmentManager fragmentManager;
 
@@ -35,6 +38,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_relative_layout);
         userDao = RoomDataBaseProvider.getDatabaseWithProxy(getApplicationContext()).userDao();
+        databaseCaller = RoomDataBaseProvider.getDatabaseCaller();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
@@ -43,16 +47,13 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         fragmentManager = getSupportFragmentManager();
         BottomNavigationView nav = findViewById(R.id.tab_navigation);
 
-        userDao.findAll()
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribe((userList -> {
-                   if (!userList.isEmpty()) {
-                       startApplication(userList.get(0), nav);
-                   } else {
-                       createUser();
-                   }
-               }));
+        databaseCaller.findAll(userDao, (userList) -> {
+            if (!userList.isEmpty()) {
+                startApplication(userList.get(0), nav);
+            } else {
+                createUser();
+            }
+        });
     }
 
     private void startApplication(User user, BottomNavigationView nav) {
@@ -115,10 +116,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
 
     private void createUser() {
         User user = new User();
-        userDao.create(user)
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribe(() -> Log.d("CREATE_USER_TAG", "createUser: user created"));
+        databaseCaller.create(userDao, user, () -> {});
     }
 
     public void setTitle(String title) {
