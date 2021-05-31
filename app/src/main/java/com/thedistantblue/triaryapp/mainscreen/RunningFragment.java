@@ -39,7 +39,7 @@ public class RunningFragment extends Fragment {
     private User user;
     private List<Running> runningList = new ArrayList<>();
     private RunningFragmentLayoutBinding binding;
-
+    private RunningAdapter runningAdapter;
 
     public static RunningFragment newInstance(User user) {
         Bundle args = new Bundle();
@@ -55,10 +55,10 @@ public class RunningFragment extends Fragment {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.running_tab_button);
         userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
                                      .subscribe(user -> {
-                                         ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(user.getRunningList());
+                                         runningList = user.getRunningList();
+                                         runningAdapter.setRunningList(runningList);
+                                         runningAdapter.notifyDataSetChanged();
                                      });
     }
 
@@ -68,10 +68,10 @@ public class RunningFragment extends Fragment {
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
         userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
                                      .subscribe(user -> {
-                                        runningList = user.getRunningList();
+                                         runningList = user.getRunningList();
+                                         runningAdapter.setRunningList(runningList);
+                                         runningAdapter.notifyDataSetChanged();
                                      });
     }
 
@@ -87,8 +87,9 @@ public class RunningFragment extends Fragment {
         binding =
                 DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
 
+        runningAdapter = new RunningAdapter(runningList, getActivity());
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.runningRecyclerView.setAdapter(new RunningAdapter(runningList, getActivity()));
+        binding.runningRecyclerView.setAdapter(runningAdapter);
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((RunningAdapter) binding.runningRecyclerView.getAdapter());
@@ -163,9 +164,11 @@ public class RunningFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            runningDao.delete(runningList.get(position)).subscribe();
-            runningList.remove(position);
-            notifyItemRemoved(position);
+            runningDao.delete(runningList.get(position))
+                      .subscribe(() -> {
+                          runningList.remove(position);
+                          notifyItemRemoved(position);
+                      });
         }
 
         @Override

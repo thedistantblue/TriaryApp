@@ -84,7 +84,7 @@ public class RunningCreationFragment extends Fragment {
         });
 
         binding.runningCreateButton.setOnClickListener(v -> {
-            if (action.equals("create")) {
+            if (action.equals(ActionEnum.CREATE)) {
                 if (running.getRunningName() == null || running.getRunningName().equals("")) {
                     Toast.makeText(getActivity(), R.string.enter_running_name_toast, Toast.LENGTH_SHORT).show();
                 } else {

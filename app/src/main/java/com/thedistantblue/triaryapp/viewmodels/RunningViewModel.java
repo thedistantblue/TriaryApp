@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
+import android.util.Log;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
@@ -132,7 +134,9 @@ public class RunningViewModel extends BaseObservable {
     public void save() {
         switch (action) {
             case CREATE: {
-                runningDao.create(running).subscribe();
+                runningDao.create(running).subscribe(() -> {
+                    Log.d("RUNNING_CREATION_TAG", "RUNNING_CREATED");
+                });
                 break;
             }
             case UPDATE: {
