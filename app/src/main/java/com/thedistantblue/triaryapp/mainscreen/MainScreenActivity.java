@@ -2,7 +2,6 @@ package com.thedistantblue.triaryapp.mainscreen;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,13 +12,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thedistantblue.triaryapp.R;
 
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
-import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.database.room.database.utils.ObserverFactory;
 import com.thedistantblue.triaryapp.entities.base.User;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainScreenActivity extends AppCompatActivity implements MainScreenActivityCallback {
 
@@ -29,7 +24,6 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
     private static final String RUNNING_FRAGMENT_NAME = MainScreenActivity.class.getPackage() + "RunningFragment";
 
     private UserDao userDao;
-    private DatabaseCaller databaseCaller;
 
     private FragmentManager fragmentManager;
 
@@ -38,7 +32,6 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_relative_layout);
         userDao = RoomDataBaseProvider.getDatabaseWithProxy(getApplicationContext()).userDao();
-        databaseCaller = RoomDataBaseProvider.getDatabaseCaller();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
@@ -47,13 +40,13 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         fragmentManager = getSupportFragmentManager();
         BottomNavigationView nav = findViewById(R.id.tab_navigation);
 
-        databaseCaller.findAll(userDao, (userList) -> {
+        userDao.findAll().subscribeWith(ObserverFactory.createSingleObserver((userList) -> {
             if (!userList.isEmpty()) {
                 startApplication(userList.get(0), nav);
             } else {
                 createUser();
             }
-        });
+        }));
     }
 
     private void startApplication(User user, BottomNavigationView nav) {
@@ -116,7 +109,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
 
     private void createUser() {
         User user = new User();
-        databaseCaller.create(userDao, user, () -> {});
+        userDao.create(user);
     }
 
     public void setTitle(String title) {

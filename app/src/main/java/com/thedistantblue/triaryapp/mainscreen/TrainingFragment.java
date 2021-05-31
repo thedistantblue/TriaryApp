@@ -15,13 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
-import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
-import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
@@ -30,12 +28,6 @@ import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class TrainingFragment extends Fragment {
 
@@ -48,7 +40,6 @@ public class TrainingFragment extends Fragment {
 
     private TrainingDao trainingDao;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
-    private DatabaseCaller databaseCaller;
 
     TrainingFragmentLayoutBinding binding;
 
@@ -66,12 +57,12 @@ public class TrainingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        databaseCaller.findById(userWithTrainingAndRunningDao, String.valueOf(user.getUserID()),
-                                userWithTrainingAndRunning -> {
-                                    trainingList = userWithTrainingAndRunning.getTrainingList();
-                                    trainingAdapter.setTrainingList(trainingList);
-                                    trainingAdapter.notifyDataSetChanged();
-                                });
+        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                     .subscribe(userWithTrainingAndRunning -> {
+                                         trainingList = userWithTrainingAndRunning.getTrainingList();
+                                         trainingAdapter.setTrainingList(trainingList);
+                                         trainingAdapter.notifyDataSetChanged();
+                                     });
     }
 
     private void initDaos() {
@@ -79,7 +70,6 @@ public class TrainingFragment extends Fragment {
                                                                  .userWithTrainingAndRunningDao();
         this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                .trainingDao();
-        this.databaseCaller = RoomDataBaseProvider.getDatabaseCaller();
     }
 
     @Override
@@ -109,12 +99,12 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        databaseCaller.findById(userWithTrainingAndRunningDao, String.valueOf(user.getUserID()),
-                                userWithTrainingAndRunning -> {
-                                    trainingList = userWithTrainingAndRunning.getTrainingList();
-                                    trainingAdapter.setTrainingList(trainingList);
-                                    trainingAdapter.notifyDataSetChanged();
-                                });
+        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                     .subscribe(userWithTrainingAndRunning -> {
+                                         trainingList = userWithTrainingAndRunning.getTrainingList();
+                                         trainingAdapter.setTrainingList(trainingList);
+                                         trainingAdapter.notifyDataSetChanged();
+                                     });
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
     }
 
@@ -188,11 +178,7 @@ public class TrainingFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            databaseCaller.delete(trainingDao, trainingList.get(position),
-                                  () -> {
-                                      trainingList.remove(position);
-                                      notifyItemRemoved(position);
-                                  });
+            trainingDao.delete(trainingList.get(position));
         }
 
         @Override

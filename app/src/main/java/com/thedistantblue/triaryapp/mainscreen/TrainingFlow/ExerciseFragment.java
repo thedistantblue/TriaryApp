@@ -22,9 +22,6 @@ import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
 public class ExerciseFragment extends Fragment {
 
     private static final String DATES_KEY = "dates";
@@ -78,8 +75,6 @@ public class ExerciseFragment extends Fragment {
         final ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
         AtomicBoolean isCompleted = new AtomicBoolean(false);
         exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
-                                  .subscribeOn(Schedulers.io())
-                                  .observeOn(AndroidSchedulers.mainThread())
                                   .subscribe(exerciseWithExerciseSet -> {
                                       exerciseViewModel.setExerciseWithExerciseSet(exerciseWithExerciseSet);
                                       exerciseViewModel.setExerciseDao(exerciseDao);

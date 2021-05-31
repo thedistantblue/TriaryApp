@@ -1,14 +1,11 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy;
 
-import android.os.AsyncTask;
-
 import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
+import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import lombok.RequiredArgsConstructor;
 
@@ -18,11 +15,11 @@ public class TrainingWithDatesDaoProxy implements TrainingWithDatesDao {
 
     @Override
     public Single<TrainingWithDates> findById(String trainingId) {
-        return trainingWithDatesDao.findById(trainingId);
+        return RxConfigurator.configureThreading(trainingWithDatesDao.findById(trainingId));
     }
 
     @Override
     public Single<List<TrainingWithDates>> findAll() {
-        return trainingWithDatesDao.findAll();
+        return RxConfigurator.configureThreading(trainingWithDatesDao.findAll());
     }
 }

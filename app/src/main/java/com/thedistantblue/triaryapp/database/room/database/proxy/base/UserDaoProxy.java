@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy.base;
 
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
+import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.base.User;
 
 import java.util.List;
@@ -15,26 +16,26 @@ public class UserDaoProxy implements UserDao {
 
     @Override
     public Completable create(User user) {
-        return userDao.create(user);
+        return RxConfigurator.configureThreading(userDao.create(user));
     }
 
     @Override
     public Completable save(User user) {
-        return userDao.save(user);
+        return RxConfigurator.configureThreading(userDao.save(user));
     }
 
     @Override
     public Completable delete(User user) {
-        return userDao.delete(user);
+        return RxConfigurator.configureThreading(userDao.delete(user));
     }
 
     @Override
     public Single<User> findById(String userId) {
-        return userDao.findById(userId);
+        return RxConfigurator.configureThreading(userDao.findById(userId));
     }
 
     @Override
     public Single<List<User>> findAll() {
-        return userDao.findAll();
+        return RxConfigurator.configureThreading(userDao.findAll());
     }
 }

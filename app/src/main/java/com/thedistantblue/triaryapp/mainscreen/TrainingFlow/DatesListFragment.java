@@ -16,11 +16,11 @@ import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
 import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
+import com.thedistantblue.triaryapp.database.room.database.utils.ObserverFactory;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
-import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
@@ -85,24 +85,9 @@ public class DatesListFragment extends Fragment {
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         initDaos();
         trainingWithDatesDao.findById(training.getTrainingUUID().toString())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new SingleObserver<TrainingWithDates>() {
-                                @Override
-                                public void onSubscribe(@NonNull Disposable d) {
-
-                                }
-
-                                @Override
-                                public void onSuccess(@NonNull TrainingWithDates trainingWithDates) {
-                                    datesList = trainingWithDates.getDatesList();
-                                }
-
-                                @Override
-                                public void onError(@NonNull Throwable e) {
-
-                                }
-                            });
+                            .subscribeWith(ObserverFactory.createSingleObserver((trainingWithDates -> {
+                                datesList = trainingWithDates.getDatesList();
+                            })));
     }
 
     private void initDaos() {
@@ -175,10 +160,10 @@ public class DatesListFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            datesDao.delete(datesList.get(position));
-            datesList.remove(position);
-            //dao.deleteTraining(trainingList.get(position));
-            notifyItemRemoved(position);
+            datesDao.delete(datesList.get(position)).subscribe(() -> {
+                datesList.remove(position);
+                notifyItemRemoved(position);
+            });
         }
 
         @Override

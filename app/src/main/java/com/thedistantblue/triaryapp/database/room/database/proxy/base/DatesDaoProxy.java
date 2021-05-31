@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy.base;
 
 import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
+import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 
 import java.util.List;
@@ -15,22 +16,22 @@ public class DatesDaoProxy implements DatesDao {
 
     @Override
     public Completable create(Dates dates) {
-        return datesDao.create(dates);
+        return RxConfigurator.configureThreading(datesDao.create(dates));
     }
 
     @Override
     public Completable save(Dates dates) {
-        return datesDao.save(dates);
+        return RxConfigurator.configureThreading(datesDao.save(dates));
     }
 
     @Override
     public Completable delete(Dates dates) {
-        return datesDao.delete(dates);
+        return RxConfigurator.configureThreading(datesDao.delete(dates));
     }
 
     @Override
     public Single<Dates> findById(String datesId) {
-        return datesDao.findById(datesId);
+        return RxConfigurator.configureThreading(datesDao.findById(datesId));
     }
 
     @Override

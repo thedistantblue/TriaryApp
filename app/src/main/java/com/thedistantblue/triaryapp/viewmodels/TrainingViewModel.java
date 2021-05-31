@@ -1,17 +1,12 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
-import android.util.Log;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
-import com.thedistantblue.triaryapp.database.room.database.DatabaseCaller;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,8 +15,6 @@ public class TrainingViewModel extends BaseObservable {
 
     @Setter
     private TrainingDao dao;
-    @Setter
-    private DatabaseCaller databaseCaller;
 
     @Getter
     @Setter
@@ -65,20 +58,17 @@ public class TrainingViewModel extends BaseObservable {
     public void action() {
         switch (action) {
             case CREATE: {
-                databaseCaller.create(dao, training,
-                                      () -> Log.d("TRAINING_CREATED_TAG", "action: training created"));
+                dao.create(training).subscribe();
                 break;
             }
             case UPDATE: {
-                databaseCaller.save(dao, training,
-                                    () -> Log.d("TRAINING_UPDATED_TAG", "action: training updated"));
+                dao.save(training).subscribe();
                 break;
             }
         }
     }
 
     public void save() {
-        databaseCaller.create(dao, training,
-                              () -> Log.d("TRAINING_CREATED_TAG", "action: training created"));
+        dao.create(training).subscribe();
     }
 }

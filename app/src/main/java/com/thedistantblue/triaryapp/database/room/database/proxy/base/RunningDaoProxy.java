@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy.base;
 
 import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
+import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.base.Running;
 
 import java.util.List;
@@ -15,26 +16,26 @@ public class RunningDaoProxy implements RunningDao {
 
     @Override
     public Completable create(Running running) {
-        return runningDao.create(running);
+        return RxConfigurator.configureThreading(runningDao.create(running));
     }
 
     @Override
     public Completable save(Running running) {
-        return runningDao.save(running);
+        return RxConfigurator.configureThreading(runningDao.save(running));
     }
 
     @Override
     public Completable delete(Running running) {
-        return runningDao.delete(running);
+        return RxConfigurator.configureThreading(runningDao.delete(running));
     }
 
     @Override
     public Single<Running> findById(String runningId) {
-        return runningDao.findById(runningId);
+        return RxConfigurator.configureThreading(runningDao.findById(runningId));
     }
 
     @Override
     public Single<List<Running>> findAll() {
-        return runningDao.findAll();
+        return RxConfigurator.configureThreading(runningDao.findAll());
     }
 }
