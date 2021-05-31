@@ -178,7 +178,7 @@ public class TrainingFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            trainingDao.delete(trainingList.get(position));
+            trainingDao.delete(trainingList.get(position)).subscribe();
         }
 
         @Override

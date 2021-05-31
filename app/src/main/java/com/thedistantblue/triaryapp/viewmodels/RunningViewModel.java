@@ -132,7 +132,7 @@ public class RunningViewModel extends BaseObservable {
     public void save() {
         switch (action) {
             case CREATE: {
-                runningDao.create(running);
+                runningDao.create(running).subscribe();
                 break;
             }
             case UPDATE: {
@@ -143,6 +143,6 @@ public class RunningViewModel extends BaseObservable {
     }
 
     public void update() {
-        runningDao.save(running);
+        runningDao.save(running).subscribe();
     }
 }

@@ -109,7 +109,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
 
     private void createUser() {
         User user = new User();
-        userDao.create(user);
+        userDao.create(user).subscribe();
     }
 
     public void setTitle(String title) {

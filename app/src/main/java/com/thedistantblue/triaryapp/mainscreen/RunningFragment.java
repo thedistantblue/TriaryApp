@@ -163,7 +163,7 @@ public class RunningFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            runningDao.delete(runningList.get(position));
+            runningDao.delete(runningList.get(position)).subscribe();
             runningList.remove(position);
             notifyItemRemoved(position);
         }

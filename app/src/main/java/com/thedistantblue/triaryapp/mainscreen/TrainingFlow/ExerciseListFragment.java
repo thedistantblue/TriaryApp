@@ -204,8 +204,6 @@ public class ExerciseListFragment extends Fragment {
         @Override
         public void onItemDismiss(int position) {
             exerciseDao.delete(exerciseList.get(position))
-                       .subscribeOn(Schedulers.io())
-                       .observeOn(AndroidSchedulers.mainThread())
                        .subscribe(() -> {
                            exerciseList.remove(position);
                            notifyItemRemoved(position);

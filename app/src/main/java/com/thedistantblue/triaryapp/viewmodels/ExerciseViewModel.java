@@ -265,8 +265,6 @@ public class ExerciseViewModel extends BaseObservable {
         List<ExerciseSet> exerciseSets = exerciseWithExerciseSet.getExerciseSetList();
 
         exerciseDao.create(exercise)
-                   .subscribeOn(Schedulers.io())
-                   .observeOn(AndroidSchedulers.mainThread())
                    .subscribe(() -> {
                        exerciseSets.forEach(exerciseSet -> exerciseSetDao.create(exerciseSet));
                    });
