@@ -36,7 +36,7 @@ public class Running implements Serializable {
     private UUID runningUUID;
     private long userId;
     private String runningName;
-    private Date date;
+    private long date;
     private double distance;
     private double speed;
     private double time;
@@ -46,7 +46,7 @@ public class Running implements Serializable {
     @Ignore
     public Running(long userId) {
         this(UUID.randomUUID(), userId);
-        this.date = new Date();
+        this.date = new Date().getTime();
     }
 
     @Ignore

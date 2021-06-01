@@ -42,11 +42,12 @@ public class ExerciseListFragment extends Fragment {
 
     private static final String DATES_KEY = "dates";
 
+    private ExerciseAdapter exerciseAdapter;
     private DatesWithExerciseDao datesWithExerciseDao;
     private ExerciseDao exerciseDao;
     private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
     private Dates dates;
-    private List<Exercise> exerciseList;
+    private List<Exercise> exerciseList = new ArrayList<>();
     private ExerciseListFragmentLayoutBinding binding;
 
     public static ExerciseListFragment newInstance(Dates dates) {
@@ -65,8 +66,9 @@ public class ExerciseListFragment extends Fragment {
         binding =
                 DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
 
+        exerciseAdapter = new ExerciseAdapter(exerciseList, getActivity());
         binding.exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.exerciseRecyclerView.setAdapter(new ExerciseAdapter(exerciseList, getActivity()));
+        binding.exerciseRecyclerView.setAdapter(exerciseAdapter);
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((ExerciseAdapter) binding.exerciseRecyclerView.getAdapter());
@@ -92,6 +94,8 @@ public class ExerciseListFragment extends Fragment {
         datesWithExerciseDao.findById(dates.getDatesUUID().toString())
                             .subscribe(datesWithExercise -> {
                                 exerciseList = datesWithExercise.getExerciseList();
+                                exerciseAdapter.setExerciseList(exerciseList);
+                                exerciseAdapter.notifyDataSetChanged();
                             });
     }
 
@@ -109,10 +113,10 @@ public class ExerciseListFragment extends Fragment {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_exercises_fragment_name);
         datesWithExerciseDao.findById(dates.getDatesUUID().toString())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(datesWithExercise -> {
-                                ((ExerciseAdapter)binding.exerciseRecyclerView.getAdapter()).setExerciseList(datesWithExercise.getExerciseList());
+                                exerciseList = datesWithExercise.getExerciseList();
+                                exerciseAdapter.setExerciseList(exerciseList);
+                                exerciseAdapter.notifyDataSetChanged();
                             });
     }
 
@@ -128,8 +132,6 @@ public class ExerciseListFragment extends Fragment {
         public void bind(final Exercise exercise) {
 
             exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
-                                      .subscribeOn(Schedulers.io())
-                                      .observeOn(AndroidSchedulers.mainThread())
                                       .subscribe(exerciseWithExerciseSet -> {
                                           this.exerciseItemCardBinding.getViewModel().setExerciseWithExerciseSet(exerciseWithExerciseSet);
                                           this.exerciseItemCardBinding.executePendingBindings();
@@ -147,8 +149,7 @@ public class ExerciseListFragment extends Fragment {
         }
     }
 
-    private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseHolder>
-    implements ItemTouchHelperAdapter {
+    private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseHolder> implements ItemTouchHelperAdapter {
         List<Exercise> exerciseList;
         Context context;
 

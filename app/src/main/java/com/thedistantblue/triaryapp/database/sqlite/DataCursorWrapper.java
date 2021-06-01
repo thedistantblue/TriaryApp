@@ -101,7 +101,7 @@ public class DataCursorWrapper extends CursorWrapper {
 
         Running running = new Running(UUID.fromString(uuid), Long.parseLong(userUUID));
         running.setRunningUUID(UUID.fromString(uuid));
-        running.setDate(new Date(date)); // Переработать
+        running.setDate(date); // Переработать
         running.setRunningName(name);
         running.setDistance(distance);
         running.setSpeed(speed);

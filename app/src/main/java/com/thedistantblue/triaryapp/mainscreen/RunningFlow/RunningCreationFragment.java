@@ -109,7 +109,7 @@ public class RunningCreationFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_DATE) {
-            Date date = (Date) data.getSerializableExtra(DateFragment.EXTRA_DATE);
+            long date = (long) data.getSerializableExtra(DateFragment.EXTRA_DATE);
             runningViewModel.setRunningDate(date);
         }
     }

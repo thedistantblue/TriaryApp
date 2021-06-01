@@ -51,7 +51,7 @@ public class RunningViewModel extends BaseObservable {
         return running.getRunningName();
     }
 
-    public void setRunningDate(Date date) {
+    public void setRunningDate(long date) {
         running.setDate(date);
         notifyChange();
     }

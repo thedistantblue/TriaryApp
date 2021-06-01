@@ -14,7 +14,7 @@ public class RoomDataBaseProvider {
         if (triaryAppDatabaseWithProxy == null) {
             TriaryAppRoomDatabase database = Room.databaseBuilder(context,
                                                                   TriaryAppRoomDatabase.class,
-                                                                  "triaryapp_v2_database")
+                                                                  "triaryapp_v2_database_1")
                                                  .build();
             triaryAppDatabaseWithProxy = new TriaryAppDatabaseProxy(database);
 

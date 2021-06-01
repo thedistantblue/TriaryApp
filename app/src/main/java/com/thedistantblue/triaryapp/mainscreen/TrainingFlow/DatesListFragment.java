@@ -34,6 +34,7 @@ public class DatesListFragment extends Fragment {
 
     private static final String TRAINING_KEY = "training_key";
 
+    private DatesAdapter datesAdapter;
     private DatesListFragmentLayoutBinding binding;
     private List<Dates> datesList = new ArrayList<>();
     private Training training;
@@ -58,8 +59,9 @@ public class DatesListFragment extends Fragment {
                                 parent,
                                 false);
 
+        datesAdapter = new DatesAdapter(datesList, getActivity());
         binding.datesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.datesRecyclerView.setAdapter(new DatesAdapter(datesList, getActivity()));
+        binding.datesRecyclerView.setAdapter(datesAdapter);
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((DatesAdapter) binding.datesRecyclerView.getAdapter());
@@ -81,6 +83,8 @@ public class DatesListFragment extends Fragment {
         trainingWithDatesDao.findById(training.getTrainingUUID().toString())
                             .subscribeWith(ObserverFactory.createSingleObserver((trainingWithDates -> {
                                 datesList = trainingWithDates.getDatesList();
+                                datesAdapter.setDatesList(datesList);
+                                datesAdapter.notifyDataSetChanged();
                             })));
     }
 
