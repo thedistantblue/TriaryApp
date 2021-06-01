@@ -87,25 +87,11 @@ public class ExerciseListFragment extends Fragment {
     }
 
     private void init() {
+        initDaos();
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
         datesWithExerciseDao.findById(dates.getDatesUUID().toString())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new SingleObserver<DatesWithExercise>() {
-                                @Override
-                                public void onSubscribe(@NonNull Disposable d) {
-
-                                }
-
-                                @Override
-                                public void onSuccess(@NonNull DatesWithExercise datesWithExercise) {
-                                    exerciseList = datesWithExercise.getExerciseList();
-                                }
-
-                                @Override
-                                public void onError(@NonNull Throwable e) {
-                                    exerciseList = new ArrayList<>();
-                                }
+                            .subscribe(datesWithExercise -> {
+                                exerciseList = datesWithExercise.getExerciseList();
                             });
     }
 
