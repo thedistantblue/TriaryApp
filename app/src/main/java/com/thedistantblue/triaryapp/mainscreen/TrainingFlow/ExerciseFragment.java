@@ -28,6 +28,7 @@ public class ExerciseFragment extends Fragment {
     private static final String EXERCISE_KEY = "exercise";
     private static final String ACTION_CODE = "action";
 
+    private ExerciseViewModel exerciseViewModel;
     private ExerciseDao exerciseDao;
     private ExerciseSetDao exerciseSetDao;
     private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
@@ -56,6 +57,23 @@ public class ExerciseFragment extends Fragment {
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
         exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
         action = (ActionEnum) getArguments().getSerializable(ACTION_CODE);
+        exerciseViewModel = new ExerciseViewModel();
+
+        exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
+                                  .subscribe(exerciseWithExerciseSet -> {
+                                      exerciseViewModel.setExerciseWithExerciseSet(exerciseWithExerciseSet);
+
+                                      if (action.equals(ActionEnum.CREATE)) {
+                                          exerciseViewModel.setEmptyExerciseSets();
+                                      } else {
+                                          exerciseViewModel.setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
+                                      }
+                                  });
+
+        exerciseViewModel.setExerciseDao(exerciseDao);
+        exerciseViewModel.setExerciseSetDao(exerciseSetDao);
+        exerciseViewModel.setExerciseWithExerciseSetDao(exerciseWithExerciseSetDao);
+        exerciseViewModel.setAction(action);
     }
 
     private void initDaos() {
@@ -72,36 +90,13 @@ public class ExerciseFragment extends Fragment {
         ExerciseFragmentLayoutBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
 
-        final ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
-        AtomicBoolean isCompleted = new AtomicBoolean(false);
-        exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
-                                  .subscribe(exerciseWithExerciseSet -> {
-                                      exerciseViewModel.setExerciseWithExerciseSet(exerciseWithExerciseSet);
-                                      exerciseViewModel.setExerciseDao(exerciseDao);
-                                      exerciseViewModel.setExerciseSetDao(exerciseSetDao);
-                                      exerciseViewModel.setExerciseWithExerciseSetDao(exerciseWithExerciseSetDao);
-                                      exerciseViewModel.setAction(action);
+        binding.exerciseActionButton.setOnClickListener(v -> {
+            exerciseViewModel.action();
+            ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
+        });
 
-                                      if (action.equals(ActionEnum.CREATE)) {
-                                          exerciseViewModel.setEmptyExerciseSets();
-                                      } else {
-                                          exerciseViewModel.setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
-                                      }
+        binding.setViewModel(exerciseViewModel);
 
-                                      binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View v) {
-                                              exerciseViewModel.action();
-                                              ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
-                                          }
-                                      });
-
-                                      binding.setViewModel(exerciseViewModel);
-
-                                      isCompleted.set(true);
-                                  });
-
-        while(!isCompleted.get()) { }
         return binding.getRoot();
     }
 

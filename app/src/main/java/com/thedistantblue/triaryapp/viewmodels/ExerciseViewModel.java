@@ -13,14 +13,16 @@ import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.Getter;
 import lombok.Setter;
 
 public class ExerciseViewModel extends BaseObservable {
     private ExerciseWithExerciseSet exerciseWithExerciseSet;
+
+    @Setter
+    private String exerciseId;
 
     @Setter
     private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
@@ -66,6 +68,7 @@ public class ExerciseViewModel extends BaseObservable {
 
     public void setExerciseWithExerciseSet(ExerciseWithExerciseSet exerciseWithExerciseSet) {
         this.exerciseWithExerciseSet = exerciseWithExerciseSet;
+        notifyChange();
     }
 
     public ExerciseWithExerciseSet getExerciseWithExerciseSet() {
@@ -79,7 +82,13 @@ public class ExerciseViewModel extends BaseObservable {
 
     @Bindable
     public String getExerciseName() {
-        return exerciseWithExerciseSet.getExercise().getExerciseName();
+        AtomicReference<String> exerciseName = new AtomicReference<>("");
+        exerciseWithExerciseSetDao.findById(exerciseId)
+                                  .subscribe(e -> {
+                                      exerciseName.set(e.getExercise().getExerciseName());
+                                      notifyChange();
+                                  });
+       return exerciseName.get();
     }
 
     public void setExerciseComments(String comments) {
@@ -89,7 +98,13 @@ public class ExerciseViewModel extends BaseObservable {
 
     @Bindable
     public String getExerciseComments() {
-        return exerciseWithExerciseSet.getExercise().getExerciseComments();
+        AtomicReference<String> exerciseComments = new AtomicReference<>("");
+        exerciseWithExerciseSetDao.findById(exerciseId)
+                                  .subscribe(e -> {
+                                      exerciseComments.set(e.getExercise().getExerciseComments());
+                                      notifyChange();
+                                  });
+        return exerciseComments.get();
     }
 
     //1 set
@@ -275,8 +290,6 @@ public class ExerciseViewModel extends BaseObservable {
         List<ExerciseSet> exerciseSets = exerciseWithExerciseSet.getExerciseSetList();
 
         exerciseDao.save(exercise)
-                   .subscribeOn(Schedulers.io())
-                   .observeOn(AndroidSchedulers.mainThread())
                    .subscribe(() -> exerciseSets.forEach(exerciseSet -> exerciseSetDao.save(exerciseSet)));
     }
 }

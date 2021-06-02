@@ -72,10 +72,12 @@ public class DatesFragment extends Fragment {
         });
 
         confirmButton = view.findViewById(R.id.confirm_button);
-        datesDao.create(dates).subscribe(() -> {
-            FragmentSwitcher.showFragment(this,
-                                          DatesListFragment.newInstance(training),
-                                          R.string.training_dates_fragment_name);
+        confirmButton.setOnClickListener(v -> {
+            datesDao.create(dates).subscribe(() -> {
+                FragmentSwitcher.showFragment(this,
+                                              DatesListFragment.newInstance(training),
+                                              R.string.training_dates_fragment_name);
+            });
         });
 
         return view;
