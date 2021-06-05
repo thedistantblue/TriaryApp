@@ -1,5 +1,8 @@
 package com.thedistantblue.triaryapp.entities.base;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -7,7 +10,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
-import com.thedistantblue.triaryapp.entities.EntityConstants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
                                   parentColumns = Exercise.UUID_FIELD_NAME,
                                   childColumns = ExerciseSet.EXERCISE_UUID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
-public class ExerciseSet implements Serializable {
+public class ExerciseSet implements Serializable, Parcelable {
 
     public static final String UUID_FIELD_NAME = "exerciseSetUUID";
     public static final String EXERCISE_UUID_FIELD = "exerciseId";
@@ -33,9 +35,9 @@ public class ExerciseSet implements Serializable {
     @PrimaryKey
     private UUID exerciseSetUUID;
     private UUID exerciseId;
-    private int setNumber;
-    private int setRepetitions;
-    private double setWeight;
+    private int number;
+    private int repetitions;
+    private double weight;
 
     @Ignore
     public ExerciseSet(UUID exerciseId) {
@@ -46,5 +48,36 @@ public class ExerciseSet implements Serializable {
     public ExerciseSet(@NotNull UUID exerciseSetUUID, UUID exerciseId) {
         this.exerciseSetUUID = exerciseSetUUID;
         this.exerciseId = exerciseId;
+    }
+
+    @Ignore
+    public ExerciseSet(Parcel in) {
+        number = in.readInt();
+        repetitions = in.readInt();
+        weight = in.readDouble();
+    }
+
+    public static final Creator<ExerciseSet> CREATOR = new Creator<ExerciseSet>() {
+        @Override
+        public ExerciseSet createFromParcel(Parcel in) {
+            return new ExerciseSet(in);
+        }
+
+        @Override
+        public ExerciseSet[] newArray(int size) {
+            return new ExerciseSet[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(number);
+        dest.writeInt(repetitions);
+        dest.writeDouble(weight);
     }
 }

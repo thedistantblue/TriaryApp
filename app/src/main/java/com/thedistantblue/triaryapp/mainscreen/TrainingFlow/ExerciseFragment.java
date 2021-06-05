@@ -16,34 +16,36 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
-import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
+import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModelNew;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import lombok.Data;
+import lombok.SneakyThrows;
 
 public class ExerciseFragment extends Fragment {
 
-    private static final String DATES_KEY = "dates";
     private static final String EXERCISE_KEY = "exercise";
-    private static final String ACTION_CODE = "action";
+    private static final String EXERCISE_LIST_KEY = "exerciseList";
 
-    private ExerciseViewModel exerciseViewModel;
+    private ExerciseFragmentLayoutBinding binding;
+    private ExerciseViewModelNew exerciseViewModelNew;
     private ExerciseDao exerciseDao;
     private ExerciseSetDao exerciseSetDao;
-    private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
     private Exercise exercise;
-    private Dates dates;
+    private List<ExerciseSet> exerciseSetList;
 
-    private ActionEnum action;
-
-    public static ExerciseFragment newInstance(Dates dates, Exercise exercise, ActionEnum action) {
+    public static ExerciseFragment newInstance(Exercise exercise, ArrayList<ExerciseSet> exerciseSets) {
         Bundle args = new Bundle();
-
-        if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
-        else {args.putSerializable(EXERCISE_KEY, new Exercise(dates.getDatesUUID()));}
-        args.putSerializable(ACTION_CODE, action);
-        if (dates != null) {args.putSerializable(DATES_KEY, dates);}
+        args.putSerializable(EXERCISE_KEY, exercise);
+        args.putParcelableArrayList(EXERCISE_LIST_KEY, exerciseSets);
 
         ExerciseFragment fragment = new ExerciseFragment();
         fragment.setArguments(args);
@@ -54,26 +56,8 @@ public class ExerciseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDaos();
-        dates = (Dates) getArguments().getSerializable(DATES_KEY);
         exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
-        action = (ActionEnum) getArguments().getSerializable(ACTION_CODE);
-        exerciseViewModel = new ExerciseViewModel();
-
-        exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
-                                  .subscribe(exerciseWithExerciseSet -> {
-                                      exerciseViewModel.setExerciseWithExerciseSet(exerciseWithExerciseSet);
-
-                                      if (action.equals(ActionEnum.CREATE)) {
-                                          exerciseViewModel.setEmptyExerciseSets();
-                                      } else {
-                                          exerciseViewModel.setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
-                                      }
-                                  });
-
-        exerciseViewModel.setExerciseDao(exerciseDao);
-        exerciseViewModel.setExerciseSetDao(exerciseSetDao);
-        exerciseViewModel.setExerciseWithExerciseSetDao(exerciseWithExerciseSetDao);
-        exerciseViewModel.setAction(action);
+        exerciseSetList = getArguments().getParcelableArrayList(EXERCISE_LIST_KEY);
     }
 
     private void initDaos() {
@@ -81,22 +65,14 @@ public class ExerciseFragment extends Fragment {
                                           .exerciseDao();
         exerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                              .exerciseSetDao();
-        exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                                         .exerciseWithExerciseSetDao();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        ExerciseFragmentLayoutBinding binding =
-                DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
-
-        binding.exerciseActionButton.setOnClickListener(v -> {
-            exerciseViewModel.action();
-            ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
-        });
-
-        binding.setViewModel(exerciseViewModel);
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
+        exerciseViewModelNew = new ExerciseViewModelNew(exercise, exerciseSetList, exerciseDao, exerciseSetDao);
+        binding.setViewModel(exerciseViewModelNew);
+        binding.notifyChange();
         return binding.getRoot();
     }
 

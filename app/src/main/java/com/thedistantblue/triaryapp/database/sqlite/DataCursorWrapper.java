@@ -10,7 +10,6 @@ import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class DataCursorWrapper extends CursorWrapper {
@@ -82,9 +81,9 @@ public class DataCursorWrapper extends CursorWrapper {
 
         ExerciseSet exerciseSet = new ExerciseSet(UUID.fromString(uuid), UUID.fromString(exerciseUUID));
         exerciseSet.setExerciseId(UUID.fromString(exerciseUUID));
-        exerciseSet.setSetNumber(Integer.parseInt(setNumer));
-        exerciseSet.setSetRepetitions(Integer.parseInt(repetitions));
-        exerciseSet.setSetWeight(Double.parseDouble(weight));
+        exerciseSet.setNumber(Integer.parseInt(setNumer));
+        exerciseSet.setRepetitions(Integer.parseInt(repetitions));
+        exerciseSet.setWeight(Double.parseDouble(weight));
         return exerciseSet;
     }
 

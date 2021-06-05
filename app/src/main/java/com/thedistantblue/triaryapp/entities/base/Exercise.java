@@ -34,9 +34,8 @@ public class Exercise implements Serializable {
     @PrimaryKey
     private UUID exerciseUUID;
     private UUID datesId;
-    private long exerciseDate;
-    private String exerciseName;
-    private String exerciseComments;
+    private String exerciseName = "";
+    private String exerciseComments = "";
 
     @Ignore
     public Exercise(@NotNull UUID exerciseUUID, UUID datesId) {

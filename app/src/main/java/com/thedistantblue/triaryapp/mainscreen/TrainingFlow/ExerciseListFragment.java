@@ -1,7 +1,9 @@
 package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
@@ -21,34 +24,69 @@ import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
-import com.thedistantblue.triaryapp.entities.composite.DatesWithExercise;
+import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
-import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import lombok.Data;
 
 public class ExerciseListFragment extends Fragment {
 
+    private static class CallbackThread implements Runnable {
+
+        private final CountDownLatch latch;
+        private final ExerciseListFragment exerciseListFragment;
+        private final Activity activity;
+
+        public CallbackThread(CountDownLatch latch,
+                              ExerciseListFragment exerciseListFragment,
+                              Activity activity) {
+            this.latch = latch;
+            this.exerciseListFragment = exerciseListFragment;
+            this.activity = activity;
+            Thread thread = new Thread(this);
+            thread.start();
+        }
+
+        @Override
+        public void run() {
+            try {
+                latch.await();
+                activity.runOnUiThread(exerciseListFragment::showExerciseFragment);
+            } catch (Exception ex) {
+                Log.e("", ex.toString());
+            }
+        }
+    }
+
+    @Data
+    private static class ExerciseExerciseSetListPair {
+        private final Exercise exercise;
+        private final List<ExerciseSet> exerciseSets;
+    }
+
     private static final String DATES_KEY = "dates";
+
+    private volatile boolean isWaitingDone;
 
     private ExerciseAdapter exerciseAdapter;
     private DatesWithExerciseDao datesWithExerciseDao;
     private ExerciseDao exerciseDao;
+    private ExerciseSetDao exerciseSetDao;
     private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
     private Dates dates;
     private List<Exercise> exerciseList = new ArrayList<>();
     private ExerciseListFragmentLayoutBinding binding;
+
+    private Exercise newExercise;
+    private final ArrayList<ExerciseSet> newExerciseSets = new ArrayList<>();
 
     public static ExerciseListFragment newInstance(Dates dates) {
         Bundle args = new Bundle();
@@ -62,9 +100,7 @@ public class ExerciseListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         init();
-
-        binding =
-                DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
 
         exerciseAdapter = new ExerciseAdapter(exerciseList, getActivity());
         binding.exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -77,15 +113,34 @@ public class ExerciseListFragment extends Fragment {
         touchHelper.attachToRecyclerView(binding.exerciseRecyclerView);
 
         binding.exerciseRecyclerView.getAdapter().notifyDataSetChanged();
-        binding.exerciseAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainScreenActivityCallback)getActivity())
-                        .manageFragments(ExerciseFragment.newInstance(dates, null, ActionEnum.CREATE), R.string.create_exercise_fragment_name);
-            }
+        binding.exerciseAddButton.setOnClickListener(view -> {
+            createNewExerciseWithSets();
         });
 
         return binding.getRoot();
+    }
+
+    private void createNewExerciseWithSets() {
+        newExercise = new Exercise(dates.getDatesUUID());
+        newExerciseSets.clear();
+        CountDownLatch countDownLatch = new CountDownLatch(5);
+        new CallbackThread(countDownLatch, this, getActivity());
+
+        exerciseDao.create(newExercise).subscribe(() -> {
+            for (int i = 1; i <= 5; i++) {
+                ExerciseSet exerciseSet = new ExerciseSet(newExercise.getExerciseUUID());
+                exerciseSet.setNumber(i);
+                exerciseSetDao.create(exerciseSet).subscribe(() -> {
+                    newExerciseSets.add(exerciseSet);
+                    countDownLatch.countDown();
+                });
+            }
+        });
+    }
+
+    private void showExerciseFragment() {
+        ((MainScreenActivityCallback)getActivity())
+                .manageFragments(ExerciseFragment.newInstance(newExercise, newExerciseSets), R.string.create_exercise_fragment_name);
     }
 
     private void init() {
@@ -102,6 +157,8 @@ public class ExerciseListFragment extends Fragment {
     private void initDaos() {
         exerciseDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                           .exerciseDao();
+        exerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                             .exerciseSetDao();
         datesWithExerciseDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                    .datesWithExerciseDao();
         exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
@@ -137,12 +194,11 @@ public class ExerciseListFragment extends Fragment {
                                           this.exerciseItemCardBinding.executePendingBindings();
                                           exerciseItemCardBinding.getViewModel().setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
 
-
                                           this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View v) {
                                                   ((MainScreenActivityCallback)getActivity())
-                                                          .manageFragments(ExerciseFragment.newInstance(dates, exercise, ActionEnum.UPDATE), R.string.update_exercise_fragment_name);
+                                                          .manageFragments(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList())), R.string.update_exercise_fragment_name);
                                               }
                                           });
                                       });
