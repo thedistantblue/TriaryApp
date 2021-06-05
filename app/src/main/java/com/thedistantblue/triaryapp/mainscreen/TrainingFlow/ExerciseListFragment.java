@@ -28,7 +28,7 @@ import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
-import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
+import com.thedistantblue.triaryapp.viewmodels.ExerciseCardViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -183,17 +183,15 @@ public class ExerciseListFragment extends Fragment {
         public ExerciseHolder(ExerciseItemCardBinding exerciseItemCardBinding) {
             super(exerciseItemCardBinding.getRoot());
             this.exerciseItemCardBinding = exerciseItemCardBinding;
-            this.exerciseItemCardBinding.setViewModel(new ExerciseViewModel());
+            this.exerciseItemCardBinding.setViewModel(new ExerciseCardViewModel());
         }
 
         public void bind(final Exercise exercise) {
 
             exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
                                       .subscribe(exerciseWithExerciseSet -> {
-                                          this.exerciseItemCardBinding.getViewModel().setExerciseWithExerciseSet(exerciseWithExerciseSet);
                                           this.exerciseItemCardBinding.executePendingBindings();
-                                          exerciseItemCardBinding.getViewModel().setExerciseSets(exerciseWithExerciseSet.getExerciseSetList());
-
+                                          this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getExerciseName());
                                           this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View v) {
