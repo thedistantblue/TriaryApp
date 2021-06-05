@@ -9,26 +9,16 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
-import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
-import com.thedistantblue.triaryapp.entities.composite.ExerciseWithExerciseSet;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
-import com.thedistantblue.triaryapp.utils.ActionEnum;
-import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModelNew;
+import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import lombok.Data;
-import lombok.SneakyThrows;
 
 public class ExerciseFragment extends Fragment {
 
@@ -36,7 +26,7 @@ public class ExerciseFragment extends Fragment {
     private static final String EXERCISE_LIST_KEY = "exerciseList";
 
     private ExerciseFragmentLayoutBinding binding;
-    private ExerciseViewModelNew exerciseViewModelNew;
+    private ExerciseViewModel exerciseViewModel;
     private ExerciseDao exerciseDao;
     private ExerciseSetDao exerciseSetDao;
     private Exercise exercise;
@@ -70,8 +60,8 @@ public class ExerciseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
-        exerciseViewModelNew = new ExerciseViewModelNew(exercise, exerciseSetList, exerciseDao, exerciseSetDao);
-        binding.setViewModel(exerciseViewModelNew);
+        exerciseViewModel = new ExerciseViewModel(exercise, exerciseSetList, exerciseDao, exerciseSetDao);
+        binding.setViewModel(exerciseViewModel);
         binding.notifyChange();
         return binding.getRoot();
     }
