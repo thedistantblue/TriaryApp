@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -50,15 +49,15 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
     }
 
     private void startApplication(User user, BottomNavigationView nav) {
-        manageFragments(TrainingListFragment.newInstance(user), R.string.training_tab_button);
+        switchFragment(TrainingListFragment.newInstance(user));
 
         nav.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.switch_to_running_tab:
-                    manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
+                    switchFragment(RunningFragment.newInstance(user));
                     return true;
                 case R.id.switch_to_trainings_tab:
-                    manageFragments(TrainingListFragment.newInstance(user), R.string.training_tab_button);
+                    switchFragment(TrainingListFragment.newInstance(user));
                     return true;
                 default:
                     return MainScreenActivity.super.onOptionsItemSelected(menuItem);
@@ -66,12 +65,12 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         });
     }
 
-    public void manageFragments(Fragment fragment, int title) {
+    public void switchFragment(TitledFragment fragment) {
         String backStackName = fragment.getClass().getName();
 
         boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStackName, 0);
 
-        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setTitle(fragment.getTitle());
 
         if (!fragmentPopped) {
             if (backStackName.equals(TRAINING_FRAGMENT_NAME)) {

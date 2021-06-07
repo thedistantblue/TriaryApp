@@ -24,13 +24,14 @@ import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.viewmodels.DateViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DatesListFragment extends Fragment {
+public class DatesListFragment extends TitledFragment {
 
     private static final String TRAINING_KEY = "training_key";
 
@@ -48,6 +49,11 @@ public class DatesListFragment extends Fragment {
         DatesListFragment fragment = new DatesListFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.training_dates_fragment_name;
     }
 
     @Override
@@ -71,7 +77,7 @@ public class DatesListFragment extends Fragment {
 
         binding.datesRecyclerView.getAdapter().notifyDataSetChanged();
         binding.datesAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                .manageFragments(DatesFragment.newInstance(training), R.string.create_date_fragment));
+                .switchFragment(DatesFragment.newInstance(training)));
 
         return binding.getRoot();
 
@@ -112,7 +118,7 @@ public class DatesListFragment extends Fragment {
 
 
             this.dateItemCardBinding.dateCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                    .manageFragments(ExerciseListFragment.newInstance(dates), R.string.exercises_fragment));
+                    .switchFragment(ExerciseListFragment.newInstance(dates)));
         }
     }
 

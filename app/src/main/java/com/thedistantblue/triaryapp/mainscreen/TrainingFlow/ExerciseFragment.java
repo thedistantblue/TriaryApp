@@ -15,12 +15,13 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExerciseFragment extends Fragment {
+public class ExerciseFragment extends TitledFragment {
 
     private static final String EXERCISE_KEY = "exercise";
     private static final String EXERCISE_LIST_KEY = "exerciseList";
@@ -40,6 +41,11 @@ public class ExerciseFragment extends Fragment {
         ExerciseFragment fragment = new ExerciseFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.create_exercise_fragment_name;
     }
 
     @Override

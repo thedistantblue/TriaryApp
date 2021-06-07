@@ -28,10 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
-public class RunningFragment extends Fragment {
+public class RunningFragment extends TitledFragment {
     private static final String USER_KEY = "user";
 
     private RunningDao runningDao;
@@ -48,6 +45,11 @@ public class RunningFragment extends Fragment {
         RunningFragment fragment = new RunningFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.running_tab_button;
     }
 
     @Override
@@ -98,8 +100,8 @@ public class RunningFragment extends Fragment {
         touchHelper.attachToRecyclerView(binding.runningRecyclerView);
 
         binding.runningAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                .manageFragments
-                        (RunningCreationFragment.newInstance(user, null, ActionEnum.CREATE), R.string.create_running_fragment_name));
+                .switchFragment
+                        (RunningCreationFragment.newInstance(user, null, ActionEnum.CREATE)));
 
         return binding.getRoot();
     }
@@ -117,8 +119,7 @@ public class RunningFragment extends Fragment {
             runningItemCardBinding.getViewModel().setRunning(running);
             runningItemCardBinding.executePendingBindings();
             runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                    .manageFragments
-                            (RunningCreationFragment.newInstance(user, running, ActionEnum.UPDATE), R.string.update_running_fragment_name));
+                    .switchFragment(RunningCreationFragment.newInstance(user, running, ActionEnum.UPDATE)));
         }
     }
 

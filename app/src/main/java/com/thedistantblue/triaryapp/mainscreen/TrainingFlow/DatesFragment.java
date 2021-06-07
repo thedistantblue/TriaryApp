@@ -17,12 +17,13 @@ import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.utils.FragmentSwitcher;
 import com.thedistantblue.triaryapp.utils.TriaryDateFormat;
 
 import java.util.Date;
 
-public class DatesFragment extends Fragment {
+public class DatesFragment extends TitledFragment {
 
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
@@ -41,6 +42,11 @@ public class DatesFragment extends Fragment {
         DatesFragment fragment = new DatesFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.create_date_fragment;
     }
 
     @Override
@@ -75,8 +81,7 @@ public class DatesFragment extends Fragment {
         confirmButton.setOnClickListener(v -> {
             datesDao.create(dates).subscribe(() -> {
                 FragmentSwitcher.showFragment(this,
-                                              DatesListFragment.newInstance(training),
-                                              R.string.training_dates_fragment_name);
+                                              DatesListFragment.newInstance(training));
             });
         });
 

@@ -16,10 +16,11 @@ import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBi
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
-public class TrainingCreationFragment extends Fragment {
+public class TrainingCreationFragment extends TitledFragment {
 
     private static final String USER_KEY = "user";
     private static final String TRAINING_KEY = "training";
@@ -36,6 +37,11 @@ public class TrainingCreationFragment extends Fragment {
         TrainingCreationFragment fragment = new TrainingCreationFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.training_settings_fragment_name;
     }
 
     @Override

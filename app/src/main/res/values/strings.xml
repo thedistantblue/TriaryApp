@@ -7,6 +7,7 @@
     <string name="local_button_text">Offline use</string>
     <string name="training_tab_button">Training</string>
     <string name="running_tab_button">Running</string>
+    <string name="training_list_fragment_name">Training list</string>
     <string name="training_exercises_fragment_name">Training exercises</string>
     <string name="create_training_fragment_name">Create training</string>
     <string name="training_dates_fragment_name">Training dates</string>

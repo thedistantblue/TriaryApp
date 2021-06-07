@@ -20,12 +20,11 @@ import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.RunningFragment;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
-import java.util.Date;
-
-public class RunningCreationFragment extends Fragment {
+public class RunningCreationFragment extends TitledFragment {
 
     private static final String USER_KEY = "user";
     private static final String RUNNING_KEY = "running";
@@ -53,6 +52,11 @@ public class RunningCreationFragment extends Fragment {
         RunningCreationFragment fragment = new RunningCreationFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.create_running_fragment_name;
     }
 
     @Override
@@ -90,12 +94,12 @@ public class RunningCreationFragment extends Fragment {
                 } else {
                     runningViewModel.save();
                     Toast.makeText(getActivity(), R.string.running_created_toast, Toast.LENGTH_SHORT).show();
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
+                    ((MainScreenActivityCallback) getActivity()).switchFragment(RunningFragment.newInstance(user));
                 }
             } else {
                 runningViewModel.update();
                 Toast.makeText(getActivity(), R.string.running_updated_toast, Toast.LENGTH_SHORT).show();
-                ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
+                ((MainScreenActivityCallback) getActivity()).switchFragment(RunningFragment.newInstance(user));
             }
         });
 

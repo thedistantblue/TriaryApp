@@ -28,6 +28,7 @@ import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseCardViewModel;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.concurrent.CountDownLatch;
 
 import lombok.Data;
 
-public class ExerciseListFragment extends Fragment {
+public class ExerciseListFragment extends TitledFragment {
 
     private static class CallbackThread implements Runnable {
 
@@ -98,6 +99,11 @@ public class ExerciseListFragment extends Fragment {
     }
 
     @Override
+    public int getTitle() {
+        return R.string.exercises_fragment;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         init();
         binding = DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
@@ -140,7 +146,7 @@ public class ExerciseListFragment extends Fragment {
 
     private void showExerciseFragment() {
         ((MainScreenActivityCallback)getActivity())
-                .manageFragments(ExerciseFragment.newInstance(newExercise, newExerciseSets), R.string.create_exercise_fragment_name);
+                .switchFragment(ExerciseFragment.newInstance(newExercise, newExerciseSets));
     }
 
     private void init() {
@@ -195,7 +201,7 @@ public class ExerciseListFragment extends Fragment {
                                               @Override
                                               public void onClick(View v) {
                                                   ((MainScreenActivityCallback)getActivity())
-                                                          .manageFragments(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList())), R.string.update_exercise_fragment_name);
+                                                          .switchFragment(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList())));
                                               }
                                           });
                                       });
