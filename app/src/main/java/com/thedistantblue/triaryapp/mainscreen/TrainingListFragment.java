@@ -23,13 +23,14 @@ import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
+import com.thedistantblue.triaryapp.viewmodels.TrainingCardViewModel;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TrainingFragment extends Fragment {
+public class TrainingListFragment extends Fragment {
 
     private static final String USER_KEY = "user";
 
@@ -37,17 +38,16 @@ public class TrainingFragment extends Fragment {
 
     private User user;
     private List<Training> trainingList = new ArrayList<>();
-
     private TrainingDao trainingDao;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
     TrainingFragmentLayoutBinding binding;
 
-    public static TrainingFragment newInstance(User user) {
+    public static TrainingListFragment newInstance(User user) {
         Bundle args = new Bundle();
         args.putSerializable(USER_KEY, user);
 
-        TrainingFragment fragment = new TrainingFragment();
+        TrainingListFragment fragment = new TrainingListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,10 +88,11 @@ public class TrainingFragment extends Fragment {
         touchHelper.attachToRecyclerView(binding.trainingRecyclerView);
 
         this.binding.trainingAddButton.setOnClickListener(v -> {
-            ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user,
-                                                                                                              null,
-                                                                                                              ActionEnum.CREATE),
-                                                                         R.string.create_training_fragment_name);
+            Training training = new Training(user.getUserID());
+            trainingDao.create(training).subscribe(() -> {
+                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, training),
+                                                                             R.string.create_training_fragment_name);
+            });
         });
         return binding.getRoot();
     }
@@ -106,35 +107,6 @@ public class TrainingFragment extends Fragment {
                                          trainingAdapter.notifyDataSetChanged();
                                      });
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
-    }
-
-    public class TrainingHolder extends RecyclerView.ViewHolder {
-        private TrainingItemCardBinding trainingItemCardBinding;
-        int pos;
-
-        private TrainingHolder(TrainingItemCardBinding ticb) {
-            super(ticb.getRoot());
-            trainingItemCardBinding = ticb;
-            trainingItemCardBinding.setViewModel(new TrainingViewModel());
-        }
-
-        public void bind(final Training training, final int position) {
-            this.pos = position;
-            trainingItemCardBinding.getViewModel().setTraining(training);
-            trainingItemCardBinding.executePendingBindings();
-            trainingItemCardBinding.trainingCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), R.string.training_dates_fragment_name);
-                }
-            });
-            trainingItemCardBinding.trainingSettingsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, trainingList.get(pos), ActionEnum.UPDATE), R.string.training_settings_fragment_name);
-                }
-            });
-        }
     }
 
     public class TrainingAdapter extends RecyclerView.Adapter<TrainingHolder>
@@ -168,7 +140,7 @@ public class TrainingFragment extends Fragment {
         @Override
         public void onBindViewHolder(TrainingHolder trainingHolder, int position) {
             Training training = trainingList.get(position);
-            trainingHolder.bind(training, position);
+            trainingHolder.bind(training);
         }
 
         @Override
@@ -199,6 +171,27 @@ public class TrainingFragment extends Fragment {
         @Override
         public void onRefresh(int position) {
             this.notifyItemChanged(position);
+        }
+    }
+
+    public class TrainingHolder extends RecyclerView.ViewHolder {
+        private TrainingItemCardBinding trainingItemCardBinding;
+
+        private TrainingHolder(TrainingItemCardBinding ticb) {
+            super(ticb.getRoot());
+            trainingItemCardBinding = ticb;
+            trainingItemCardBinding.setViewModel(new TrainingCardViewModel());
+        }
+
+        public void bind(final Training training) {
+            trainingItemCardBinding.executePendingBindings();
+            trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
+            trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
+                ((MainScreenActivityCallback) getActivity()).manageFragments(DatesListFragment.newInstance(training), R.string.training_dates_fragment_name);
+            });
+            trainingItemCardBinding.trainingSettingsButton.setOnClickListener(v -> {
+                ((MainScreenActivityCallback) getActivity()).manageFragments(TrainingCreationFragment.newInstance(user, training), R.string.training_settings_fragment_name);
+            });
         }
     }
 }

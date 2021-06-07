@@ -12,7 +12,7 @@
         tools:layout="@layout/main_screen_relative_layout" />
     <fragment
         android:id="@+id/trainingFragment2"
-        android:name="com.thedistantblue.triaryapp.mainscreen.TrainingFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.TrainingListFragment"
         android:label="training_fragment_layout"
         tools:layout="@layout/training_fragment_layout" />
     <fragment

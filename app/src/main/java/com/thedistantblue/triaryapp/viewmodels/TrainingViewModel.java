@@ -1,74 +1,40 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
 
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.entities.base.Training;
-import com.thedistantblue.triaryapp.utils.ActionEnum;
 
-import lombok.Getter;
 import lombok.Setter;
 
 public class TrainingViewModel extends BaseObservable {
+
+    public final ObservableField<String> trainingName = new ObservableField<>();
+
+    @Setter
     private Training training;
+    private final TrainingDao trainingDao;
 
-    @Setter
-    private TrainingDao dao;
-
-    @Getter
-    @Setter
-    private ActionEnum action;
-
-    public Training getTraining() {
-        return training;
-    }
-
-    public void setTraining(Training training) {
+    public TrainingViewModel(Training training, TrainingDao trainingDao) {
         this.training = training;
-        notifyChange(); // ВНИМАНИЕ - ЭТО ИСПРАВИЛО ТО, ЧТО ПОСЛЕ СВАЙПА ОДНОГО ЭЛЕМЕНТА
-                        // И ПОСЛЕДУЮЩЕГО СВАЙПА ДРУГОГО (ВСЕ ЭТО С ОТМЕНАМИ УДАЛЕНИЯ)
-                        // ДРУГОЙ ИТЕМ БЫЛ С ДАННЫМИ ПЕРВОГО
+        this.trainingDao = trainingDao;
+        init();
     }
 
-    @Bindable
-    public String getTrainingDate() {
-        return "test";
-        //return training.getTrainingDate().toString();
+    public TrainingViewModel(TrainingDao trainingDao) {
+        this.trainingDao = trainingDao;
     }
 
-    /*
-    public void setTrainingDate(Date date) {
-        training.setTrainingDate(date.getTime());
-        notifyChange();
-    }
-    */
-
-
-    public void setTrainingName(String name) {
-        training.setTrainingName(name);
-        notifyChange();
+    private void init() {
+        trainingName.set(training.getTrainingName());
     }
 
-    @Bindable
-    public String getTrainingName() {
-        return training.getTrainingName();
-    }
-
-    public void action() {
-        switch (action) {
-            case CREATE: {
-                dao.create(training).subscribe();
-                break;
-            }
-            case UPDATE: {
-                dao.save(training).subscribe();
-                break;
-            }
-        }
-    }
-
+    // TODO вернуть Disposable из этих методов для последующего dispose()
     public void save() {
-        dao.create(training).subscribe();
+        training.setTrainingName(trainingName.get());
+        trainingDao.save(training).subscribe(() -> {
+            // TODO: Добавить тоаст об успешном сохранении
+        });
     }
 }

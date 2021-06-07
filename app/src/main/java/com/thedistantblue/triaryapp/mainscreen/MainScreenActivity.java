@@ -50,7 +50,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
     }
 
     private void startApplication(User user, BottomNavigationView nav) {
-        manageFragments(TrainingFragment.newInstance(user), R.string.training_tab_button);
+        manageFragments(TrainingListFragment.newInstance(user), R.string.training_tab_button);
 
         nav.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
@@ -58,7 +58,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
                     manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
                     return true;
                 case R.id.switch_to_trainings_tab:
-                    manageFragments(TrainingFragment.newInstance(user), R.string.training_tab_button);
+                    manageFragments(TrainingListFragment.newInstance(user), R.string.training_tab_button);
                     return true;
                 default:
                     return MainScreenActivity.super.onOptionsItemSelected(menuItem);

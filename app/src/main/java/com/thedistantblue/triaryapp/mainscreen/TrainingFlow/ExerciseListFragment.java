@@ -187,7 +187,6 @@ public class ExerciseListFragment extends Fragment {
         }
 
         public void bind(final Exercise exercise) {
-
             exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
                                       .subscribe(exerciseWithExerciseSet -> {
                                           this.exerciseItemCardBinding.executePendingBindings();
