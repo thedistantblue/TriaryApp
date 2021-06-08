@@ -25,8 +25,6 @@ public class TrainingCreationFragment extends TitledFragment {
     private static final String USER_KEY = "user";
     private static final String TRAINING_KEY = "training";
 
-    private TrainingDao trainingDao;
-    Training training;
     private TrainingViewModel trainingViewModel;
 
     public static TrainingCreationFragment newInstance(User user, Training training) {
@@ -47,8 +45,8 @@ public class TrainingCreationFragment extends TitledFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
-        training = (Training) getArguments().getSerializable(TRAINING_KEY);
+        TrainingDao trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
+        Training training = (Training) getArguments().getSerializable(TRAINING_KEY);
         trainingViewModel = new TrainingViewModel(training, trainingDao);
     }
 

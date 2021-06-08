@@ -86,8 +86,7 @@ public class RunningFragment extends TitledFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        binding =
-                DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
 
         runningAdapter = new RunningAdapter(runningList, getActivity());
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -106,28 +105,9 @@ public class RunningFragment extends TitledFragment {
         return binding.getRoot();
     }
 
-    private class RunningHolder extends RecyclerView.ViewHolder {
-        RunningItemCardBinding runningItemCardBinding;
-
-        public RunningHolder(RunningItemCardBinding runningItemCardBinding) {
-            super(runningItemCardBinding.getRoot());
-            this.runningItemCardBinding = runningItemCardBinding;
-            runningItemCardBinding.setViewModel(new RunningViewModel());
-        }
-
-        public void bind(final Running running) {
-            runningItemCardBinding.getViewModel().setRunning(running);
-            runningItemCardBinding.executePendingBindings();
-            runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                    .switchFragment(RunningCreationFragment.newInstance(user, running, ActionEnum.UPDATE)));
-        }
-    }
-
-    private class RunningAdapter extends RecyclerView.Adapter<RunningHolder>
-            implements ItemTouchHelperAdapter {
-
-        List<Running> runningList;
-        Context context;
+    private class RunningAdapter extends RecyclerView.Adapter<RunningHolder> implements ItemTouchHelperAdapter {
+        private List<Running> runningList;
+        private Context context;
 
         public RunningAdapter(List<Running> runningList, Context context) {
             this.runningList = runningList;
@@ -190,6 +170,23 @@ public class RunningFragment extends TitledFragment {
         @Override
         public void onRefresh(int position) {
             this.notifyItemChanged(position);
+        }
+    }
+
+    private class RunningHolder extends RecyclerView.ViewHolder {
+        private final RunningItemCardBinding runningItemCardBinding;
+
+        public RunningHolder(RunningItemCardBinding runningItemCardBinding) {
+            super(runningItemCardBinding.getRoot());
+            this.runningItemCardBinding = runningItemCardBinding;
+            runningItemCardBinding.setViewModel(new RunningViewModel());
+        }
+
+        public void bind(final Running running) {
+            runningItemCardBinding.getViewModel().setRunning(running);
+            runningItemCardBinding.executePendingBindings();
+            runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                    .switchFragment(RunningCreationFragment.newInstance(user, running, ActionEnum.UPDATE)));
         }
     }
 }

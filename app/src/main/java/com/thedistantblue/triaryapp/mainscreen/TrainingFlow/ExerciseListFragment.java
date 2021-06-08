@@ -25,6 +25,7 @@ import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBindin
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.entities.composite.DatesWithExercise;
 import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
@@ -67,15 +68,7 @@ public class ExerciseListFragment extends TitledFragment {
         }
     }
 
-    @Data
-    private static class ExerciseExerciseSetListPair {
-        private final Exercise exercise;
-        private final List<ExerciseSet> exerciseSets;
-    }
-
     private static final String DATES_KEY = "dates";
-
-    private volatile boolean isWaitingDone;
 
     private ExerciseAdapter exerciseAdapter;
     private DatesWithExerciseDao datesWithExerciseDao;
@@ -84,7 +77,6 @@ public class ExerciseListFragment extends TitledFragment {
     private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
     private Dates dates;
     private List<Exercise> exerciseList = new ArrayList<>();
-    private ExerciseListFragmentLayoutBinding binding;
 
     private Exercise newExercise;
     private final ArrayList<ExerciseSet> newExerciseSets = new ArrayList<>();
@@ -106,7 +98,7 @@ public class ExerciseListFragment extends TitledFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         init();
-        binding = DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
+        ExerciseListFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.exercise_list_fragment_layout, parent, false);
 
         exerciseAdapter = new ExerciseAdapter(exerciseList, getActivity());
         binding.exerciseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -132,16 +124,18 @@ public class ExerciseListFragment extends TitledFragment {
         CountDownLatch countDownLatch = new CountDownLatch(5);
         new CallbackThread(countDownLatch, this, getActivity());
 
-        exerciseDao.create(newExercise).subscribe(() -> {
-            for (int i = 1; i <= 5; i++) {
-                ExerciseSet exerciseSet = new ExerciseSet(newExercise.getExerciseUUID());
-                exerciseSet.setNumber(i);
-                exerciseSetDao.create(exerciseSet).subscribe(() -> {
-                    newExerciseSets.add(exerciseSet);
-                    countDownLatch.countDown();
-                });
-            }
-        });
+        exerciseDao.create(newExercise).subscribe(() -> createExercises(countDownLatch));
+    }
+
+    private void createExercises(CountDownLatch countDownLatch) {
+        for (int i = 1; i <= 5; i++) {
+            ExerciseSet exerciseSet = new ExerciseSet(newExercise.getExerciseUUID());
+            exerciseSet.setNumber(i);
+            exerciseSetDao.create(exerciseSet).subscribe(() -> {
+                newExerciseSets.add(exerciseSet);
+                countDownLatch.countDown();
+            });
+        }
     }
 
     private void showExerciseFragment() {
@@ -153,11 +147,7 @@ public class ExerciseListFragment extends TitledFragment {
         initDaos();
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
         datesWithExerciseDao.findById(dates.getDatesUUID().toString())
-                            .subscribe(datesWithExercise -> {
-                                exerciseList = datesWithExercise.getExerciseList();
-                                exerciseAdapter.setExerciseList(exerciseList);
-                                exerciseAdapter.notifyDataSetChanged();
-                            });
+                            .subscribe(this::initExerciseList);
     }
 
     private void initDaos() {
@@ -169,6 +159,12 @@ public class ExerciseListFragment extends TitledFragment {
                                                    .datesWithExerciseDao();
         exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                          .exerciseWithExerciseSetDao();
+    }
+
+    private void initExerciseList(DatesWithExercise datesWithExercise) {
+        exerciseList = datesWithExercise.getExerciseList();
+        exerciseAdapter.setExerciseList(exerciseList);
+        exerciseAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -197,20 +193,15 @@ public class ExerciseListFragment extends TitledFragment {
                                       .subscribe(exerciseWithExerciseSet -> {
                                           this.exerciseItemCardBinding.executePendingBindings();
                                           this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getExerciseName());
-                                          this.exerciseItemCardBinding.exerciseCard.setOnClickListener(new View.OnClickListener() {
-                                              @Override
-                                              public void onClick(View v) {
-                                                  ((MainScreenActivityCallback)getActivity())
-                                                          .switchFragment(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList())));
-                                              }
-                                          });
+                                          this.exerciseItemCardBinding.exerciseCard.setOnClickListener(v -> ((MainScreenActivityCallback)getActivity())
+                                                  .switchFragment(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList()))));
                                       });
         }
     }
 
     private class ExerciseAdapter extends RecyclerView.Adapter<ExerciseHolder> implements ItemTouchHelperAdapter {
-        List<Exercise> exerciseList;
-        Context context;
+        private List<Exercise> exerciseList;
+        private Context context;
 
         public ExerciseAdapter(List<Exercise> exerciseList, Context context) {
             this.exerciseList = exerciseList;
@@ -237,9 +228,7 @@ public class ExerciseListFragment extends TitledFragment {
 
         @Override
         public void onBindViewHolder(ExerciseHolder exerciseHolder, int position) {
-            Exercise exercise = exerciseList.get(position);
-            //Log.d("exercise id in adapter", exercise.getId().toString());
-            exerciseHolder.bind(exercise);
+            exerciseHolder.bind(exerciseList.get(position));
         }
 
         @Override

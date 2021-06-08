@@ -34,6 +34,8 @@ public class TrainingListFragment extends TitledFragment {
 
     private List<Training> trainingList = new ArrayList<>();
 
+    private MainScreenActivityCallback mainScreenActivityCallback;
+
     private User user;
     private TrainingAdapter trainingAdapter;
 
@@ -57,6 +59,7 @@ public class TrainingListFragment extends TitledFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.mainScreenActivityCallback = (MainScreenActivityCallback) getActivity();
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
         userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
@@ -96,9 +99,7 @@ public class TrainingListFragment extends TitledFragment {
     private void createTrainingAndSwitchFragment() {
         Training training = new Training(user.getUserID());
         trainingDao.create(training)
-                   .subscribe(() -> {
-                       ((MainScreenActivityCallback) getActivity()).switchFragment(TrainingCreationFragment.newInstance(user, training));
-                   });
+                   .subscribe(() -> mainScreenActivityCallback.switchFragment(TrainingCreationFragment.newInstance(user, training)));
     }
 
     @Override
@@ -110,7 +111,6 @@ public class TrainingListFragment extends TitledFragment {
                                          trainingAdapter.setTrainingList(trainingList);
                                          trainingAdapter.notifyDataSetChanged();
                                      });
-        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_tab_button);
     }
 
     public class TrainingAdapter extends RecyclerView.Adapter<TrainingHolder> implements ItemTouchHelperAdapter {
@@ -190,11 +190,12 @@ public class TrainingListFragment extends TitledFragment {
         public void bind(final Training training) {
             trainingItemCardBinding.executePendingBindings();
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
+
             trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
-                ((MainScreenActivityCallback) getActivity()).switchFragment(DatesListFragment.newInstance(training));
+                mainScreenActivityCallback.switchFragment(DatesListFragment.newInstance(training));
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(v -> {
-                ((MainScreenActivityCallback) getActivity()).switchFragment(TrainingCreationFragment.newInstance(user, training));
+                mainScreenActivityCallback.switchFragment(TrainingCreationFragment.newInstance(user, training));
             });
         }
     }
