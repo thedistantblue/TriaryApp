@@ -79,10 +79,11 @@ public class DatesFragment extends TitledFragment {
 
         confirmButton = view.findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(v -> {
-            datesDao.create(dates).subscribe(() -> {
-                FragmentSwitcher.showFragment(this,
-                                              DatesListFragment.newInstance(training));
-            });
+            withAutoDispose(
+                    datesDao.create(dates).subscribe(() -> {
+                        FragmentSwitcher.showFragment(this,
+                                                      DatesListFragment.newInstance(training));
+                    }));
         });
 
         return view;

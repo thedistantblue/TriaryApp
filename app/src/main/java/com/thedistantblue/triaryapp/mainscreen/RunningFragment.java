@@ -56,12 +56,13 @@ public class RunningFragment extends TitledFragment {
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.running_tab_button);
-        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribe(user -> {
-                                         runningList = user.getRunningList();
-                                         runningAdapter.setRunningList(runningList);
-                                         runningAdapter.notifyDataSetChanged();
-                                     });
+        withAutoDispose(
+                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                             .subscribe(user -> {
+                                                 runningList = user.getRunningList();
+                                                 runningAdapter.setRunningList(runningList);
+                                                 runningAdapter.notifyDataSetChanged();
+                                             }));
     }
 
     @Override
@@ -69,12 +70,13 @@ public class RunningFragment extends TitledFragment {
         super.onCreate(savedInstanceState);
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribe(user -> {
-                                         runningList = user.getRunningList();
-                                         runningAdapter.setRunningList(runningList);
-                                         runningAdapter.notifyDataSetChanged();
-                                     });
+        withAutoDispose(
+                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                             .subscribe(user -> {
+                                                 runningList = user.getRunningList();
+                                                 runningAdapter.setRunningList(runningList);
+                                                 runningAdapter.notifyDataSetChanged();
+                                             }));
     }
 
     private void initDaos() {
@@ -145,11 +147,12 @@ public class RunningFragment extends TitledFragment {
 
         @Override
         public void onItemDismiss(int position) {
-            runningDao.delete(runningList.get(position))
-                      .subscribe(() -> {
-                          runningList.remove(position);
-                          notifyItemRemoved(position);
-                      });
+            withAutoDispose(
+                    runningDao.delete(runningList.get(position))
+                              .subscribe(() -> {
+                                  runningList.remove(position);
+                                  notifyItemRemoved(position);
+                              }));
         }
 
         @Override

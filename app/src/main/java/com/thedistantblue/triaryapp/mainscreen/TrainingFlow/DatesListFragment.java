@@ -62,8 +62,9 @@ public class DatesListFragment extends TitledFragment {
         super.onCreate(savedInstanceState);
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         initDaos();
-        trainingWithDatesDao.findById(training.getTrainingUUID().toString())
-                            .subscribe(this::initDatesList);
+        withAutoDispose(
+                trainingWithDatesDao.findById(training.getTrainingUUID().toString())
+                                    .subscribe(this::initDatesList));
     }
 
     private void initDaos() {
@@ -163,10 +164,11 @@ public class DatesListFragment extends TitledFragment {
 
         @Override
         public void onItemDismiss(int position) {
-            datesDao.delete(datesList.get(position)).subscribe(() -> {
-                datesList.remove(position);
-                notifyItemRemoved(position);
-            });
+            withAutoDispose(
+                    datesDao.delete(datesList.get(position)).subscribe(() -> {
+                        datesList.remove(position);
+                        notifyItemRemoved(position);
+                    }));
         }
 
         @Override

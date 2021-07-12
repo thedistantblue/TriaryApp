@@ -124,17 +124,19 @@ public class ExerciseListFragment extends TitledFragment {
         CountDownLatch countDownLatch = new CountDownLatch(5);
         new CallbackThread(countDownLatch, this, getActivity());
 
-        exerciseDao.create(newExercise).subscribe(() -> createExercises(countDownLatch));
+        withAutoDispose(
+                exerciseDao.create(newExercise).subscribe(() -> createExercises(countDownLatch)));
     }
 
     private void createExercises(CountDownLatch countDownLatch) {
         for (int i = 1; i <= 5; i++) {
             ExerciseSet exerciseSet = new ExerciseSet(newExercise.getExerciseUUID());
             exerciseSet.setNumber(i);
-            exerciseSetDao.create(exerciseSet).subscribe(() -> {
-                newExerciseSets.add(exerciseSet);
-                countDownLatch.countDown();
-            });
+            withAutoDispose(
+                    exerciseSetDao.create(exerciseSet).subscribe(() -> {
+                        newExerciseSets.add(exerciseSet);
+                        countDownLatch.countDown();
+                    }));
         }
     }
 
@@ -146,8 +148,9 @@ public class ExerciseListFragment extends TitledFragment {
     private void init() {
         initDaos();
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
-        datesWithExerciseDao.findById(dates.getDatesUUID().toString())
-                            .subscribe(this::initExerciseList);
+        withAutoDispose(
+                datesWithExerciseDao.findById(dates.getDatesUUID().toString())
+                                    .subscribe(this::initExerciseList));
     }
 
     private void initDaos() {
@@ -171,12 +174,13 @@ public class ExerciseListFragment extends TitledFragment {
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_exercises_fragment_name);
-        datesWithExerciseDao.findById(dates.getDatesUUID().toString())
-                            .subscribe(datesWithExercise -> {
-                                exerciseList = datesWithExercise.getExerciseList();
-                                exerciseAdapter.setExerciseList(exerciseList);
-                                exerciseAdapter.notifyDataSetChanged();
-                            });
+        withAutoDispose(
+                datesWithExerciseDao.findById(dates.getDatesUUID().toString())
+                                    .subscribe(datesWithExercise -> {
+                                        exerciseList = datesWithExercise.getExerciseList();
+                                        exerciseAdapter.setExerciseList(exerciseList);
+                                        exerciseAdapter.notifyDataSetChanged();
+                                    }));
     }
 
     private class ExerciseHolder extends RecyclerView.ViewHolder {
@@ -189,13 +193,14 @@ public class ExerciseListFragment extends TitledFragment {
         }
 
         public void bind(final Exercise exercise) {
-            exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
-                                      .subscribe(exerciseWithExerciseSet -> {
-                                          this.exerciseItemCardBinding.executePendingBindings();
-                                          this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getExerciseName());
-                                          this.exerciseItemCardBinding.exerciseCard.setOnClickListener(v -> ((MainScreenActivityCallback)getActivity())
-                                                  .switchFragment(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList()))));
-                                      });
+            withAutoDispose(
+                    exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
+                                              .subscribe(exerciseWithExerciseSet -> {
+                                                  this.exerciseItemCardBinding.executePendingBindings();
+                                                  this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getExerciseName());
+                                                  this.exerciseItemCardBinding.exerciseCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                                                          .switchFragment(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList()))));
+                                              }));
         }
     }
 
@@ -238,11 +243,12 @@ public class ExerciseListFragment extends TitledFragment {
 
         @Override
         public void onItemDismiss(int position) {
-            exerciseDao.delete(exerciseList.get(position))
-                       .subscribe(() -> {
-                           exerciseList.remove(position);
-                           notifyItemRemoved(position);
-                       });
+            withAutoDispose(
+                    exerciseDao.delete(exerciseList.get(position))
+                               .subscribe(() -> {
+                                   exerciseList.remove(position);
+                                   notifyItemRemoved(position);
+                               }));
         }
 
         @Override
