@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleObserver;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 
-public interface AutoDisposable extends LifecycleObserver {
+public interface AutoDisposableLifecycleObserver extends LifecycleObserver {
     void bindTo(Lifecycle lifecycle);
     void add(Disposable disposable);
 }

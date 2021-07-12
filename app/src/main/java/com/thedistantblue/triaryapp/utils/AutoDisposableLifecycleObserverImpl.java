@@ -6,7 +6,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 
-public class AutoDisposableImpl implements AutoDisposable {
+public class AutoDisposableLifecycleObserverImpl implements AutoDisposableLifecycleObserver {
 
     private CompositeDisposable compositeDisposable;
 

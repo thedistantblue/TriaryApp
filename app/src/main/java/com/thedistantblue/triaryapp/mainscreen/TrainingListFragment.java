@@ -22,11 +22,15 @@ import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
+import com.thedistantblue.triaryapp.utils.AutoDisposableLifecycleObserver;
+import com.thedistantblue.triaryapp.utils.AutoDisposableLifecycleObserverImpl;
 import com.thedistantblue.triaryapp.viewmodels.TrainingCardViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class TrainingListFragment extends TitledFragment {
 
@@ -62,8 +66,9 @@ public class TrainingListFragment extends TitledFragment {
         this.mainScreenActivityCallback = (MainScreenActivityCallback) getActivity();
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribe(this::initTrainingList);
+        withAutoDispose(
+                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                             .subscribe(this::initTrainingList));
     }
 
     private void initDaos() {
@@ -98,19 +103,21 @@ public class TrainingListFragment extends TitledFragment {
 
     private void createTrainingAndSwitchFragment() {
         Training training = new Training(user.getUserID());
-        trainingDao.create(training)
-                   .subscribe(() -> mainScreenActivityCallback.switchFragment(TrainingCreationFragment.newInstance(user, training)));
+        withAutoDispose(
+                trainingDao.create(training)
+                           .subscribe(() -> mainScreenActivityCallback.switchFragment(TrainingCreationFragment.newInstance(user, training))));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                     .subscribe(userWithTrainingAndRunning -> {
-                                         trainingList = userWithTrainingAndRunning.getTrainingList();
-                                         trainingAdapter.setTrainingList(trainingList);
-                                         trainingAdapter.notifyDataSetChanged();
-                                     });
+        withAutoDispose(
+                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                             .subscribe(userWithTrainingAndRunning -> {
+                                                 trainingList = userWithTrainingAndRunning.getTrainingList();
+                                                 trainingAdapter.setTrainingList(trainingList);
+                                                 trainingAdapter.notifyDataSetChanged();
+                                             }));
     }
 
     public class TrainingAdapter extends RecyclerView.Adapter<TrainingHolder> implements ItemTouchHelperAdapter {
@@ -154,7 +161,8 @@ public class TrainingListFragment extends TitledFragment {
 
         @Override
         public void onItemDismiss(int position) {
-            trainingDao.delete(trainingList.get(position)).subscribe();
+            withAutoDispose(
+                    trainingDao.delete(trainingList.get(position)).subscribe());
         }
 
         @Override
