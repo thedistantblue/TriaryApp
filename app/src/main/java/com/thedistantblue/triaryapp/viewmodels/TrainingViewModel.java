@@ -5,7 +5,9 @@ import androidx.databinding.ObservableField;
 
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.Setter;
 
 public class TrainingViewModel extends BaseObservable {
@@ -14,16 +16,14 @@ public class TrainingViewModel extends BaseObservable {
 
     @Setter
     private Training training;
+    private final AutoDisposableFragment autoDisposableFragment;
     private final TrainingDao trainingDao;
 
-    public TrainingViewModel(Training training, TrainingDao trainingDao) {
+    public TrainingViewModel(Training training, TrainingDao trainingDao, AutoDisposableFragment autoDisposableFragment) {
         this.training = training;
         this.trainingDao = trainingDao;
+        this.autoDisposableFragment = autoDisposableFragment;
         init();
-    }
-
-    public TrainingViewModel(TrainingDao trainingDao) {
-        this.trainingDao = trainingDao;
     }
 
     private void init() {
@@ -33,8 +33,9 @@ public class TrainingViewModel extends BaseObservable {
     // TODO вернуть Disposable из этих методов для последующего dispose()
     public void save() {
         training.setTrainingName(trainingName.get());
-        trainingDao.save(training).subscribe(() -> {
+        Disposable disposable = trainingDao.save(training).subscribe(() -> {
             // TODO: Добавить тоаст об успешном сохранении
         });
+        autoDisposableFragment.addDisposable(disposable);
     }
 }

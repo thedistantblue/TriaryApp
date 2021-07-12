@@ -9,12 +9,14 @@ import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.Data;
 import lombok.Getter;
 
@@ -38,6 +40,7 @@ public class ExerciseViewModel extends BaseObservable {
     private final Map<Integer, ExerciseSet> setNumberToSetMap;
     private final ExerciseDao exerciseDao;
     private final ExerciseSetDao exerciseSetDao;
+    private final AutoDisposableFragment autoDisposableFragment;
 
     private ExerciseSet first;
     private ExerciseSet second;
@@ -48,11 +51,13 @@ public class ExerciseViewModel extends BaseObservable {
     public ExerciseViewModel(Exercise exercise,
                              List<ExerciseSet> exerciseSets,
                              ExerciseDao exerciseDao,
-                             ExerciseSetDao exerciseSetDao) {
+                             ExerciseSetDao exerciseSetDao,
+                             AutoDisposableFragment autoDisposableFragment) {
         this.exercise = exercise;
         this.setNumberToSetMap = exerciseSets.stream().collect(Collectors.toMap(ExerciseSet::getNumber, Function.identity()));
         this.exerciseDao = exerciseDao;
         this.exerciseSetDao = exerciseSetDao;
+        this.autoDisposableFragment = autoDisposableFragment;
         init();
     }
 
@@ -105,10 +110,14 @@ public class ExerciseViewModel extends BaseObservable {
 
     // TODO вернуть Disposable из этих методов для последующего dispose()
     private void doSave() {
-        exerciseDao.save(exercise).subscribe(() -> {
+        Disposable exerciseDisposable = exerciseDao.save(exercise).subscribe(() -> {
             // TODO: Добавить тоаст об успешном сохранении
         });
-        setNumberToSetMap.values().forEach(exerciseSet -> exerciseSetDao.save(exerciseSet).subscribe());
+        autoDisposableFragment.addDisposable(exerciseDisposable);
+        setNumberToSetMap.values().forEach(exerciseSet -> {
+            Disposable exerciseSetDisposable = exerciseSetDao.save(exerciseSet).subscribe();
+            autoDisposableFragment.addDisposable(exerciseSetDisposable);
+        });
     }
 
 }

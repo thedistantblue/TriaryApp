@@ -69,6 +69,7 @@ public class RunningCreationFragment extends TitledFragment {
         action = (ActionEnum) getArguments().getSerializable(ACTION_KEY);
         runningViewModel = new RunningViewModel();
         runningViewModel.setRunningDao(runningDao);
+        runningViewModel.setAutoDisposableFragment(this);
         runningViewModel.setRunning(running);
         runningViewModel.setAction(action);
     }

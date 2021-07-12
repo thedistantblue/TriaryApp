@@ -7,11 +7,12 @@ import androidx.databinding.Bindable;
 
 import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
 import com.thedistantblue.triaryapp.entities.base.Running;
+import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,8 @@ public class RunningViewModel extends BaseObservable {
 
     @Setter
     private RunningDao runningDao;
+    @Setter
+    private AutoDisposableFragment autoDisposableFragment;
 
     @Getter
     @Setter
@@ -134,9 +137,10 @@ public class RunningViewModel extends BaseObservable {
     public void save() {
         switch (action) {
             case CREATE: {
-                runningDao.create(running).subscribe(() -> {
+                Disposable disposable = runningDao.create(running).subscribe(() -> {
                     Log.d("RUNNING_CREATION_TAG", "RUNNING_CREATED");
                 });
+                autoDisposableFragment.addDisposable(disposable);
                 break;
             }
             case UPDATE: {
@@ -147,6 +151,7 @@ public class RunningViewModel extends BaseObservable {
     }
 
     public void update() {
-        runningDao.save(running).subscribe();
+        Disposable disposable = runningDao.save(running).subscribe();
+        autoDisposableFragment.addDisposable(disposable);
     }
 }

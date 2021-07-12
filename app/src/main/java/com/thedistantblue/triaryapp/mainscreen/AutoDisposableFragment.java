@@ -22,4 +22,8 @@ public class AutoDisposableFragment extends Fragment {
         super.onCreate(savedInstanceState);
         observer.bindTo(getLifecycle());
     }
+
+    public void addDisposable(Disposable disposable) {
+        observer.add(disposable);
+    }
 }

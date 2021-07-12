@@ -65,7 +65,7 @@ public class ExerciseFragment extends TitledFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
-        ExerciseViewModel exerciseViewModel = new ExerciseViewModel(exercise, exerciseSetList, exerciseDao, exerciseSetDao);
+        ExerciseViewModel exerciseViewModel = new ExerciseViewModel(exercise, exerciseSetList, exerciseDao, exerciseSetDao, this);
         binding.setViewModel(exerciseViewModel);
         binding.notifyChange();
         return binding.getRoot();

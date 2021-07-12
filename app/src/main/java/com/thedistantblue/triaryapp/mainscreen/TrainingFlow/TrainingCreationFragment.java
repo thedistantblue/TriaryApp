@@ -47,7 +47,7 @@ public class TrainingCreationFragment extends TitledFragment {
         super.onCreate(savedInstanceState);
         TrainingDao trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
         Training training = (Training) getArguments().getSerializable(TRAINING_KEY);
-        trainingViewModel = new TrainingViewModel(training, trainingDao);
+        trainingViewModel = new TrainingViewModel(training, trainingDao, this);
     }
 
     @Override
