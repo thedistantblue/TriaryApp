@@ -7,6 +7,7 @@
     <string name="local_button_text">Оффлайн</string>
     <string name="training_tab_button">Тренировка</string>
     <string name="running_tab_button">Бег</string>
+    <string name="training_list_fragment_name">Список тренировок</string>
     <string name="training_exercises_fragment_name">Упражнения</string>
     <string name="create_training_fragment_name">Создать тренировку</string>
     <string name="training_dates_fragment_name">Даты тренировки</string>

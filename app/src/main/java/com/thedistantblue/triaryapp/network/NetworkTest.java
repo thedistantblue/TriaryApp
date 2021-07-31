@@ -13,15 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
+import com.thedistantblue.triaryapp.database.sqlite.DAO;
+import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.entities.base.User;
+import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,26 +32,18 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okio.BufferedSink;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NetworkTest extends AppCompatActivity {
 
     private static final String EXCHANGE_NAME = "testExchange1";
     private static final String QUEUE_NAME = "testQueue1";
+
+    private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
     public String toPrettyJson(String json) {
         JsonParser parser = new JsonParser();
@@ -139,13 +132,18 @@ public class NetworkTest extends AppCompatActivity {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
             Gson gson = new Gson();
-            User user = new User(1);
-            List<Training> trainingList = DAO.get(getApplicationContext()).getTrainingsList(user);
-            String trainingString = gson.toJson(trainingList);
-            Log.d("JSON from training: ", trainingString);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            bw.write(trainingString);
-            bw.flush();
+            User user = new User();
+            userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                         .subscribeOn(Schedulers.io())
+                                         .observeOn(AndroidSchedulers.mainThread())
+                                         .subscribe(userWithTrainingAndRunning -> {
+                                             List<Training> trainingList = userWithTrainingAndRunning.getTrainingList();
+                                             String trainingString = gson.toJson(trainingList);
+                                             Log.d("JSON from training: ", trainingString);
+                                             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+                                             bw.write(trainingString);
+                                             bw.flush();
+                                         });
             return String.valueOf(connection.getResponseCode());
         } catch (IOException exc) {
             exc.printStackTrace();

@@ -13,18 +13,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBinding;
-import com.thedistantblue.triaryapp.entities.Running;
-import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.entities.base.Running;
+import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.RunningFragment;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
-import java.util.Date;
-
-public class RunningCreationFragment extends Fragment {
+public class RunningCreationFragment extends TitledFragment {
 
     private static final String USER_KEY = "user";
     private static final String RUNNING_KEY = "running";
@@ -32,7 +32,7 @@ public class RunningCreationFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
 
-    private DAO dao;
+    private RunningDao runningDao;
     private User user;
     private Running running;
     private ActionEnum action;
@@ -44,7 +44,7 @@ public class RunningCreationFragment extends Fragment {
         if (running != null) {
             args.putSerializable(RUNNING_KEY, running);
         } else {
-            args.putSerializable(RUNNING_KEY, new Running(user.getId()));
+            args.putSerializable(RUNNING_KEY, new Running(1));
         }
         args.putSerializable(USER_KEY, user);
         args.putSerializable(ACTION_KEY, action);
@@ -55,14 +55,21 @@ public class RunningCreationFragment extends Fragment {
     }
 
     @Override
+    public int getTitle() {
+        return R.string.create_running_fragment_name;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
+        runningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                         .runningDao();
         user = (User) getArguments().getSerializable(USER_KEY);
         running = (Running) getArguments().getSerializable(RUNNING_KEY);
         action = (ActionEnum) getArguments().getSerializable(ACTION_KEY);
         runningViewModel = new RunningViewModel();
-        runningViewModel.setDao(dao);
+        runningViewModel.setRunningDao(runningDao);
+        runningViewModel.setAutoDisposableFragment(this);
         runningViewModel.setRunning(running);
         runningViewModel.setAction(action);
     }
@@ -82,18 +89,18 @@ public class RunningCreationFragment extends Fragment {
         });
 
         binding.runningCreateButton.setOnClickListener(v -> {
-            if (action.equals("create")) {
+            if (action.equals(ActionEnum.CREATE)) {
                 if (running.getRunningName() == null || running.getRunningName().equals("")) {
                     Toast.makeText(getActivity(), R.string.enter_running_name_toast, Toast.LENGTH_SHORT).show();
                 } else {
                     runningViewModel.save();
                     Toast.makeText(getActivity(), R.string.running_created_toast, Toast.LENGTH_SHORT).show();
-                    ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
+                    ((MainScreenActivityCallback) getActivity()).switchFragment(RunningFragment.newInstance(user));
                 }
             } else {
                 runningViewModel.update();
                 Toast.makeText(getActivity(), R.string.running_updated_toast, Toast.LENGTH_SHORT).show();
-                ((MainScreenActivityCallback) getActivity()).manageFragments(RunningFragment.newInstance(user), R.string.running_tab_button);
+                ((MainScreenActivityCallback) getActivity()).switchFragment(RunningFragment.newInstance(user));
             }
         });
 
@@ -107,7 +114,7 @@ public class RunningCreationFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_DATE) {
-            Date date = (Date) data.getSerializableExtra(DateFragment.EXTRA_DATE);
+            long date = (long) data.getSerializableExtra(DateFragment.EXTRA_DATE);
             runningViewModel.setRunningDate(date);
         }
     }

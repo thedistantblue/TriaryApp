@@ -4,46 +4,38 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseFragmentLayoutBinding;
-import com.thedistantblue.triaryapp.entities.Dates;
-import com.thedistantblue.triaryapp.entities.Exercise;
-import com.thedistantblue.triaryapp.entities.Set;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
-import com.thedistantblue.triaryapp.utils.ActionEnum;
+import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class ExerciseFragment extends Fragment {
+public class ExerciseFragment extends TitledFragment {
 
-    private static final String DATES_KEY = "dates";
     private static final String EXERCISE_KEY = "exercise";
-    private static final String ACTION_CODE = "action";
+    private static final String EXERCISE_LIST_KEY = "exerciseList";
 
-    private DAO dao;
+    private ExerciseFragmentLayoutBinding binding;
+    private ExerciseDao exerciseDao;
+    private ExerciseSetDao exerciseSetDao;
     private Exercise exercise;
-    private Dates dates;
+    private List<ExerciseSet> exerciseSetList;
 
-    private ActionEnum action;
-
-    public static ExerciseFragment newInstance(Dates dates, Exercise exercise, ActionEnum action) {
+    public static ExerciseFragment newInstance(Exercise exercise, ArrayList<ExerciseSet> exerciseSets) {
         Bundle args = new Bundle();
-
-        if (exercise != null) {args.putSerializable(EXERCISE_KEY, exercise);}
-        else {args.putSerializable(EXERCISE_KEY, new Exercise(dates.getId()));}
-        args.putSerializable(ACTION_CODE, action);
-        if (dates != null) {args.putSerializable(DATES_KEY, dates);}
+        args.putSerializable(EXERCISE_KEY, exercise);
+        args.putParcelableArrayList(EXERCISE_LIST_KEY, exerciseSets);
 
         ExerciseFragment fragment = new ExerciseFragment();
         fragment.setArguments(args);
@@ -51,38 +43,31 @@ public class ExerciseFragment extends Fragment {
     }
 
     @Override
+    public int getTitle() {
+        return R.string.create_exercise_fragment_name;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
-        dates = (Dates) getArguments().getSerializable(DATES_KEY);
+        initDaos();
         exercise = (Exercise) getArguments().getSerializable(EXERCISE_KEY);
-        action = (ActionEnum) getArguments().getSerializable(ACTION_CODE);
+        exerciseSetList = getArguments().getParcelableArrayList(EXERCISE_LIST_KEY);
+    }
+
+    private void initDaos() {
+        exerciseDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                          .exerciseDao();
+        exerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                             .exerciseSetDao();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        ExerciseFragmentLayoutBinding binding =
-                DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
-
-        final ExerciseViewModel exerciseViewModel = new ExerciseViewModel();
-        exerciseViewModel.setExercise(exercise);
-        exerciseViewModel.setDao(dao);
-        exerciseViewModel.setAction(action);
-        if (action.equals(ActionEnum.CREATE)) {
-            exerciseViewModel.setEmptyExerciseSets();
-        } else {
-            exerciseViewModel.setExerciseSets(exercise.getExerciseSets());
-        }
-        binding.exerciseActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exerciseViewModel.action();
-                ((MainScreenActivityCallback) getActivity()).manageFragments(ExerciseListFragment.newInstance(dates), R.string.training_exercises_fragment_name);
-            }
-        });
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.exercise_fragment_layout, parent, false);
+        ExerciseViewModel exerciseViewModel = new ExerciseViewModel(exercise, exerciseSetList, exerciseDao, exerciseSetDao, this);
         binding.setViewModel(exerciseViewModel);
-
+        binding.notifyChange();
         return binding.getRoot();
     }
 

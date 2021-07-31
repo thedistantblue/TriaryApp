@@ -1,74 +1,41 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
 
-import com.thedistantblue.triaryapp.database.DAO;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.utils.ActionEnum;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
 
-import lombok.Getter;
+import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.Setter;
 
 public class TrainingViewModel extends BaseObservable {
+
+    public final ObservableField<String> trainingName = new ObservableField<>();
+
+    @Setter
     private Training training;
+    private final AutoDisposableFragment autoDisposableFragment;
+    private final TrainingDao trainingDao;
 
-    @Setter
-    private DAO dao;
-
-    @Getter
-    @Setter
-    private ActionEnum action;
-
-    public Training getTraining() {
-        return training;
-    }
-
-    public void setTraining(Training training) {
+    public TrainingViewModel(Training training, TrainingDao trainingDao, AutoDisposableFragment autoDisposableFragment) {
         this.training = training;
-        notifyChange(); // ВНИМАНИЕ - ЭТО ИСПРАВИЛО ТО, ЧТО ПОСЛЕ СВАЙПА ОДНОГО ЭЛЕМЕНТА
-                        // И ПОСЛЕДУЮЩЕГО СВАЙПА ДРУГОГО (ВСЕ ЭТО С ОТМЕНАМИ УДАЛЕНИЯ)
-                        // ДРУГОЙ ИТЕМ БЫЛ С ДАННЫМИ ПЕРВОГО
+        this.trainingDao = trainingDao;
+        this.autoDisposableFragment = autoDisposableFragment;
+        init();
     }
 
-    @Bindable
-    public String getTrainingDate() {
-        return "test";
-        //return training.getTrainingDate().toString();
+    private void init() {
+        trainingName.set(training.getTrainingName());
     }
 
-    /*
-    public void setTrainingDate(Date date) {
-        training.setTrainingDate(date.getTime());
-        notifyChange();
-    }
-    */
-
-
-    public void setTrainingName(String name) {
-        training.setTrainingName(name);
-        notifyChange();
-    }
-
-    @Bindable
-    public String getTrainingName() {
-        return training.getTrainingName();
-    }
-
-    public void action() {
-        switch (action) {
-            case CREATE: {
-                this.save();
-                break;
-            }
-            case UPDATE: {
-                dao.updateTraining(training);
-                break;
-            }
-        }
-    }
-
+    // TODO вернуть Disposable из этих методов для последующего dispose()
     public void save() {
-        dao.addTraining(training);
+        training.setTrainingName(trainingName.get());
+        Disposable disposable = trainingDao.save(training).subscribe(() -> {
+            // TODO: Добавить тоаст об успешном сохранении
+        });
+        autoDisposableFragment.addDisposable(disposable);
     }
 }

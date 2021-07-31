@@ -1,21 +1,21 @@
-package com.thedistantblue.triaryapp.database;
+package com.thedistantblue.triaryapp.database.sqlite;
 
 import android.content.Context;
 
-import com.thedistantblue.triaryapp.entities.Dates;
-import com.thedistantblue.triaryapp.entities.Exercise;
-import com.thedistantblue.triaryapp.entities.Running;
-import com.thedistantblue.triaryapp.entities.Set;
-import com.thedistantblue.triaryapp.entities.Training;
-import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Exercise;
+import com.thedistantblue.triaryapp.entities.base.Running;
+import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
+import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.entities.base.User;
 
 import java.util.List;
 
 public interface DAO {
 
-    static DAO get(Context context) {
+/*    static DAO get(Context context) {
         return LocalDAO.get(context);
-    }
+    }*/
 
     void addUser(User user);
 
@@ -25,7 +25,7 @@ public interface DAO {
 
     void addExercise(Exercise exercise);
 
-    void addSet(Set set);
+    void addSet(ExerciseSet exerciseSet);
 
     void addRunning(Running running);
 
@@ -41,9 +41,9 @@ public interface DAO {
 
     List<Exercise> getExercisesList(Dates dates);
 
-    Set getSet(Exercise exercise, int number);
+    ExerciseSet getSet(Exercise exercise, int number);
 
-    List<Set> getSetsList(Exercise exercise);
+    List<ExerciseSet> getSetsList(Exercise exercise);
 
     List<Dates> getDates(Training training);
 
@@ -55,7 +55,7 @@ public interface DAO {
 
     void updateExercise(Exercise exercise);
 
-    void updateSet(Set set);
+    void updateSet(ExerciseSet exerciseSet);
 
     void updateRunning(Running running);
 
@@ -67,7 +67,7 @@ public interface DAO {
 
     void deleteExercise(Exercise exercise);
 
-    void deleteSet(Set set);
+    void deleteSet(ExerciseSet exerciseSet);
 
     void deleteRunning(Running running);
 }

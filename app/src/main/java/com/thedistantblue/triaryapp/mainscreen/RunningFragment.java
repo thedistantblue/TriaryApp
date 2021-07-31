@@ -13,27 +13,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
-import com.thedistantblue.triaryapp.entities.Running;
-import com.thedistantblue.triaryapp.entities.User;
+import com.thedistantblue.triaryapp.entities.base.Running;
+import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningCreationFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
-public class RunningFragment extends Fragment {
+public class RunningFragment extends TitledFragment {
     private static final String USER_KEY = "user";
 
-    private DAO dao;
+    private RunningDao runningDao;
+    private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
     private User user;
-    private List<Running> runningList;
+    private List<Running> runningList = new ArrayList<>();
     private RunningFragmentLayoutBinding binding;
-
+    private RunningAdapter runningAdapter;
 
     public static RunningFragment newInstance(User user) {
         Bundle args = new Bundle();
@@ -45,27 +48,51 @@ public class RunningFragment extends Fragment {
     }
 
     @Override
+    public int getTitle() {
+        return R.string.running_tab_button;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         ((MainScreenActivityCallback) getActivity()).setTitle(R.string.running_tab_button);
-        ((RunningAdapter)binding.runningRecyclerView.getAdapter()).setRunningList(dao.getRunningList(user));
+        withAutoDispose(
+                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                             .subscribe(user -> {
+                                                 runningList = user.getRunningList();
+                                                 runningAdapter.setRunningList(runningList);
+                                                 runningAdapter.notifyDataSetChanged();
+                                             }));
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dao = DAO.get(getActivity());
+        initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
-        runningList = dao.getRunningList(user);
+        withAutoDispose(
+                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                             .subscribe(user -> {
+                                                 runningList = user.getRunningList();
+                                                 runningAdapter.setRunningList(runningList);
+                                                 runningAdapter.notifyDataSetChanged();
+                                             }));
+    }
+
+    private void initDaos() {
+        runningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                         .runningDao();
+        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                                            .userWithTrainingAndRunningDao();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        binding =
-                DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
 
+        runningAdapter = new RunningAdapter(runningList, getActivity());
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.runningRecyclerView.setAdapter(new RunningAdapter(runningList, getActivity()));
+        binding.runningRecyclerView.setAdapter(runningAdapter);
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((RunningAdapter) binding.runningRecyclerView.getAdapter());
@@ -74,35 +101,15 @@ public class RunningFragment extends Fragment {
         touchHelper.attachToRecyclerView(binding.runningRecyclerView);
 
         binding.runningAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                .manageFragments
-                        (RunningCreationFragment.newInstance(user, null, ActionEnum.CREATE), R.string.create_running_fragment_name));
+                .switchFragment
+                        (RunningCreationFragment.newInstance(user, null, ActionEnum.CREATE)));
 
         return binding.getRoot();
     }
 
-    private class RunningHolder extends RecyclerView.ViewHolder {
-        RunningItemCardBinding runningItemCardBinding;
-
-        public RunningHolder(RunningItemCardBinding runningItemCardBinding) {
-            super(runningItemCardBinding.getRoot());
-            this.runningItemCardBinding = runningItemCardBinding;
-            runningItemCardBinding.setViewModel(new RunningViewModel());
-        }
-
-        public void bind(final Running running) {
-            runningItemCardBinding.getViewModel().setRunning(running);
-            runningItemCardBinding.executePendingBindings();
-            runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                    .manageFragments
-                            (RunningCreationFragment.newInstance(user, running, ActionEnum.UPDATE), R.string.update_running_fragment_name));
-        }
-    }
-
-    private class RunningAdapter extends RecyclerView.Adapter<RunningHolder>
-            implements ItemTouchHelperAdapter {
-
-        List<Running> runningList;
-        Context context;
+    private class RunningAdapter extends RecyclerView.Adapter<RunningHolder> implements ItemTouchHelperAdapter {
+        private List<Running> runningList;
+        private Context context;
 
         public RunningAdapter(List<Running> runningList, Context context) {
             this.runningList = runningList;
@@ -140,9 +147,12 @@ public class RunningFragment extends Fragment {
 
         @Override
         public void onItemDismiss(int position) {
-            dao.deleteRunning(runningList.get(position));
-            runningList.remove(position);
-            notifyItemRemoved(position);
+            withAutoDispose(
+                    runningDao.delete(runningList.get(position))
+                              .subscribe(() -> {
+                                  runningList.remove(position);
+                                  notifyItemRemoved(position);
+                              }));
         }
 
         @Override
@@ -163,6 +173,23 @@ public class RunningFragment extends Fragment {
         @Override
         public void onRefresh(int position) {
             this.notifyItemChanged(position);
+        }
+    }
+
+    private class RunningHolder extends RecyclerView.ViewHolder {
+        private final RunningItemCardBinding runningItemCardBinding;
+
+        public RunningHolder(RunningItemCardBinding runningItemCardBinding) {
+            super(runningItemCardBinding.getRoot());
+            this.runningItemCardBinding = runningItemCardBinding;
+            runningItemCardBinding.setViewModel(new RunningViewModel());
+        }
+
+        public void bind(final Running running) {
+            runningItemCardBinding.getViewModel().setRunning(running);
+            runningItemCardBinding.executePendingBindings();
+            runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                    .switchFragment(RunningCreationFragment.newInstance(user, running, ActionEnum.UPDATE)));
         }
     }
 }

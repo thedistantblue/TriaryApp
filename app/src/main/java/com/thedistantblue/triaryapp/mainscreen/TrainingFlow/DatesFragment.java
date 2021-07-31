@@ -13,16 +13,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.DAO;
-import com.thedistantblue.triaryapp.entities.Dates;
-import com.thedistantblue.triaryapp.entities.Training;
+import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
+import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
+import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Training;
+import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.utils.FragmentSwitcher;
 import com.thedistantblue.triaryapp.utils.TriaryDateFormat;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
-public class DatesFragment extends Fragment {
+public class DatesFragment extends TitledFragment {
 
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
@@ -32,7 +33,7 @@ public class DatesFragment extends Fragment {
     private Button confirmButton;
     private Training training;
     private Dates dates;
-    private DAO dao;
+    private DatesDao datesDao;
 
     public static DatesFragment newInstance(Training training) {
         Bundle args = new Bundle();
@@ -44,12 +45,22 @@ public class DatesFragment extends Fragment {
     }
 
     @Override
+    public int getTitle() {
+        return R.string.create_date_fragment;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initDaos();
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
-        dao = DAO.get(getActivity());
-        dates = new Dates(training.getId());
-        dates.setDatesTrainingUUID(training.getId());
+        dates = new Dates(training.getTrainingUUID());
+        dates.setDatesTrainingUUID(training.getTrainingUUID());
+    }
+
+    private void initDaos() {
+        datesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
+                                       .datesDao();
     }
 
     @Override
@@ -68,8 +79,11 @@ public class DatesFragment extends Fragment {
 
         confirmButton = view.findViewById(R.id.confirm_button);
         confirmButton.setOnClickListener(v -> {
-            dao.addDates(dates);
-            FragmentSwitcher.showFragment(this, DatesListFragment.newInstance(training), R.string.training_dates_fragment_name);
+            withAutoDispose(
+                    datesDao.create(dates).subscribe(() -> {
+                        FragmentSwitcher.showFragment(this,
+                                                      DatesListFragment.newInstance(training));
+                    }));
         });
 
         return view;
