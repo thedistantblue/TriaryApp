@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
@@ -22,18 +22,13 @@ import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
 import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
-import com.thedistantblue.triaryapp.utils.AutoDisposableLifecycleObserver;
-import com.thedistantblue.triaryapp.utils.AutoDisposableLifecycleObserverImpl;
 import com.thedistantblue.triaryapp.viewmodels.TrainingCardViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.rxjava3.disposables.Disposable;
-
 public class TrainingListFragment extends TitledFragment {
-
     private static final String USER_KEY = "user";
 
     private List<Training> trainingList = new ArrayList<>();

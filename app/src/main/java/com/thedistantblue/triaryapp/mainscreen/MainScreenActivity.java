@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thedistantblue.triaryapp.R;
-
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.database.room.database.utils.ObserverFactory;
@@ -49,7 +48,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
     }
 
     private void startApplication(User user, BottomNavigationView nav) {
-        switchFragment(TrainingListFragment.newInstance(user));
+        switchFragment(new MainScreenFragment());
 
         nav.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
@@ -111,7 +110,4 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         userDao.create(user).subscribe();
     }
 
-    public void setTitle(String title) {
-        getSupportActionBar().setTitle(title);
-    }
 }

@@ -7,14 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
+import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
