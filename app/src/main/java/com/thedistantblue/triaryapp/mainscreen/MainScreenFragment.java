@@ -12,11 +12,23 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.entities.base.User;
 
 public class MainScreenFragment extends TitledFragment {
 
+    private static final String USER_KEY = "user";
+
     private ViewPager2 viewPager;
     private MainScreenFragmentStateAdapter stateAdapter;
+
+    public static MainScreenFragment newInstance(User user) {
+        Bundle args = new Bundle();
+        args.putSerializable(USER_KEY, user);
+
+        MainScreenFragment fragment = new MainScreenFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -28,19 +40,29 @@ public class MainScreenFragment extends TitledFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        stateAdapter = new MainScreenFragmentStateAdapter(this);
+        User user = (User) getArguments().getSerializable(USER_KEY);
+        stateAdapter = new MainScreenFragmentStateAdapter(this, user);
         viewPager = view.findViewById(R.id.pager);
         viewPager.setAdapter(stateAdapter);
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabLayout,
                               viewPager,
-                              (tab, position) -> tab.setText("OBJECT " + position))
+                              this::setTabTitle)
                 .attach();
+    }
+
+    private void setTabTitle(TabLayout.Tab tab, int position) {
+        if (position == 0) {
+            tab.setText(R.string.training_tab_button);
+        }
+        if (position == 1) {
+            tab.setText(R.string.running_tab_button);
+        }
     }
 
     @Override
     public int getTitle() {
-        return R.string.running_tab_button;
+        return R.string.main_screen_fragment_workouts;
     }
 }

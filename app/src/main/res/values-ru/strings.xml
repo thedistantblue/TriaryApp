@@ -5,8 +5,8 @@
     <string name="date_text_view_hint">Дата не выбрана</string>
     <string name="sign_in_button_text">Войти</string>
     <string name="local_button_text">Оффлайн</string>
-    <string name="training_tab_button">Тренировка</string>
-    <string name="running_tab_button">Бег</string>
+    <string name="training_tab_button">Силовые</string>
+    <string name="running_tab_button">Кардио</string>
     <string name="training_list_fragment_name">Список тренировок</string>
     <string name="training_exercises_fragment_name">Упражнения</string>
     <string name="create_training_fragment_name">Создать тренировку</string>
@@ -43,4 +43,5 @@
     <string name="speed">Скорость, км/ч</string>
     <string name="running_time">Время бега, минуты</string>
     <string name="calories_lost">Потеряно калорий</string>
+    <string name="main_screen_fragment_workouts">Тренировки</string>
 </resources>

@@ -6,13 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.thedistantblue.triaryapp.entities.base.User;
+
 public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
 
-    private final TitledFragment trainingFragment = new TrainingListFragment();
-    private final TitledFragment runningFragment = new RunningFragment();
+    private final TitledFragment trainingFragment;
+    private final TitledFragment runningFragment;
 
-    public MainScreenFragmentStateAdapter(@NonNull Fragment fragment) {
-        super(fragment);
+    public MainScreenFragmentStateAdapter(@NonNull MainScreenFragment mainScreenFragment,
+                                          @NonNull User user) {
+        super(mainScreenFragment);
+        this.trainingFragment = TrainingListFragment.newInstance(user);
+        this.runningFragment = RunningFragment.newInstance(user);
     }
 
     @NonNull
@@ -27,10 +32,10 @@ public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
 
     private TitledFragment getFragmentForPosition(int position) {
         if (position == 0) {
-            return runningFragment;
+            return trainingFragment;
         }
         if (position == 1) {
-            return trainingFragment;
+            return runningFragment;
         }
         throw new IllegalArgumentException("No fragment for position " + position);
     }

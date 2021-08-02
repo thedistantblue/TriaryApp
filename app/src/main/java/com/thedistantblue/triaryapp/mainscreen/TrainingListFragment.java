@@ -61,6 +61,9 @@ public class TrainingListFragment extends TitledFragment {
         this.mainScreenActivityCallback = (MainScreenActivityCallback) getActivity();
         initDaos();
         user = (User) getArguments().getSerializable(USER_KEY);
+        if (user == null) {
+            user = new User();
+        }
         withAutoDispose(
                 userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
                                              .subscribe(this::initTrainingList));

@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/layout/main_screen_layout.xml" value="0.1234375" />
+        <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/drawable-anydpi/tab_running.xml" value="0.10069444444444445" />
+        <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/drawable/tab_background.xml" value="0.10069444444444445" />
+        <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/layout/main_screen_layout.xml" value="0.1" />
         <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/layout/main_screen_relative_layout.xml" value="0.1" />
-        <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/layout/main_screen_tab_layout.xml" value="0.1234375" />
+        <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/layout/main_screen_tab_layout.xml" value="0.1" />
         <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/layout/start_layout.xml" value="0.1234375" />
+        <entry key="..\:/Users/DistantBlue/Desktop/Android/TriaryApp/TriaryApp/app/src/main/res/menu/main_screen_tabs.xml" value="0.1234375" />
       </map>
     </option>
   </component>
