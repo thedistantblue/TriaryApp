@@ -1,15 +1,14 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
@@ -25,7 +24,6 @@ import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFrag
 import com.thedistantblue.triaryapp.viewmodels.TrainingCardViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class TrainingListFragment extends AutoDisposableFragment {
@@ -36,7 +34,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
     private MainScreenActivityCallback mainScreenActivityCallback;
 
     private User user;
-    private TrainingAdapter trainingAdapter;
+    private TrainingListItemAdapter trainingAdapter;
 
     private TrainingDao trainingDao;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
@@ -73,20 +71,19 @@ public class TrainingListFragment extends AutoDisposableFragment {
 
     private void initTrainingList(UserWithTrainingAndRunning userWithTrainingAndRunning) {
         trainingList = userWithTrainingAndRunning.getTrainingList();
-        trainingAdapter.setTrainingList(trainingList);
-        trainingAdapter.notifyDataSetChanged();
+        trainingAdapter.setObjectsList(trainingList);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         TrainingFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.training_fragment_layout, parent, false);
 
-        this.trainingAdapter = new TrainingAdapter(trainingList, getActivity());
+        this.trainingAdapter = new TrainingListItemAdapter(trainingDao, trainingList, this);
         binding.trainingRecyclerView.setAdapter(this.trainingAdapter);
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.trainingAddButton.setOnClickListener(v -> createTrainingAndSwitchFragment());
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((TrainingAdapter) binding.trainingRecyclerView.getAdapter());
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((TrainingListItemAdapter) binding.trainingRecyclerView.getAdapter());
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(binding.trainingRecyclerView);
@@ -108,29 +105,19 @@ public class TrainingListFragment extends AutoDisposableFragment {
                 userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
                                              .subscribe(userWithTrainingAndRunning -> {
                                                  trainingList = userWithTrainingAndRunning.getTrainingList();
-                                                 trainingAdapter.setTrainingList(trainingList);
-                                                 trainingAdapter.notifyDataSetChanged();
+                                                 trainingAdapter.setObjectsList(trainingList);
                                              }));
     }
 
-    public class TrainingAdapter extends RecyclerView.Adapter<TrainingHolder> implements ItemTouchHelperAdapter {
-        private List<Training> trainingList;
-        private Context context;
+    public class TrainingListItemAdapter extends ListItemAdapter<Training, TrainingHolder, TrainingDao> {
 
-        public TrainingAdapter(List<Training> trainingList, Context context) {
-            this.trainingList = trainingList;
-            this.context = context;
+        public TrainingListItemAdapter(TrainingDao trainingDao,
+                                       List<Training> trainingList,
+                                       AutoDisposableFragment fragment) {
+            super(trainingDao, fragment, trainingList);
         }
 
-        @Override
-        public Context getContext() {
-            return this.context;
-        }
-
-        public void setTrainingList(List<Training> trainingList) {
-            this.trainingList = trainingList;
-        }
-
+        @NonNull
         @Override
         public TrainingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflate = LayoutInflater.from(getActivity());
@@ -140,50 +127,13 @@ public class TrainingListFragment extends AutoDisposableFragment {
 
             return new TrainingHolder(trainingItemCardBinding);
         }
-
-        @Override
-        public void onBindViewHolder(TrainingHolder trainingHolder, int position) {
-            Training training = trainingList.get(position);
-            trainingHolder.bind(training);
-        }
-
-        @Override
-        public int getItemCount() {
-            return trainingList.size();
-        }
-
-        @Override
-        public void onItemDismiss(int position) {
-            withAutoDispose(
-                    trainingDao.delete(trainingList.get(position)).subscribe());
-        }
-
-        @Override
-        public boolean onItemMove(int fromPosition, int toPosition) {
-            if (fromPosition < toPosition) {
-                for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(trainingList, i, i + 1);
-                }
-            } else {
-                for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(trainingList, i, i - 1);
-                }
-            }
-            notifyItemMoved(fromPosition, toPosition);
-            return true;
-        }
-
-        @Override
-        public void onRefresh(int position) {
-            this.notifyItemChanged(position);
-        }
     }
 
-    public class TrainingHolder extends RecyclerView.ViewHolder {
+    public class TrainingHolder extends ListItemHolder<Training, TrainingItemCardBinding> {
         private final TrainingItemCardBinding trainingItemCardBinding;
 
         private TrainingHolder(TrainingItemCardBinding trainingItemCardBinding) {
-            super(trainingItemCardBinding.getRoot());
+            super(trainingItemCardBinding);
             this.trainingItemCardBinding = trainingItemCardBinding;
             this.trainingItemCardBinding.setViewModel(new TrainingCardViewModel());
         }

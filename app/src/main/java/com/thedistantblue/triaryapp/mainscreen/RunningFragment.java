@@ -1,15 +1,14 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
@@ -24,7 +23,6 @@ import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RunningFragment extends AutoDisposableFragment {
@@ -35,7 +33,7 @@ public class RunningFragment extends AutoDisposableFragment {
     private User user;
     private List<Running> runningList = new ArrayList<>();
     private RunningFragmentLayoutBinding binding;
-    private RunningAdapter runningAdapter;
+    private RunningListItemAdapter runningAdapter;
 
     public static RunningFragment newInstance(User user) {
         Bundle args = new Bundle();
@@ -53,8 +51,7 @@ public class RunningFragment extends AutoDisposableFragment {
                 userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
                                              .subscribe(user -> {
                                                  runningList = user.getRunningList();
-                                                 runningAdapter.setRunningList(runningList);
-                                                 runningAdapter.notifyDataSetChanged();
+                                                 runningAdapter.setObjectsList(runningList);
                                              }));
     }
 
@@ -70,7 +67,7 @@ public class RunningFragment extends AutoDisposableFragment {
                 userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
                                              .subscribe(user -> {
                                                  runningList = user.getRunningList();
-                                                 runningAdapter.setRunningList(runningList);
+                                                 runningAdapter.setObjectsList(runningList);
                                                  runningAdapter.notifyDataSetChanged();
                                              }));
     }
@@ -86,12 +83,12 @@ public class RunningFragment extends AutoDisposableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
 
-        runningAdapter = new RunningAdapter(runningList, getActivity());
+        runningAdapter = new RunningListItemAdapter(runningDao, runningList, this);
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.runningRecyclerView.setAdapter(runningAdapter);
 
         ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback((RunningAdapter) binding.runningRecyclerView.getAdapter());
+                new SimpleItemTouchHelperCallback((RunningListItemAdapter) binding.runningRecyclerView.getAdapter());
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(binding.runningRecyclerView);
@@ -103,23 +100,15 @@ public class RunningFragment extends AutoDisposableFragment {
         return binding.getRoot();
     }
 
-    private class RunningAdapter extends RecyclerView.Adapter<RunningHolder> implements ItemTouchHelperAdapter {
-        private List<Running> runningList;
-        private Context context;
+    private class RunningListItemAdapter extends ListItemAdapter<Running, RunningHolder, RunningDao> {
 
-        public RunningAdapter(List<Running> runningList, Context context) {
-            this.runningList = runningList;
-            this.context = context;
+        public RunningListItemAdapter(RunningDao runningDao,
+                                      List<Running> runningList,
+                                      AutoDisposableFragment fragment) {
+            super(runningDao, fragment, runningList);
         }
 
-        public Context getContext() {
-            return this.context;
-        }
-
-        public void setRunningList(List<Running> runningList) {
-            this.runningList = runningList;
-        }
-
+        @NonNull
         @Override
         public RunningHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflate = LayoutInflater.from(getActivity());
@@ -129,54 +118,13 @@ public class RunningFragment extends AutoDisposableFragment {
 
             return new RunningHolder(runningItemCardBinding);
         }
-
-        @Override
-        public void onBindViewHolder(RunningHolder holder, int position) {
-            Running running = runningList.get(position);
-            holder.bind(running);
-        }
-
-        @Override
-        public int getItemCount() {
-            return runningList.size();
-        }
-
-        @Override
-        public void onItemDismiss(int position) {
-            withAutoDispose(
-                    runningDao.delete(runningList.get(position))
-                              .subscribe(() -> {
-                                  runningList.remove(position);
-                                  notifyItemRemoved(position);
-                              }));
-        }
-
-        @Override
-        public boolean onItemMove(int fromPosition, int toPosition) {
-            if (fromPosition < toPosition) {
-                for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(runningList, i, i + 1);
-                }
-            } else {
-                for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(runningList, i, i - 1);
-                }
-            }
-            notifyItemMoved(fromPosition, toPosition);
-            return true;
-        }
-
-        @Override
-        public void onRefresh(int position) {
-            this.notifyItemChanged(position);
-        }
     }
 
-    private class RunningHolder extends RecyclerView.ViewHolder {
+    private class RunningHolder extends ListItemHolder<Running, RunningItemCardBinding> {
         private final RunningItemCardBinding runningItemCardBinding;
 
         public RunningHolder(RunningItemCardBinding runningItemCardBinding) {
-            super(runningItemCardBinding.getRoot());
+            super(runningItemCardBinding);
             this.runningItemCardBinding = runningItemCardBinding;
             runningItemCardBinding.setViewModel(new RunningViewModel());
         }

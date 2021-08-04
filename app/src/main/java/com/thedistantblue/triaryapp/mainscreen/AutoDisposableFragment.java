@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class AutoDisposableFragment extends Fragment {
     protected static final AutoDisposableLifecycleObserver observer = new AutoDisposableLifecycleObserverImpl();
 
-    protected static void withAutoDispose(Disposable disposable) {
+    protected void withAutoDispose(Disposable disposable) {
         observer.add(disposable);
     }
 
