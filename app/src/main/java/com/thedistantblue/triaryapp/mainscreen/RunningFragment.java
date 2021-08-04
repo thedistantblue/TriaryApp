@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RunningFragment extends TitledFragment {
+public class RunningFragment extends AutoDisposableFragment {
     private static final String USER_KEY = "user";
 
     private RunningDao runningDao;
@@ -47,14 +47,8 @@ public class RunningFragment extends TitledFragment {
     }
 
     @Override
-    public int getTitle() {
-        return R.string.running_tab_button;
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.running_tab_button);
         withAutoDispose(
                 userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
                                              .subscribe(user -> {

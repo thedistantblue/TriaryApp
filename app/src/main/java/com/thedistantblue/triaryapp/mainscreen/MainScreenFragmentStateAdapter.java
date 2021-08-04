@@ -10,8 +10,8 @@ import com.thedistantblue.triaryapp.entities.base.User;
 
 public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
 
-    private final TitledFragment trainingFragment;
-    private final TitledFragment runningFragment;
+    private final AutoDisposableFragment trainingFragment;
+    private final AutoDisposableFragment runningFragment;
 
     public MainScreenFragmentStateAdapter(@NonNull MainScreenFragment mainScreenFragment,
                                           @NonNull User user) {
@@ -23,14 +23,14 @@ public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        TitledFragment fragment = getFragmentForPosition(position);
+        AutoDisposableFragment fragment = getFragmentForPosition(position);
         Bundle args = new Bundle();
         args.putInt(fragment.getName(), position + 1);
         fragment.setArguments(args);
         return fragment;
     }
 
-    private TitledFragment getFragmentForPosition(int position) {
+    private AutoDisposableFragment getFragmentForPosition(int position) {
         if (position == 0) {
             return trainingFragment;
         }

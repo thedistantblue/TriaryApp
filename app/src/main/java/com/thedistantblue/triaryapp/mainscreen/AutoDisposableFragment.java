@@ -26,4 +26,8 @@ public class AutoDisposableFragment extends Fragment {
     public void addDisposable(Disposable disposable) {
         observer.add(disposable);
     }
+
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
 }

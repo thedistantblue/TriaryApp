@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TrainingListFragment extends TitledFragment {
+public class TrainingListFragment extends AutoDisposableFragment {
     private static final String USER_KEY = "user";
 
     private List<Training> trainingList = new ArrayList<>();
@@ -48,11 +48,6 @@ public class TrainingListFragment extends TitledFragment {
         TrainingListFragment fragment = new TrainingListFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public int getTitle() {
-        return R.string.training_list_fragment_name;
     }
 
     @Override

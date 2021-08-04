@@ -3,8 +3,10 @@ package com.thedistantblue.triaryapp.mainscreen;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
@@ -13,22 +15,19 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.database.room.database.utils.ObserverFactory;
 import com.thedistantblue.triaryapp.entities.base.User;
 
+@SuppressWarnings("ConstantConditions")
 public class MainScreenActivity extends AppCompatActivity implements MainScreenActivityCallback {
 
     private UserDao userDao;
-    private Toolbar toolBar;
+    private ActionBar actionBar;
     private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_relative_layout);
-        userDao = RoomDataBaseProvider.getDatabaseWithProxy(getApplicationContext()).userDao();
-        toolBar = findViewById(R.id.toolbar);
-        toolBar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolBar);
-        toolBar.setTitle(R.string.app_name);
-
+        initDaos();
+        setupActionBar();
         fragmentManager = getSupportFragmentManager();
 
         userDao.findAll().subscribeWith(ObserverFactory.createSingleObserver((userList) -> {
@@ -40,17 +39,34 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         }));
     }
 
-    private void startApplication(User user) {
-        fragmentManager.beginTransaction()
-                       .add(R.id.fragment_container, MainScreenFragment.newInstance(user))
-                       .commit();
+    private void initDaos() {
+        userDao = RoomDataBaseProvider.getDatabaseWithProxy(getApplicationContext()).userDao();
     }
 
-    public void switchFragment(TitledFragment fragment) {
+    private void setupActionBar() {
+        Toolbar toolBar = findViewById(R.id.toolbar);
+        toolBar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolBar);
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.app_name);
+    }
+
+    private void startApplication(User user) {
+        MainScreenFragment mainScreenFragment = MainScreenFragment.newInstance(user);
+        fragmentManager.beginTransaction()
+                       .add(R.id.fragment_container, mainScreenFragment)
+                       .commit();
+        actionBar.setTitle(mainScreenFragment.getTitle());
+    }
+
+    @Override
+    public void switchFragment(Fragment fragment) {
         String backStackName = fragment.getClass().getName();
         boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStackName, 0);
 
-        getSupportActionBar().setTitle(fragment.getTitle());
+        if (fragment instanceof TitledFragment) {
+            actionBar.setTitle(((TitledFragment) fragment).getTitle());
+        }
 
         if (!fragmentPopped) {
             fragmentManager.beginTransaction()
@@ -71,7 +87,7 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         super.onBackPressed();
         TitledFragment fragment = (TitledFragment) fragmentManager.findFragmentById(R.id.fragment_container);
         if (fragment != null) {
-            toolBar.setTitle(fragment.getTitle());
+            actionBar.setTitle(fragment.getTitle());
         }
     }
 }
