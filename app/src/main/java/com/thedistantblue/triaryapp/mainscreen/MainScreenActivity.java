@@ -16,6 +16,7 @@ import com.thedistantblue.triaryapp.entities.base.User;
 public class MainScreenActivity extends AppCompatActivity implements MainScreenActivityCallback {
 
     private UserDao userDao;
+    private Toolbar toolBar;
     private FragmentManager fragmentManager;
 
     @Override
@@ -23,10 +24,10 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_relative_layout);
         userDao = RoomDataBaseProvider.getDatabaseWithProxy(getApplicationContext()).userDao();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
+        toolBar = findViewById(R.id.toolbar);
+        toolBar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolBar);
+        toolBar.setTitle(R.string.app_name);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -65,4 +66,12 @@ public class MainScreenActivity extends AppCompatActivity implements MainScreenA
         return user;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        TitledFragment fragment = (TitledFragment) fragmentManager.findFragmentById(R.id.fragment_container);
+        if (fragment != null) {
+            toolBar.setTitle(fragment.getTitle());
+        }
+    }
 }
