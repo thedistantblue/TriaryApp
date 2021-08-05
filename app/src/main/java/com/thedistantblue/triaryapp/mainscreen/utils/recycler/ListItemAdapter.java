@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen;
+package com.thedistantblue.triaryapp.mainscreen.utils.recycler;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,6 +8,8 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.database.room.dao.base.BaseDao;
+import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.ItemTouchHelperAdapter;
 
 import java.util.Collections;
 import java.util.List;

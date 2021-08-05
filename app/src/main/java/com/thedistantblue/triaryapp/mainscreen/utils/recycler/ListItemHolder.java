@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen;
+package com.thedistantblue.triaryapp.mainscreen.utils.recycler;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;

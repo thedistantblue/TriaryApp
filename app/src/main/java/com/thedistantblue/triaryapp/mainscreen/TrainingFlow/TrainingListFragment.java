@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen;
+package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,8 +19,11 @@ import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
-import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.DatesListFragment;
-import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingCreationFragment;
+import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.viewmodels.TrainingCardViewModel;
 
 import java.util.ArrayList;

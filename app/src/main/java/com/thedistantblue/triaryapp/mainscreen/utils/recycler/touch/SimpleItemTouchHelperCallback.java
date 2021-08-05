@@ -1,12 +1,12 @@
-package com.thedistantblue.triaryapp.mainscreen;
+package com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.thedistantblue.triaryapp.mainscreen.DeleteAlertDialog;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 

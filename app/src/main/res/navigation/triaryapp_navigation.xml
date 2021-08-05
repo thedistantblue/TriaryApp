@@ -12,12 +12,12 @@
         tools:layout="@layout/main_screen_relative_layout" />
     <fragment
         android:id="@+id/trainingFragment2"
-        android:name="com.thedistantblue.triaryapp.mainscreen.TrainingListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingListFragment"
         android:label="training_fragment_layout"
         tools:layout="@layout/training_fragment_layout" />
     <fragment
         android:id="@+id/runningFragment"
-        android:name="com.thedistantblue.triaryapp.mainscreen.RunningFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningListFragment"
         android:label="running_fragment_layout"
         tools:layout="@layout/running_fragment_layout" />
 </navigation>

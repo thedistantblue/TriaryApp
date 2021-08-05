@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen;
+package com.thedistantblue.triaryapp.mainscreen.RunningFlow;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,14 +18,18 @@ import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
-import com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningCreationFragment;
+import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RunningFragment extends AutoDisposableFragment {
+public class RunningListFragment extends AutoDisposableFragment {
     private static final String USER_KEY = "user";
 
     private RunningDao runningDao;
@@ -35,11 +39,11 @@ public class RunningFragment extends AutoDisposableFragment {
     private RunningFragmentLayoutBinding binding;
     private RunningListItemAdapter runningAdapter;
 
-    public static RunningFragment newInstance(User user) {
+    public static RunningListFragment newInstance(User user) {
         Bundle args = new Bundle();
         args.putSerializable(USER_KEY, user);
 
-        RunningFragment fragment = new RunningFragment();
+        RunningListFragment fragment = new RunningListFragment();
         fragment.setArguments(args);
         return fragment;
     }

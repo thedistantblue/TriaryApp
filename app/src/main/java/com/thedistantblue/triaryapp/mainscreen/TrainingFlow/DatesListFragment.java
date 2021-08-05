@@ -8,25 +8,22 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
 import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.database.room.database.utils.ObserverFactory;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
-import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
-import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
-import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.ItemTouchHelperAdapter;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.viewmodels.DateViewModel;
 
 import java.util.ArrayList;

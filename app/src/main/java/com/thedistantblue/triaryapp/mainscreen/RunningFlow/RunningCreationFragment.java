@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
@@ -19,8 +18,8 @@ import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBin
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
-import com.thedistantblue.triaryapp.mainscreen.RunningFragment;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
+import com.thedistantblue.triaryapp.mainscreen.utils.DateFragment;
 import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.RunningViewModel;
 
@@ -95,12 +94,12 @@ public class RunningCreationFragment extends TitledFragment {
                 } else {
                     runningViewModel.save();
                     Toast.makeText(getActivity(), R.string.running_created_toast, Toast.LENGTH_SHORT).show();
-                    ((MainScreenActivityCallback) getActivity()).switchFragment(RunningFragment.newInstance(user));
+                    ((MainScreenActivityCallback) getActivity()).switchFragment(RunningListFragment.newInstance(user));
                 }
             } else {
                 runningViewModel.update();
                 Toast.makeText(getActivity(), R.string.running_updated_toast, Toast.LENGTH_SHORT).show();
-                ((MainScreenActivityCallback) getActivity()).switchFragment(RunningFragment.newInstance(user));
+                ((MainScreenActivityCallback) getActivity()).switchFragment(RunningListFragment.newInstance(user));
             }
         });
 

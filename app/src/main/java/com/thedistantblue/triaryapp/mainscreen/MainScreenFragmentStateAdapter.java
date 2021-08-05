@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.thedistantblue.triaryapp.entities.base.User;
+import com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningListFragment;
+import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingListFragment;
 
 public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
 
@@ -17,7 +19,7 @@ public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
                                           @NonNull User user) {
         super(mainScreenFragment);
         this.trainingFragment = TrainingListFragment.newInstance(user);
-        this.runningFragment = RunningFragment.newInstance(user);
+        this.runningFragment = RunningListFragment.newInstance(user);
     }
 
     @NonNull

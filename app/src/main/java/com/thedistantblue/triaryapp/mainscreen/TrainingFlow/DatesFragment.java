@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
@@ -18,6 +17,7 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
+import com.thedistantblue.triaryapp.mainscreen.utils.DateFragment;
 import com.thedistantblue.triaryapp.utils.FragmentSwitcher;
 import com.thedistantblue.triaryapp.utils.TriaryDateFormat;
 
