@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
+package com.thedistantblue.triaryapp.mainscreen.power;
 
 import android.content.Context;
 import android.os.Bundle;

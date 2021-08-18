@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.thedistantblue.triaryapp.entities.base.User;
-import com.thedistantblue.triaryapp.mainscreen.RunningFlow.RunningListFragment;
-import com.thedistantblue.triaryapp.mainscreen.TrainingFlow.TrainingListFragment;
+import com.thedistantblue.triaryapp.mainscreen.cardio.RunningListFragment;
+import com.thedistantblue.triaryapp.mainscreen.power.TrainingListFragment;
 
 public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
 

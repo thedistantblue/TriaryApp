@@ -1,13 +1,11 @@
-package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
+package com.thedistantblue.triaryapp.mainscreen.power;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
@@ -15,9 +13,7 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingCreationFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
-import com.thedistantblue.triaryapp.utils.ActionEnum;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
 public class TrainingCreationFragment extends TitledFragment {

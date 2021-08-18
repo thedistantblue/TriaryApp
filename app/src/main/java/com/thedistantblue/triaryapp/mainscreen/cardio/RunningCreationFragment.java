@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen.RunningFlow;
+package com.thedistantblue.triaryapp.mainscreen.cardio;
 
 import android.app.Activity;
 import android.content.Intent;

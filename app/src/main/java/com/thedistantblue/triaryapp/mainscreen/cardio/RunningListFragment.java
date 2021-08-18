@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen.RunningFlow;
+package com.thedistantblue.triaryapp.mainscreen.cardio;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
