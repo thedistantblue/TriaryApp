@@ -21,7 +21,7 @@ public class MainScreenFragment extends TitledFragment {
     private ViewPager2 viewPager;
     private MainScreenFragmentStateAdapter stateAdapter;
 
-    public static MainScreenFragment newInstance(User user) {
+    public static MainScreenFragment newInstance(@NonNull User user) {
         Bundle args = new Bundle();
         args.putSerializable(USER_KEY, user);
 
@@ -40,7 +40,7 @@ public class MainScreenFragment extends TitledFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        User user = (User) getArguments().getSerializable(USER_KEY);
+        User user = (User) requireArguments().getSerializable(USER_KEY);
         stateAdapter = new MainScreenFragmentStateAdapter(this, user);
         viewPager = view.findViewById(R.id.pager);
         viewPager.setAdapter(stateAdapter);

@@ -20,7 +20,7 @@ import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.ItemTouchHelperAdapter;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
@@ -95,7 +95,7 @@ public class DatesListFragment extends TitledFragment {
         touchHelper.attachToRecyclerView(binding.datesRecyclerView);
 
         binding.datesRecyclerView.getAdapter().notifyDataSetChanged();
-        binding.datesAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+        binding.datesAddButton.setOnClickListener(v -> ((MainScreenActivity) getActivity())
                 .switchFragment(DatesFragment.newInstance(training)));
 
         return binding.getRoot();
@@ -115,7 +115,7 @@ public class DatesListFragment extends TitledFragment {
             this.dateItemCardBinding.getViewModel().setDate(dates);
             this.dateItemCardBinding.executePendingBindings();
 
-            this.dateItemCardBinding.dateCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+            this.dateItemCardBinding.dateCard.setOnClickListener(v -> ((MainScreenActivity) getActivity())
                     .switchFragment(ExerciseListFragment.newInstance(dates)));
         }
     }

@@ -20,7 +20,7 @@ import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
@@ -34,15 +34,13 @@ public class TrainingListFragment extends AutoDisposableFragment {
 
     private List<Training> trainingList = new ArrayList<>();
 
-    private MainScreenActivityCallback mainScreenActivityCallback;
-
     private User user;
-    private TrainingListItemAdapter trainingAdapter;
-
     private TrainingDao trainingDao;
+    private MainScreenActivity mainScreenActivity;
+    private TrainingListItemAdapter trainingAdapter;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
-    public static TrainingListFragment newInstance(User user) {
+    public static TrainingListFragment newInstance(@NonNull User user) {
         Bundle args = new Bundle();
         args.putSerializable(USER_KEY, user);
 
@@ -54,12 +52,9 @@ public class TrainingListFragment extends AutoDisposableFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mainScreenActivityCallback = (MainScreenActivityCallback) getActivity();
+        this.mainScreenActivity = (MainScreenActivity) getActivity();
         initDaos();
-        user = (User) getArguments().getSerializable(USER_KEY);
-        if (user == null) {
-            user = new User();
-        }
+        user = (User) requireArguments().getSerializable(USER_KEY);
         withAutoDispose(
                 userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
                                              .subscribe(this::initTrainingList));
@@ -98,7 +93,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
         Training training = new Training(user.getUserID());
         withAutoDispose(
                 trainingDao.create(training)
-                           .subscribe(() -> mainScreenActivityCallback.switchFragment(TrainingCreationFragment.newInstance(user, training))));
+                           .subscribe(() -> mainScreenActivity.switchFragment(TrainingCreationFragment.newInstance(user, training))));
     }
 
     @Override
@@ -146,10 +141,10 @@ public class TrainingListFragment extends AutoDisposableFragment {
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
 
             trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
-                mainScreenActivityCallback.switchFragment(DatesListFragment.newInstance(training));
+                mainScreenActivity.switchFragment(DatesListFragment.newInstance(training));
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(v -> {
-                mainScreenActivityCallback.switchFragment(TrainingCreationFragment.newInstance(user, training));
+                mainScreenActivity.switchFragment(TrainingCreationFragment.newInstance(user, training));
             });
         }
     }

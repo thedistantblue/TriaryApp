@@ -1,6 +1,6 @@
 package com.thedistantblue.triaryapp.utils;
 
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 
 public class FragmentSwitcher {
@@ -8,7 +8,7 @@ public class FragmentSwitcher {
         if (currentFragment == null) {
             throw new IllegalStateException("Current fragment must not be null");
         }
-        MainScreenActivityCallback mainScreenActivity = (MainScreenActivityCallback) currentFragment.getActivity();
+        MainScreenActivity mainScreenActivity = (MainScreenActivity) currentFragment.getActivity();
         mainScreenActivity.switchFragment(nextFragment);
     }
 }

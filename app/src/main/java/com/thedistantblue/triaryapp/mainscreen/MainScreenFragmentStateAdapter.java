@@ -26,9 +26,8 @@ public class MainScreenFragmentStateAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         AutoDisposableFragment fragment = getFragmentForPosition(position);
-        Bundle args = new Bundle();
+        Bundle args = fragment.requireArguments();
         args.putInt(fragment.getName(), position + 1);
-        fragment.setArguments(args);
         return fragment;
     }
 
