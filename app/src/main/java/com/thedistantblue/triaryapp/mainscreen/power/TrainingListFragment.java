@@ -141,7 +141,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
             this.trainingItemCardBinding.setViewModel(new TrainingCardViewModel());
         }
 
-        public void bind(final Training training) {
+        public void bind(@NonNull final Training training) {
             trainingItemCardBinding.executePendingBindings();
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
 

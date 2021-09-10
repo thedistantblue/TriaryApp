@@ -137,6 +137,7 @@ public class RunningViewModel extends BaseObservable {
     public void save() {
         switch (action) {
             case CREATE: {
+                Log.d("RUNNING_CREATION_TAG", "about to create running");
                 Disposable disposable = runningDao.create(running).subscribe(() -> {
                     Log.d("RUNNING_CREATION_TAG", "RUNNING_CREATED");
                 });

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 
@@ -37,14 +38,9 @@ public class RunningCreationFragment extends TitledFragment {
     private ActionEnum action;
     private RunningViewModel runningViewModel;
 
-    public static RunningCreationFragment newInstance(User user, Running running, ActionEnum action) {
+    public static RunningCreationFragment newInstance(User user, @NonNull Running running, ActionEnum action) {
         Bundle args = new Bundle();
-
-        if (running != null) {
-            args.putSerializable(RUNNING_KEY, running);
-        } else {
-            args.putSerializable(RUNNING_KEY, new Running(1));
-        }
+        args.putSerializable(RUNNING_KEY, running);
         args.putSerializable(USER_KEY, user);
         args.putSerializable(ACTION_KEY, action);
 

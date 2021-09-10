@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,40 +52,24 @@ public class RunningListFragment extends AutoDisposableFragment {
     @Override
     public void onResume() {
         super.onResume();
-        withAutoDispose(
-                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                             .subscribe(user -> {
-                                                 runningList = user.getRunningList();
-                                                 runningAdapter.setObjectsList(runningList);
-                                             }));
+        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                                     .subscribe(user -> runningAdapter.setObjectsList(user.getRunningList())));
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDaos();
-        user = (User) getArguments().getSerializable(USER_KEY);
-        if (user == null) {
-            user = new User();
-        }
-        withAutoDispose(
-                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                             .subscribe(user -> {
-                                                 runningList = user.getRunningList();
-                                                 runningAdapter.setObjectsList(runningList);
-                                                 runningAdapter.notifyDataSetChanged();
-                                             }));
+        user = (User) requireArguments().getSerializable(USER_KEY);
     }
 
     private void initDaos() {
-        runningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                         .runningDao();
-        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                                            .userWithTrainingAndRunningDao();
+        runningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).runningDao();
+        userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).userWithTrainingAndRunningDao();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
 
         runningAdapter = new RunningListItemAdapter(runningDao, runningList, this);
@@ -97,24 +82,24 @@ public class RunningListFragment extends AutoDisposableFragment {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(binding.runningRecyclerView);
 
-        binding.runningAddButton.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
-                .switchFragment
-                        (RunningCreationFragment.newInstance(user, null, ActionEnum.CREATE)));
-
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                                     .subscribe(user -> runningAdapter.setObjectsList(user.getRunningList())));
     }
 
     private class RunningListItemAdapter extends ListItemAdapter<Running, RunningHolder, RunningDao> {
 
-        public RunningListItemAdapter(RunningDao runningDao,
-                                      List<Running> runningList,
-                                      AutoDisposableFragment fragment) {
+        public RunningListItemAdapter(RunningDao runningDao, List<Running> runningList, AutoDisposableFragment fragment) {
             super(runningDao, fragment, runningList);
         }
 
         @NonNull
         @Override
-        public RunningHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RunningHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflate = LayoutInflater.from(getActivity());
 
             RunningItemCardBinding runningItemCardBinding =
@@ -133,7 +118,8 @@ public class RunningListFragment extends AutoDisposableFragment {
             runningItemCardBinding.setViewModel(new RunningViewModel());
         }
 
-        public void bind(final Running running) {
+        @Override
+        public void bind(@NonNull final Running running) {
             runningItemCardBinding.getViewModel().setRunning(running);
             runningItemCardBinding.executePendingBindings();
             runningItemCardBinding.runningCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())

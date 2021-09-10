@@ -10,5 +10,5 @@ public abstract class ListItemHolder<E, T extends ViewDataBinding> extends Recyc
         super(view.getRoot());
     }
 
-    public abstract void bind(E object);
+    public abstract void bind(@NonNull E object);
 }
