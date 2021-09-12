@@ -16,6 +16,7 @@ import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.viewmodels.TrainingViewModel;
 
@@ -25,7 +26,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class TrainingFragment extends TitledFragment {
 
-    private static final String USER_KEY = "user";
     private static final String TRAINING_KEY = "training";
     private static final String IS_CREATE_KEY = "isCreate";
 
@@ -34,10 +34,10 @@ public class TrainingFragment extends TitledFragment {
     private TrainingDao trainingDao;
     private TrainingViewModel trainingViewModel;
     private TrainingFragmentLayoutBinding binding;
+    private MainScreenActivity mainScreenActivity;
 
     public static TrainingFragment newInstance(@NonNull User user, @Nullable Training training) {
         Bundle args = new Bundle();
-        args.putSerializable(USER_KEY, user);
         boolean creationRequired = training == null;
         args.putSerializable(IS_CREATE_KEY, creationRequired);
         if (creationRequired) {
@@ -59,6 +59,7 @@ public class TrainingFragment extends TitledFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
+        mainScreenActivity = (MainScreenActivity) requireActivity();
         training = (Training) requireArguments().getSerializable(TRAINING_KEY);
         isCreate = (Boolean) requireArguments().getSerializable(IS_CREATE_KEY);
         trainingViewModel = new TrainingViewModel(training);
@@ -71,7 +72,9 @@ public class TrainingFragment extends TitledFragment {
 
         if (isCreate) {
             initTrainingOperateButton(R.string.create, R.string.training_created_toast,
-                                      (t) -> trainingDao.create(t).subscribe());
+                                      (t) -> trainingDao.create(t).subscribe(() -> {
+                                          mainScreenActivity.switchFragment(DatesListFragment.newInstance(t));
+                                      }));
         } else {
             initTrainingOperateButton(R.string.save, R.string.training_updated_toast,
                                       (t) -> trainingDao.save(t).subscribe());
