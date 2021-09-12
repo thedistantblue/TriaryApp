@@ -8,14 +8,13 @@
     <string name="local_button_text">Оффлайн</string>
     <string name="training_tab_button">Силовые</string>
     <string name="running_tab_button">Кардио</string>
-    <string name="training_list_fragment_name">Список тренировок</string>
     <string name="training_exercises_fragment_name">Упражнения</string>
     <string name="create_training_fragment_name">Создать тренировку</string>
     <string name="training_dates_fragment_name">Даты тренировки</string>
-    <string name="training_settings_fragment_name">Список тренировок</string>
+    <string name="training_fragment_title">Тренировка</string>
     <string name="create_exercise_fragment_name">Создать упражнений</string>
     <string name="update_exercise_fragment_name">Обновить упражнение</string>
-    <string name="create_running_fragment_name">Создать бег</string>
+    <string name="running_fragment_title">Бег</string>
     <string name="update_running_fragment_name">Обновить бег</string>
     <string name="date_chooser_title">Дата</string>
     <string name="enter_running_name_toast">Введите название бега</string>

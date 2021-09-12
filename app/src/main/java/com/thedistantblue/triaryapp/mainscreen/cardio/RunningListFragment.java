@@ -15,8 +15,8 @@ import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.RunningItemCardBinding;
+import com.thedistantblue.triaryapp.databinding.RunningListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
@@ -69,7 +69,7 @@ public class RunningListFragment extends AutoDisposableFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        RunningFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
+        RunningListFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.running_list_fragment_layout, parent, false);
 
         runningAdapter = new RunningListItemAdapter(runningDao, new ArrayList<>(), this);
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

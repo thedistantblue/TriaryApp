@@ -14,8 +14,8 @@ import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.databinding.TrainingFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
+import com.thedistantblue.triaryapp.databinding.TrainingListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
@@ -61,10 +61,8 @@ public class TrainingListFragment extends AutoDisposableFragment {
     }
 
     private void initDaos() {
-        this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                                                 .userWithTrainingAndRunningDao();
-        this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                               .trainingDao();
+        this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).userWithTrainingAndRunningDao();
+        this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
     }
 
     private void initTrainingList(UserWithTrainingAndRunning userWithTrainingAndRunning) {
@@ -74,12 +72,12 @@ public class TrainingListFragment extends AutoDisposableFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        TrainingFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.training_fragment_layout, parent, false);
+        TrainingListFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.training_list_fragment_layout, parent, false);
 
         this.trainingAdapter = new TrainingListItemAdapter(trainingDao, trainingList, this);
         binding.trainingRecyclerView.setAdapter(this.trainingAdapter);
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.trainingAddButton.setOnClickListener(v -> createTrainingAndSwitchFragment());
+        binding.trainingAddButton.setOnClickListener(v -> mainScreenActivity.switchFragment(TrainingFragment.newInstance(user, null)));
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((TrainingListItemAdapter) binding.trainingRecyclerView.getAdapter());
 
@@ -87,13 +85,6 @@ public class TrainingListFragment extends AutoDisposableFragment {
         touchHelper.attachToRecyclerView(binding.trainingRecyclerView);
 
         return binding.getRoot();
-    }
-
-    private void createTrainingAndSwitchFragment() {
-        Training training = new Training(user.getUserID());
-        withAutoDispose(
-                trainingDao.create(training)
-                           .subscribe(() -> mainScreenActivity.switchFragment(TrainingCreationFragment.newInstance(user, training))));
     }
 
     @Override
@@ -144,7 +135,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
                 mainScreenActivity.switchFragment(DatesListFragment.newInstance(training));
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(v -> {
-                mainScreenActivity.switchFragment(TrainingCreationFragment.newInstance(user, training));
+                mainScreenActivity.switchFragment(TrainingFragment.newInstance(user, training));
             });
         }
     }

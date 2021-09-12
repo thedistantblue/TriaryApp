@@ -8,14 +8,13 @@
     <string name="local_button_text">Offline use</string>
     <string name="training_tab_button">Power</string>
     <string name="running_tab_button">Cardio</string>
-    <string name="training_list_fragment_name">Training list</string>
     <string name="training_exercises_fragment_name">Training exercises</string>
     <string name="create_training_fragment_name">Create training</string>
     <string name="training_dates_fragment_name">Training dates</string>
-    <string name="training_settings_fragment_name">Training settings</string>
+    <string name="training_fragment_title">Training</string>
     <string name="create_exercise_fragment_name">Create exercise</string>
     <string name="update_exercise_fragment_name">Update exercise</string>
-    <string name="create_running_fragment_name">Create running</string>
+    <string name="running_fragment_title">Running</string>
     <string name="update_running_fragment_name">Update running</string>
     <string name="date_chooser_title">Date</string>
     <string name="enter_running_name_toast">Enter running name</string>

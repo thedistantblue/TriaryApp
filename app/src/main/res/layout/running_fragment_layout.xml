@@ -1,33 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.thedistantblue.triaryapp.viewmodels.RunningViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/running_fragment_layout">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/running_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
+        <Button
+            android:id="@+id/running_date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="32dp"
+            android:text="@{viewModel.runningDate}"
+            android:textAlignment="center"
+            android:textColor="@color/DayNightColor"
+            android:textSize="14sp"
+            android:background="@drawable/bordered_button"
+            app:layout_constraintBottom_toTopOf="@+id/running_operate_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/running_operate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:textColor="@android:color/black"
+            android:text="@string/save"
+            android:backgroundTint="@color/DayNightColor"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/running_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:maxLength="15"
+            android:text="@={viewModel.runningName}"
+            android:textAlignment="center"
+            android:textColor="@color/DayNightColor"
+            android:textSize="24sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/running_add_button"
+        <EditText
+            android:id="@+id/running_distance"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:maxLength="10"
+            android:text="@={viewModel.runningDistance}"
+            android:textAlignment="center"
+            android:textColor="@color/DayNightColor"
+            android:textSize="24sp"
+            android:theme="@style/MyEditTextTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/running_name" />
+        <TextView
+            android:id="@+id/running_distance_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:clickable="true"
-            app:backgroundTint="@color/DayNightColor"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/running_distance"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/running_distance"
+            app:layout_constraintStart_toStartOf="@+id/running_distance"
+            app:layout_constraintTop_toBottomOf="@+id/running_distance" />
+
+        <TextView
+            android:id="@+id/running_speed"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:text="@{viewModel.runningSpeed}"
+            android:textAlignment="center"
+            android:textColor="@color/DayNightColor"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/running_distance" />
+        <View
+            android:id="@+id/running_speed_bottom_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/running_speed"
+            app:layout_constraintStart_toStartOf="@+id/running_speed"
+            app:layout_constraintTop_toBottomOf="@+id/running_speed" />
+
+        <TextView
+            android:id="@+id/running_speed_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speed"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/running_speed_bottom_line"
+            app:layout_constraintStart_toStartOf="@+id/running_speed_bottom_line"
+            app:layout_constraintTop_toBottomOf="@+id/running_speed_bottom_line" />
+
+        <EditText
+            android:id="@+id/running_time"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:maxLength="10"
+            android:text="@={viewModel.runningTime}"
+            android:textAlignment="center"
+            android:textColor="@color/DayNightColor"
+            android:textSize="24sp"
+            android:theme="@style/MyEditTextTheme"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add"
-            android:focusable="true" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/running_distance_text" />
+
+        <TextView
+            android:id="@+id/running_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/running_time"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/running_time"
+            app:layout_constraintStart_toStartOf="@+id/running_time"
+            app:layout_constraintTop_toBottomOf="@+id/running_time" />
+
+        <TextView
+            android:id="@+id/running_calories"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:text="@{viewModel.runningCalories}"
+            android:textAlignment="center"
+            android:textColor="@color/DayNightColor"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/running_distance" />
+        <View
+            android:id="@+id/running_calories_bottom_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/running_calories"
+            app:layout_constraintStart_toStartOf="@+id/running_calories"
+            app:layout_constraintTop_toBottomOf="@+id/running_calories" />
+
+        <TextView
+            android:id="@+id/running_calories_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calories_lost"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="@+id/running_calories_bottom_line"
+            app:layout_constraintStart_toStartOf="@+id/running_calories_bottom_line"
+            app:layout_constraintTop_toBottomOf="@+id/running_calories_bottom_line" />
+
+        <EditText
+            android:id="@+id/running_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:maxLength="50"
+            android:text="@={viewModel.runningComments}"
+            android:textAlignment="center"
+            android:textColor="@color/DayNightColor"
+            android:theme="@style/MyEditTextTheme"
+            app:layout_constraintBottom_toTopOf="@+id/running_date_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

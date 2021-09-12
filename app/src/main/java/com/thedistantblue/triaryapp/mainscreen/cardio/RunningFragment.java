@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.databinding.RunningCreationFragmentLayoutBinding;
+import com.thedistantblue.triaryapp.databinding.RunningFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
@@ -31,16 +31,16 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class RunningFragment extends TitledFragment {
 
-    private static final String RUNNING_KEY = "running";
-    private static final String IS_CREATE_KEY = "isCreate";
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
+    private static final String RUNNING_KEY = "running";
+    private static final String IS_CREATE_KEY = "isCreate";
 
     private Running running;
     private Boolean isCreate;
     private RunningDao runningDao;
     private RunningViewModel runningViewModel;
-    private RunningCreationFragmentLayoutBinding binding;
+    private RunningFragmentLayoutBinding binding;
 
     public static RunningFragment newInstance(@NotNull User user, @Nullable Running running) {
         Bundle args = new Bundle();
@@ -58,7 +58,7 @@ public class RunningFragment extends TitledFragment {
 
     @Override
     public int getTitle() {
-        return R.string.create_running_fragment_name;
+        return R.string.running_fragment_title;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class RunningFragment extends TitledFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.running_creation_fragment_layout, parent, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.running_fragment_layout, parent, false);
         binding.setViewModel(runningViewModel);
 
         binding.runningDateButton.setOnClickListener(v -> {

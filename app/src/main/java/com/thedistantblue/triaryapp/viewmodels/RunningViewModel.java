@@ -20,10 +20,10 @@ public class RunningViewModel extends BaseObservable {
 
     public RunningViewModel(Running running) {
         this.running = running;
-        distance = String.valueOf(running.getDistance());
-        speed = String.valueOf(running.getSpeed());
-        time = String.valueOf(running.getTime());
-        calories = String.valueOf(running.getCalories());
+        this.distance = String.valueOf(running.getDistance());
+        this.speed = String.valueOf(running.getSpeed());
+        this.time = String.valueOf(running.getTime());
+        this.calories = String.valueOf(running.getCalories());
     }
 
     public void setRunningName(String name) {
