@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -14,7 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.entities.base.User;
 
-public class MainScreenFragment extends TitledFragment {
+public class MainScreenFragment extends NavHostFragment {
 
     private static final String USER_KEY = "user";
 
@@ -61,7 +62,6 @@ public class MainScreenFragment extends TitledFragment {
         }
     }
 
-    @Override
     public int getTitle() {
         return R.string.main_screen_fragment_workouts;
     }
