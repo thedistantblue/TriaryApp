@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,6 @@ import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
-import com.thedistantblue.triaryapp.entities.composite.UserWithTrainingAndRunning;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
@@ -50,24 +50,23 @@ public class TrainingListFragment extends AutoDisposableFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                                     .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mainScreenActivity = (MainScreenActivity) getActivity();
         initDaos();
+        this.mainScreenActivity = (MainScreenActivity) getActivity();
         user = (User) requireArguments().getSerializable(USER_KEY);
-        withAutoDispose(
-                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                             .subscribe(this::initTrainingList));
     }
 
     private void initDaos() {
         this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).userWithTrainingAndRunningDao();
         this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
-    }
-
-    private void initTrainingList(UserWithTrainingAndRunning userWithTrainingAndRunning) {
-        trainingList = userWithTrainingAndRunning.getTrainingList();
-        trainingAdapter.setObjectsList(trainingList);
     }
 
     @Override
@@ -88,14 +87,9 @@ public class TrainingListFragment extends AutoDisposableFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        withAutoDispose(
-                userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                             .subscribe(userWithTrainingAndRunning -> {
-                                                 trainingList = userWithTrainingAndRunning.getTrainingList();
-                                                 trainingAdapter.setObjectsList(trainingList);
-                                             }));
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+                                                     .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
     }
 
     public class TrainingListItemAdapter extends ListItemAdapter<Training, TrainingHolder, TrainingDao> {
@@ -127,6 +121,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
             this.trainingItemCardBinding.setViewModel(new TrainingCardViewModel());
         }
 
+        @Override
         public void bind(@NonNull final Training training) {
             trainingItemCardBinding.executePendingBindings();
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());

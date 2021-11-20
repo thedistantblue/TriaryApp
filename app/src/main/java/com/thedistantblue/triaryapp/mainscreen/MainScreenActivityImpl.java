@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
@@ -22,6 +24,7 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
     private UserDao userDao;
     private ActionBar actionBar;
     private FragmentManager fragmentManager;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
         initDaos();
         setupActionBar();
         fragmentManager = getSupportFragmentManager();
+        navController = Navigation.findNavController(this, R.id.fragment_container);
 
         userDao.findAll().subscribeWith(ObserverFactory.createSingleObserver((userList) -> {
             if (!userList.isEmpty()) {
@@ -67,6 +71,8 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
 
         if (fragment instanceof TitledFragment) {
             actionBar.setTitle(((TitledFragment) fragment).getTitle());
+        } else if (fragment instanceof MainScreenFragment) {
+            actionBar.setTitle(((MainScreenFragment) fragment).getTitle());
         }
 
         if (!fragmentPopped) {
