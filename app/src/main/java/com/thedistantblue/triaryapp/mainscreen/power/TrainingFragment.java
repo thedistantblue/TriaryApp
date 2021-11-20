@@ -89,6 +89,7 @@ public class TrainingFragment extends TitledFragment {
             } else {
                 withAutoDispose(operation.apply(training));
                 Toast.makeText(getActivity(), toastText, Toast.LENGTH_SHORT).show();
+                getParentFragmentManager().popBackStackImmediate();
             }
         });
     }
