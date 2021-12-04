@@ -33,7 +33,7 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
         initDaos();
         setupActionBar();
         fragmentManager = getSupportFragmentManager();
-        navController = Navigation.findNavController(this, R.id.fragment_container);
+        //navController = Navigation.findNavController(this, R.id.fragment_container);
 
         userDao.findAll().subscribeWith(ObserverFactory.createSingleObserver((userList) -> {
             if (!userList.isEmpty()) {
@@ -92,9 +92,15 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        TitledFragment fragment = (TitledFragment) fragmentManager.findFragmentById(R.id.fragment_container);
-        if (fragment != null) {
-            actionBar.setTitle(fragment.getTitle());
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (!(fragment instanceof MainScreenFragment)) {
+            TitledFragment titledFragment = (TitledFragment) fragment;
+            if (titledFragment != null) {
+                actionBar.setTitle(titledFragment.getTitle());
+            }
+        } else {
+            MainScreenFragment mainScreenFragment = (MainScreenFragment) fragment;
+            actionBar.setTitle(mainScreenFragment.getTitle());
         }
     }
 }

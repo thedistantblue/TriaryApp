@@ -70,12 +70,6 @@ public class RunningViewModel extends BaseObservable {
 
     @Bindable
     public String getRunningSpeed() {
-        String methodSpeed;
-        if (!this.distance.equals("") && !this.time.equals("")) {
-            methodSpeed = String.valueOf(Double.parseDouble(this.distance) / (Double.parseDouble(this.time) / 60));
-            running.setSpeed(Double.parseDouble(methodSpeed));
-            return methodSpeed;
-        }
         return speed;
     }
 
