@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
@@ -21,10 +21,11 @@ import com.thedistantblue.triaryapp.entities.base.User;
 @SuppressWarnings("ConstantConditions")
 public class MainScreenActivityImpl extends AppCompatActivity implements MainScreenActivity {
 
+    private static final String USER_KEY = "user";
+
     private UserDao userDao;
     private ActionBar actionBar;
     private FragmentManager fragmentManager;
-    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,6 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
         initDaos();
         setupActionBar();
         fragmentManager = getSupportFragmentManager();
-        //navController = Navigation.findNavController(this, R.id.fragment_container);
 
         userDao.findAll().subscribeWith(ObserverFactory.createSingleObserver((userList) -> {
             if (!userList.isEmpty()) {
@@ -58,9 +58,15 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
 
     private void startApplication(@NonNull User user) {
         MainScreenFragment mainScreenFragment = MainScreenFragment.newInstance(user);
-        fragmentManager.beginTransaction()
-                       .add(R.id.fragment_container, mainScreenFragment)
-                       .commit();
+
+        Bundle args = new Bundle();
+        args.putSerializable(USER_KEY, user);
+
+        NavHostFragment navHostFragment =
+                (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        navController.setGraph(R.navigation.nav_graph, args);
+
         actionBar.setTitle(mainScreenFragment.getTitle());
     }
 

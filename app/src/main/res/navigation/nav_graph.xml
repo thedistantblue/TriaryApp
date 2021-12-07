@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainScreenFragment">
 
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.MainScreenFragment"
+        android:label="MainScreenFragment" >
+        <argument
+            android:name="user"
+            app:argType="com.thedistantblue.triaryapp.entities.base.User" />
+    </fragment>
 </navigation>
