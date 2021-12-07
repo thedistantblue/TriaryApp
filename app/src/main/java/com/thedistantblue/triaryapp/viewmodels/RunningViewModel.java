@@ -1,47 +1,29 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
-import android.util.Log;
-
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
 import com.thedistantblue.triaryapp.entities.base.Running;
-import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
-import com.thedistantblue.triaryapp.utils.ActionEnum;
 
 import java.text.SimpleDateFormat;
 
-import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.Getter;
-import lombok.Setter;
 
 public class RunningViewModel extends BaseObservable {
-    private Running running;
-
-    @Setter
-    private RunningDao runningDao;
-    @Setter
-    private AutoDisposableFragment autoDisposableFragment;
 
     @Getter
-    @Setter
-    private ActionEnum action;
-    String distance = "";
-    String speed = "";
-    String time = "";
-    String calories = "";
+    private final Running running;
+    private String distance;
+    private String speed;
+    private String time;
+    private String calories;
 
-    public Running getRunning() {
-        return running;
-    }
-
-    public void setRunning(Running running) {
+    public RunningViewModel(Running running) {
         this.running = running;
-        distance = String.valueOf(running.getDistance());
-        speed = String.valueOf(running.getSpeed());
-        time = String.valueOf(running.getTime());
-        calories = String.valueOf(running.getCalories());
+        this.distance = String.valueOf(running.getDistance());
+        this.speed = String.valueOf(running.getSpeed());
+        this.time = String.valueOf(running.getTime());
+        this.calories = String.valueOf(running.getCalories());
     }
 
     public void setRunningName(String name) {
@@ -63,7 +45,6 @@ public class RunningViewModel extends BaseObservable {
     public String getRunningDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return dateFormat.format(running.getDate());
-        //return running.getDate().toString();
     }
 
     public void setRunningDistance(String distance) {
@@ -89,12 +70,6 @@ public class RunningViewModel extends BaseObservable {
 
     @Bindable
     public String getRunningSpeed() {
-        String methodSpeed;
-        if (!this.distance.equals("") && !this.time.equals("")) {
-            methodSpeed = String.valueOf(Double.parseDouble(this.distance) / (Double.parseDouble(this.time) / 60));
-            running.setSpeed(Double.parseDouble(methodSpeed));
-            return methodSpeed;
-        }
         return speed;
     }
 
@@ -134,24 +109,4 @@ public class RunningViewModel extends BaseObservable {
         return running.getComments();
     }
 
-    public void save() {
-        switch (action) {
-            case CREATE: {
-                Disposable disposable = runningDao.create(running).subscribe(() -> {
-                    Log.d("RUNNING_CREATION_TAG", "RUNNING_CREATED");
-                });
-                autoDisposableFragment.addDisposable(disposable);
-                break;
-            }
-            case UPDATE: {
-                update();
-                break;
-            }
-        }
-    }
-
-    public void update() {
-        Disposable disposable = runningDao.save(running).subscribe();
-        autoDisposableFragment.addDisposable(disposable);
-    }
 }

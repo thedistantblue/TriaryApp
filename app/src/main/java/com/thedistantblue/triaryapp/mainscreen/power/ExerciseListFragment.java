@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
+package com.thedistantblue.triaryapp.mainscreen.power;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,16 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
@@ -26,18 +25,16 @@ import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.entities.composite.DatesWithExercise;
-import com.thedistantblue.triaryapp.mainscreen.ItemTouchHelperAdapter;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityCallback;
-import com.thedistantblue.triaryapp.mainscreen.SimpleItemTouchHelperCallback;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.ItemTouchHelperAdapter;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
 import com.thedistantblue.triaryapp.viewmodels.ExerciseCardViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
-import lombok.Data;
 
 public class ExerciseListFragment extends TitledFragment {
 
@@ -141,7 +138,7 @@ public class ExerciseListFragment extends TitledFragment {
     }
 
     private void showExerciseFragment() {
-        ((MainScreenActivityCallback)getActivity())
+        ((MainScreenActivity)getActivity())
                 .switchFragment(ExerciseFragment.newInstance(newExercise, newExerciseSets));
     }
 
@@ -173,7 +170,7 @@ public class ExerciseListFragment extends TitledFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainScreenActivityCallback) getActivity()).setTitle(R.string.training_exercises_fragment_name);
+        ((MainScreenActivity) getActivity()).setTitle(R.string.training_exercises_fragment_name);
         withAutoDispose(
                 datesWithExerciseDao.findById(dates.getDatesUUID().toString())
                                     .subscribe(datesWithExercise -> {
@@ -198,7 +195,7 @@ public class ExerciseListFragment extends TitledFragment {
                                               .subscribe(exerciseWithExerciseSet -> {
                                                   this.exerciseItemCardBinding.executePendingBindings();
                                                   this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getExerciseName());
-                                                  this.exerciseItemCardBinding.exerciseCard.setOnClickListener(v -> ((MainScreenActivityCallback) getActivity())
+                                                  this.exerciseItemCardBinding.exerciseCard.setOnClickListener(v -> ((MainScreenActivity) getActivity())
                                                           .switchFragment(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList()))));
                                               }));
         }

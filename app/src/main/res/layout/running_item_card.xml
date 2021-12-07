@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.thedistantblue.triaryapp.viewmodels.RunningViewModel" />
+            type="com.thedistantblue.triaryapp.viewmodels.RunningCardViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

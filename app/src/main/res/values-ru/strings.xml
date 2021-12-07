@@ -1,20 +1,20 @@
 <resources>
     <string name="app_name">TriaryApp</string>
     <string name="save">Сохранить</string>
+    <string name="create">Создать</string>
     <string name="exercise">Упражнение</string>
     <string name="date_text_view_hint">Дата не выбрана</string>
     <string name="sign_in_button_text">Войти</string>
     <string name="local_button_text">Оффлайн</string>
-    <string name="training_tab_button">Тренировка</string>
-    <string name="running_tab_button">Бег</string>
-    <string name="training_list_fragment_name">Список тренировок</string>
+    <string name="training_tab_button">Силовые</string>
+    <string name="running_tab_button">Кардио</string>
     <string name="training_exercises_fragment_name">Упражнения</string>
     <string name="create_training_fragment_name">Создать тренировку</string>
     <string name="training_dates_fragment_name">Даты тренировки</string>
-    <string name="training_settings_fragment_name">Список тренировок</string>
+    <string name="training_fragment_title">Тренировка</string>
     <string name="create_exercise_fragment_name">Создать упражнений</string>
     <string name="update_exercise_fragment_name">Обновить упражнение</string>
-    <string name="create_running_fragment_name">Создать бег</string>
+    <string name="running_fragment_title">Бег</string>
     <string name="update_running_fragment_name">Обновить бег</string>
     <string name="date_chooser_title">Дата</string>
     <string name="enter_running_name_toast">Введите название бега</string>
@@ -43,4 +43,5 @@
     <string name="speed">Скорость, км/ч</string>
     <string name="running_time">Время бега, минуты</string>
     <string name="calories_lost">Потеряно калорий</string>
+    <string name="main_screen_fragment_workouts">Тренировки</string>
 </resources>

@@ -1,13 +1,13 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.ItemTouchHelperAdapter;
 
 public class DeleteAlertDialog extends Dialog implements View.OnClickListener {
 

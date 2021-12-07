@@ -1,15 +1,14 @@
 package com.thedistantblue.triaryapp.start;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.MainScreenActivityImpl;
 import com.thedistantblue.triaryapp.network.NetworkTest;
 
 public class StartActivity extends AppCompatActivity {
@@ -36,7 +35,7 @@ public class StartActivity extends AppCompatActivity {
         localUseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainScreenActivityImpl.class);
                 startActivity(intent);
             }
         });

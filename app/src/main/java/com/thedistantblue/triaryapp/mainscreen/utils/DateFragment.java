@@ -1,24 +1,21 @@
-package com.thedistantblue.triaryapp.mainscreen.TrainingFlow;
-
-import androidx.fragment.app.DialogFragment;
+package com.thedistantblue.triaryapp.mainscreen.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import androidx.fragment.app.DialogFragment;
 
 import com.thedistantblue.triaryapp.R;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateFragment extends DialogFragment {
     private static final String ARG_DATE = "date";
