@@ -15,7 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.entities.base.User;
 
-public class MainScreenFragment extends NavHostFragment {
+public class MainScreenFragment extends TitledFragment {
 
     private static final String USER_KEY = "user";
 
@@ -62,6 +62,7 @@ public class MainScreenFragment extends NavHostFragment {
         }
     }
 
+    @Override
     public int getTitle() {
         return R.string.main_screen_fragment_workouts;
     }

@@ -44,4 +44,5 @@
     <string name="running_time">Время бега, минуты</string>
     <string name="calories_lost">Потеряно калорий</string>
     <string name="main_screen_fragment_workouts">Тренировки</string>
+    <string name="settings_profile_title">Профиль</string>
 </resources>

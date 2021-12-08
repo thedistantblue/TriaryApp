@@ -44,4 +44,5 @@
     <string name="running_time">Running time, minutes</string>
     <string name="calories_lost">Calories lost</string>
     <string name="main_screen_fragment_workouts">Workouts</string>
+    <string name="settings_profile_title">Profile</string>
 </resources>
