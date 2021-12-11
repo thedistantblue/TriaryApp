@@ -26,6 +26,14 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
 
+        <activity android:name=".mainscreen.cardio.RunningDetailActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".mainscreen.power.TrainingDetailActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
         <activity android:name=".network.NetworkTest">
 
         </activity>

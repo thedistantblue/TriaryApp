@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.USER_KEY;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -16,8 +17,6 @@ import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.entities.base.User;
 
 public class MainScreenFragment extends TitledFragment {
-
-    private static final String USER_KEY = "user";
 
     private ViewPager2 viewPager;
     private MainScreenFragmentStateAdapter stateAdapter;

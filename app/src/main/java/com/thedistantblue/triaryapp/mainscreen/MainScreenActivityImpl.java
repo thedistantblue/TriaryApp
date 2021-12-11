@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.USER_KEY;
+
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -24,13 +26,12 @@ import com.thedistantblue.triaryapp.entities.base.User;
 @SuppressWarnings("ConstantConditions")
 public class MainScreenActivityImpl extends AppCompatActivity implements MainScreenActivity {
 
-    private static final String USER_KEY = "user";
+    public static FragmentManager fragmentManager;
 
     private UserDao userDao;
     private ActionBar actionBar;
     private DrawerLayout drawerLayout;
     private NavController navController;
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
         NavHostFragment navHostFragment
                 = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-        navController.setGraph(R.navigation.nav_graph, args);
+        navController.setGraph(R.navigation.main_nav_graph, args);
 
         AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph())

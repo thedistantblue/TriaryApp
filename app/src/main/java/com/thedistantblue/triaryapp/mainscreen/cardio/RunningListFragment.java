@@ -1,5 +1,9 @@
 package com.thedistantblue.triaryapp.mainscreen.cardio;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.RUNNING_KEY;
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.USER_KEY;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +25,7 @@ import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.power.TrainingFragment;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
@@ -30,11 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RunningListFragment extends AutoDisposableFragment {
-    private static final String USER_KEY = "user";
 
     private User user;
     private RunningDao runningDao;
-    private MainScreenActivity mainScreenActivity;
     private RunningListItemAdapter runningAdapter;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
@@ -58,7 +61,6 @@ public class RunningListFragment extends AutoDisposableFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDaos();
-        mainScreenActivity = (MainScreenActivity) requireActivity();
         user = (User) requireArguments().getSerializable(USER_KEY);
     }
 
@@ -74,7 +76,9 @@ public class RunningListFragment extends AutoDisposableFragment {
         runningAdapter = new RunningListItemAdapter(runningDao, new ArrayList<>(), this);
         binding.runningRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.runningRecyclerView.setAdapter(runningAdapter);
-        binding.runningAddButton.setOnClickListener(v -> mainScreenActivity.switchFragment(RunningFragment.newInstance(user, null)));
+        binding.runningAddButton.setOnClickListener(v -> {
+            //todo надо переделать создание бега на диалог
+        });
 
         ItemTouchHelper.Callback callback =
                 new SimpleItemTouchHelperCallback((RunningListItemAdapter) binding.runningRecyclerView.getAdapter());
@@ -122,7 +126,12 @@ public class RunningListFragment extends AutoDisposableFragment {
         public void bind(@NonNull final Running running) {
             runningItemCardBinding.getViewModel().runningName.set(running.getRunningName());
             runningItemCardBinding.executePendingBindings();
-            runningItemCardBinding.runningCard.setOnClickListener(v -> mainScreenActivity.switchFragment(RunningFragment.newInstance(user, running)));
+            runningItemCardBinding.runningCard.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), RunningDetailActivity.class);
+                intent.putExtra(USER_KEY, user);
+                intent.putExtra(RUNNING_KEY, running);
+                startActivity(intent);
+            });
         }
     }
 }
