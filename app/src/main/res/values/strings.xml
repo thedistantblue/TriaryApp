@@ -45,4 +45,9 @@
     <string name="calories_lost">Calories lost</string>
     <string name="main_screen_fragment_workouts">Workouts</string>
     <string name="settings_profile_title">Profile</string>
+
+    <!-- Training details -->
+    <string name="training_detail_exercise_list">Exercises</string>
+    <string name="training_detail_exercise_pack_list">Packs of exercises</string>
+    <string name="training_detail_dates_list">Training dates</string>
 </resources>
