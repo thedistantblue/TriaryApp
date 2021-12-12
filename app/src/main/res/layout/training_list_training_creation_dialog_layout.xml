@@ -32,7 +32,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/training_list_training_creation_dialog_name_input"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColorHint="@color/DayNightColor"
@@ -47,13 +47,13 @@
             android:background="@color/backgroundColor"
             android:hint="@string/training_list_training_creation_dialog_name_input_hint"
             android:textColor="@color/textColor"
-            android:maxLength="20" />
+            android:maxLength="15" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/training_list_training_creation_dialog_description_input"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColorHint="@color/DayNightColor"
@@ -68,7 +68,7 @@
             android:background="@color/backgroundColor"
             android:hint="@string/training_list_training_creation_dialog_description_input_hint"
             android:textColor="@color/textColor"
-            android:maxLength="20" />
+            android:maxLength="150" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.Guideline
