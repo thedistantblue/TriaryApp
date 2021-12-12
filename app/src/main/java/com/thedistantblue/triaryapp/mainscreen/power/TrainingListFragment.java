@@ -24,8 +24,7 @@ import com.thedistantblue.triaryapp.databinding.TrainingListFragmentLayoutBindin
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
-import com.thedistantblue.triaryapp.mainscreen.cardio.RunningDetailActivity;
+import com.thedistantblue.triaryapp.mainscreen.power.dialog.PowerTrainingCreationDialog;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
@@ -81,7 +80,8 @@ public class TrainingListFragment extends AutoDisposableFragment {
         binding.trainingRecyclerView.setAdapter(this.trainingAdapter);
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.trainingAddButton.setOnClickListener(v -> {
-            new PowerTrainingCreationDialog().show(getChildFragmentManager(), PowerTrainingCreationDialog.TAG);
+            new PowerTrainingCreationDialog(this, trainingDao, user.getUserID())
+                    .show(getChildFragmentManager(), PowerTrainingCreationDialog.TAG);
         });
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((TrainingListItemAdapter) binding.trainingRecyclerView.getAdapter());
