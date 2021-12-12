@@ -12,6 +12,8 @@ import com.thedistantblue.triaryapp.R;
 
 public class PowerTrainingDetailActivity extends AppCompatActivity {
 
+    private NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +29,15 @@ public class PowerTrainingDetailActivity extends AppCompatActivity {
         NavHostFragment navHostFragment
                 = (NavHostFragment) fragmentManager.findFragmentById(R.id.tab_power_nav_host);
         if (navHostFragment != null) {
-            NavController navController = navHostFragment.getNavController();
+            navController = navHostFragment.getNavController();
             navController.setGraph(R.navigation.power_training_detail_nav_graph, extras);
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!navController.popBackStack()) {
+            super.onBackPressed();
+        }
+    }
 }

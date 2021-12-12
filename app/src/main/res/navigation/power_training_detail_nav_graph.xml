@@ -12,13 +12,16 @@
         tools:layout="@layout/training_detail_layout">
         <action
             android:id="@+id/action_powerTrainingDetailFragment_to_powerExerciseListFragment"
-            app:destination="@id/powerExerciseListFragment" />
+            app:destination="@id/powerExerciseListFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_powerTrainingDetailFragment_to_powerExercisePackListFragment"
-            app:destination="@id/powerExercisePackListFragment" />
+            app:destination="@id/powerExercisePackListFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_powerTrainingDetailFragment_to_powerDateListFragment"
-            app:destination="@id/powerDateYearListFragment" />
+            app:destination="@id/powerDateYearListFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/powerExerciseListFragment"
@@ -27,7 +30,8 @@
         tools:layout="@layout/training_detail_exercise_list_layout">
         <action
             android:id="@+id/action_powerExerciseListFragment_to_powerExerciseCreationFragment"
-            app:destination="@id/powerExerciseCreationFragment" />
+            app:destination="@id/powerExerciseCreationFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/powerExerciseCreationFragment"
@@ -41,7 +45,8 @@
         tools:layout="@layout/training_detail_exercise_pack_list_layout">
         <action
             android:id="@+id/action_powerExercisePackListFragment_to_powerExercisePackCreationFragment"
-            app:destination="@id/powerExercisePackCreationFragment" />
+            app:destination="@id/powerExercisePackCreationFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/powerExercisePackCreationFragment"
@@ -55,10 +60,12 @@
         tools:layout="@layout/training_detail_year_list_layout">
         <action
             android:id="@+id/action_powerDateListFragment_to_powerDateCreationFragment"
-            app:destination="@id/powerDateCreationFragment" />
+            app:destination="@id/powerDateCreationFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_powerDateYearListFragment_to_powerDateMonthListFragment"
-            app:destination="@id/powerDateMonthListFragment" />
+            app:destination="@id/powerDateMonthListFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/powerDateCreationFragment"
@@ -67,7 +74,8 @@
         tools:layout="@layout/training_detail_date_layout">
         <action
             android:id="@+id/action_powerDateCreationFragment_to_powerDateListFragment"
-            app:destination="@id/powerDateYearListFragment" />
+            app:destination="@id/powerDateYearListFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/powerDateMonthListFragment"
@@ -76,7 +84,8 @@
         tools:layout="@layout/training_detail_month_list_layout">
         <action
             android:id="@+id/action_powerDateMonthListFragment_to_powerDateDayListFragment"
-            app:destination="@id/powerDateDayListFragment" />
+            app:destination="@id/powerDateDayListFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/powerDateDayListFragment"
