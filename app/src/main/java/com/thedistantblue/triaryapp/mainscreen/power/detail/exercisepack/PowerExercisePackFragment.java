@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
 
-public class PowerExercisePackCreationFragment extends Fragment {
+public class PowerExercisePackFragment extends Fragment {
 
     @Nullable
     @Override
