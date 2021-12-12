@@ -81,7 +81,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
         binding.trainingRecyclerView.setAdapter(this.trainingAdapter);
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.trainingAddButton.setOnClickListener(v -> {
-            //todo надо переделать создание тренировки на диалог
+            new PowerTrainingCreationDialog().show(getChildFragmentManager(), PowerTrainingCreationDialog.TAG);
         });
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((TrainingListItemAdapter) binding.trainingRecyclerView.getAdapter());

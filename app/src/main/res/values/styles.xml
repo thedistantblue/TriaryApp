@@ -8,9 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/DayNightColor</item>
         <item name="colorAccent">@android:color/darker_gray</item>
+        <item name="colorOnSurface">@color/DayNightColor</item>
+
+        <!--Пока не знаю зачем нужны и где могут понадобиться-->
+        <!--
+        <item name="colorControlActivated">@color/DayNightColor</item>
+        <item name="colorControlHighlight">@color/DayNightColor</item>
+        <item name="colorControlNormal">@color/DayNightColor</item>
+        -->
+
         <item name="colorPrimaryDark">@color/backgroundColor</item>
         <item name="android:colorBackground">@color/backgroundColor</item>
         <item name="android:navigationBarColor">@android:color/black</item>
