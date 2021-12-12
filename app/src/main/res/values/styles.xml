@@ -24,6 +24,11 @@
         <item name="android:colorBackground">@color/backgroundColor</item>
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <!-- Анимация перехода между активностями -->
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">

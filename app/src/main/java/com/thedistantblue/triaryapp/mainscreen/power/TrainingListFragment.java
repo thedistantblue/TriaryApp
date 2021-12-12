@@ -3,6 +3,7 @@ package com.thedistantblue.triaryapp.mainscreen.power;
 import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.TRAINING_KEY;
 import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.USER_KEY;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -138,7 +139,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
             trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), PowerTrainingDetailActivity.class);
                 intent.putExtra(TRAINING_KEY, training);
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle());
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(v -> {
                 //todo добавить диалог для редактирования
