@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen.power;
+package com.thedistantblue.triaryapp.mainscreen.power.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.thedistantblue.triaryapp.R;
 
-public class TrainingDetailActivity extends AppCompatActivity {
+public class PowerTrainingDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,10 @@ public class TrainingDetailActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment
                 = (NavHostFragment) fragmentManager.findFragmentById(R.id.tab_power_nav_host);
-        NavController navController = navHostFragment.getNavController();
-        navController.setGraph(R.navigation.tab_power_nav_graph, extras);
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+            navController.setGraph(R.navigation.power_training_detail_nav_graph, extras);
+        }
     }
 
 }

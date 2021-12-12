@@ -46,12 +46,12 @@
     <string name="main_screen_fragment_workouts">Workouts</string>
     <string name="settings_profile_title">Profile</string>
 
-    <!--Dialog buttons-->
+    <!-- Dialog buttons -->
     <string name="dialog_ok">Ok</string>
     <string name="dialog_create">Create</string>
     <string name="dialog_cancel">Cancel</string>
 
-    <!--Power training list-->
+    <!-- Power training list -->
     <string name="training_list_training_add_button">Add training</string>
     <string name="training_list_training_creation_dialog_message">Create training</string>
     <string name="training_list_training_creation_dialog_name_input_hint">Training name</string>
@@ -62,8 +62,12 @@
     <string name="training_detail_exercise_pack_list">Packs of exercises</string>
     <string name="training_detail_dates_list">Training dates</string>
 
-    <!-- Список упражнений -->
+    <!-- Exercise list -->
     <string name="training_detail_exercise_add_button">Add exercise</string>
     <string name="training_detail_exercise_creation_dialog_message">Create exercise</string>
     <string name="training_detail_exercise_creation_dialog_name_input_hint">Exercise name</string>
+
+    <!-- Exercise pack list -->
+    <string name="training_detail_exercise_pack_add_button">Add pack</string>
+
 </resources>

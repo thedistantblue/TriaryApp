@@ -24,6 +24,7 @@ import com.thedistantblue.triaryapp.databinding.TrainingListFragmentLayoutBindin
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
+import com.thedistantblue.triaryapp.mainscreen.power.detail.PowerTrainingDetailActivity;
 import com.thedistantblue.triaryapp.mainscreen.power.dialog.PowerTrainingCreationDialog;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
@@ -135,7 +136,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
 
             trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), TrainingDetailActivity.class);
+                Intent intent = new Intent(getActivity(), PowerTrainingDetailActivity.class);
                 intent.putExtra(TRAINING_KEY, training);
                 startActivity(intent);
             });

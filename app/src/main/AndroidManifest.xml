@@ -31,7 +31,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
 
-        <activity android:name=".mainscreen.power.TrainingDetailActivity"
+        <activity android:name=".mainscreen.power.detail.PowerTrainingDetailActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
