@@ -9,11 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.thedistantblue.triaryapp.R;
 
 public class PowerTrainingCreationDialog extends DialogFragment implements View.OnClickListener {
 
     public static String TAG = "PowerTrainingCreationDialog";
+    private TextInputEditText nameEditText;
+    private TextInputEditText descriptionEditText;
 
     public PowerTrainingCreationDialog() {
         super(R.layout.training_list_training_creation_dialog_layout);
@@ -26,6 +29,8 @@ public class PowerTrainingCreationDialog extends DialogFragment implements View.
         View view = inflater.inflate(R.layout.training_list_training_creation_dialog_layout, null);
         view.findViewById(R.id.training_list_training_creation_dialog_create_button).setOnClickListener(this);
         view.findViewById(R.id.training_list_training_creation_dialog_cancel_button).setOnClickListener(this);
+        nameEditText = view.findViewById(R.id.training_list_training_creation_dialog_name_input_edit_text);
+        descriptionEditText = view.findViewById(R.id.training_list_training_creation_dialog_description_input_edit_text);
         return view;
     }
 
@@ -33,4 +38,5 @@ public class PowerTrainingCreationDialog extends DialogFragment implements View.
     public void onClick(View v) {
 
     }
+
 }

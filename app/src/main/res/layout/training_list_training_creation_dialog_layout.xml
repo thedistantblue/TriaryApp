@@ -42,6 +42,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/training_list_training_creation_dialog_name_input_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/backgroundColor"
@@ -63,6 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/training_list_training_creation_dialog_name_input">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/training_list_training_creation_dialog_description_input_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/backgroundColor"
