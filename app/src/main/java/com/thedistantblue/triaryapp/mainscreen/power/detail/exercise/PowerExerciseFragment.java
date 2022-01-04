@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.thedistantblue.triaryapp.R;
+import com.thedistantblue.triaryapp.entities.base.Exercise;
 
 public class PowerExerciseFragment extends Fragment {
 
@@ -18,6 +19,10 @@ public class PowerExerciseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.training_detail_exercise_layout, container, false);
         return view;
+    }
+
+    public void createExercise(Exercise exercise) {
+
     }
 
 }

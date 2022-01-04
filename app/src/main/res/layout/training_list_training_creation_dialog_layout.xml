@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/DayNightColor"
-        android:text="@string/dialog_cancel"
+        android:text="@string/action_cancel"
         android:textColor="@color/design_default_color_on_secondary"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/training_list_training_creation_dialog_description_input" />
@@ -26,7 +26,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/DayNightColor"
-        android:text="@string/dialog_create"
+        android:text="@string/action_create"
         android:textColor="@color/design_default_color_on_secondary"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/training_list_training_creation_dialog_description_input" />

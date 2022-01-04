@@ -44,6 +44,8 @@ public class Exercise implements Serializable {
     }
 
     @Ignore
+    // Упражнение будет теперь привязывается не к дате, а к тренировке
+    @Deprecated
     public Exercise(UUID datesId) {
         this(UUID.randomUUID(), datesId);
     }

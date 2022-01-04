@@ -45,6 +45,16 @@
         <item name="android:colorControlHighlight">@android:color/white</item>
     </style>
 
+    <style name="TextInputLayoutStyle">
+        <item name="android:textColorHint">@color/DayNightColor</item>
+        <item name="hintTextColor">@color/DayNightColor</item>
+    </style>
+
+    <style name="TextInputEditTextStyle">
+        <item name="android:background">@color/backgroundColor</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/textColor</item>

@@ -81,6 +81,8 @@ public class PowerTrainingCreationDialog extends DialogFragment {
     @Override
     public void dismiss() {
         super.dismiss();
-        disposable.dispose();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 }
