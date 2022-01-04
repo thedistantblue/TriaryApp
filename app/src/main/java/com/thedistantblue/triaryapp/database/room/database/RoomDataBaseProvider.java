@@ -1,6 +1,7 @@
 package com.thedistantblue.triaryapp.database.room.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.room.Room;
 
@@ -18,6 +19,8 @@ public class RoomDataBaseProvider {
                                                  .build();
             triaryAppDatabaseWithProxy = new TriaryAppDatabaseProxy(database);
 
+            int dataBaseVersion = database.getOpenHelper().getWritableDatabase().getVersion();
+            Log.d("DB_VERSION: ", String.valueOf(dataBaseVersion));
         }
         return triaryAppDatabaseWithProxy;
     }
