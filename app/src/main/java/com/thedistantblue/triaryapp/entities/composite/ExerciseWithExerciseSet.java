@@ -4,6 +4,7 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Relation;
 
+import com.thedistantblue.triaryapp.entities.EntityConstants;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 
@@ -18,6 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExerciseWithExerciseSet {
     @Embedded private Exercise exercise = new Exercise();
-    @Relation(parentColumn = Exercise.UUID_FIELD_NAME, entityColumn = ExerciseSet.EXERCISE_UUID_FIELD)
+    @Relation(parentColumn = EntityConstants.UUID_FIELD, entityColumn = EntityConstants.PARENT_UUID_FIELD)
     private List<ExerciseSet> exerciseSetList = new ArrayList<>();
 }

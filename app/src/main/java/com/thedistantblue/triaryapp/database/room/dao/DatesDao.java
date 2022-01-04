@@ -25,7 +25,7 @@ public interface DatesDao extends BaseDao<Dates> {
     @Delete
     Completable delete(Dates dates);
 
-    @Query("SELECT * from dates_table where datesUUID = :datesId")
+    @Query("SELECT * from dates_table where uuid = :datesId")
     Single<Dates> findById(String datesId);
 
     @Query("SELECT * FROM dates_table")

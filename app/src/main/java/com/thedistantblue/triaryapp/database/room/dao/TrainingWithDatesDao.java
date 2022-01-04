@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.core.Single;
 @Dao
 public interface TrainingWithDatesDao extends ReadOnlyDao<TrainingWithDates> {
     @Transaction
-    @Query("SELECT * from training_table where trainingUUID = :trainingId")
+    @Query("SELECT * from training_table where uuid = :trainingId")
     Single<TrainingWithDates> findById(String trainingId);
 
     @Transaction

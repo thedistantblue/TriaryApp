@@ -1,9 +1,7 @@
 package com.thedistantblue.triaryapp.viewmodels;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
-import androidx.lifecycle.ViewModel;
 
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
@@ -18,7 +16,6 @@ import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.Data;
-import lombok.Getter;
 
 public class ExerciseViewModel extends BaseObservable {
 
@@ -62,7 +59,7 @@ public class ExerciseViewModel extends BaseObservable {
     }
 
     private void init() {
-        exerciseName.set(exercise.getExerciseName());
+        exerciseName.set(exercise.getName());
 
         first = setNumberToSetMap.get(1);
         firstSet.getRepetitions().set(String.valueOf(first.getRepetitions()));
@@ -86,7 +83,7 @@ public class ExerciseViewModel extends BaseObservable {
     }
 
     public void save() {
-        exercise.setExerciseName(exerciseName.get());
+        exercise.setName(exerciseName.get());
 
         first.setRepetitions(Integer.parseInt(firstSet.getRepetitions().get()));
         first.setWeight(Double.parseDouble(firstSet.getWeight().get()));
@@ -103,7 +100,7 @@ public class ExerciseViewModel extends BaseObservable {
         fifth.setRepetitions(Integer.parseInt(fifthSet.getRepetitions().get()));
         fifth.setWeight(Double.parseDouble(fifthSet.getWeight().get()));
 
-        exercise.setExerciseComments(exerciseComments.get());
+        exercise.setComments(exerciseComments.get());
 
         doSave();
     }

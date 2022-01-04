@@ -25,7 +25,7 @@ public interface ExerciseDao extends BaseDao<Exercise> {
     @Delete
     Completable delete(Exercise exercise);
 
-    @Query("SELECT * from exercise_table where exerciseUUID = :exerciseId")
+    @Query("SELECT * from exercise_table where uuid = :exerciseId")
     Single<Exercise> findById(String exerciseId);
 
     @Query("SELECT * FROM exercise_table")

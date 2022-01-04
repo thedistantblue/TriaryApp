@@ -19,27 +19,26 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity(tableName = DatabaseConstants.DATES_TABLE,
+@Entity(tableName = DatabaseConstants.EXERCISE_PACK_TABLE,
         foreignKeys = @ForeignKey(entity = Training.class,
                                   parentColumns = EntityConstants.UUID_FIELD,
                                   childColumns = EntityConstants.PARENT_UUID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
-public class Dates implements Serializable {
+public class ExercisePack implements Serializable {
 
     @NonNull
     @PrimaryKey
     private UUID uuid;
     private UUID parentUuid;
-    private long date;
 
     @Ignore
-    public Dates(@NotNull UUID uuid, UUID parentUuid) {
+    public ExercisePack(@NotNull UUID uuid, UUID parentUuid) {
         this.uuid = uuid;
         this.parentUuid = parentUuid;
     }
 
     @Ignore
-    public Dates(UUID parentUuid) {
+    public ExercisePack(UUID parentUuid) {
         this(UUID.randomUUID(), parentUuid);
     }
 }

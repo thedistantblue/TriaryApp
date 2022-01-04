@@ -42,7 +42,7 @@ public class DataCursorWrapper extends CursorWrapper {
         //Training training = new Training(Long.parseLong(uuid));
         training.setTrainingName(name);
         //training.setUserId(UUID.fromString(userUUID));
-        training.setUserId(Long.parseLong(userUUID));
+        training.setParentUuid(Long.parseLong(userUUID));
         //training.setTrainingDate(date); // Здесь надо будет переработать
         return training;
     }
@@ -53,8 +53,8 @@ public class DataCursorWrapper extends CursorWrapper {
         long dates = getLong(getColumnIndex(DatabaseScheme.DateTable.Columns.Dates));
 
         Dates d = new Dates(UUID.fromString(uuid), UUID.fromString(trainingUUID));
-        d.setDatesTrainingUUID(UUID.fromString(trainingUUID));
-        d.setDatesDate(dates);
+        d.setParentUuid(UUID.fromString(trainingUUID));
+        d.setDate(dates);
 
         return d;
     }
@@ -66,9 +66,9 @@ public class DataCursorWrapper extends CursorWrapper {
         String comments = getString(getColumnIndex(DatabaseScheme.ExerciseTable.Columns.Comments));
 
         Exercise exercise = new Exercise(UUID.fromString(uuid), UUID.fromString(datesUUID));
-        exercise.setExerciseName(name);
-        exercise.setDatesId(UUID.fromString(datesUUID));
-        exercise.setExerciseComments(comments);
+        exercise.setName(name);
+        exercise.setParentUuid(UUID.fromString(datesUUID));
+        exercise.setComments(comments);
         return exercise;
     }
 
@@ -80,7 +80,7 @@ public class DataCursorWrapper extends CursorWrapper {
         String weight = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.Weight));
 
         ExerciseSet exerciseSet = new ExerciseSet(UUID.fromString(uuid), UUID.fromString(exerciseUUID));
-        exerciseSet.setExerciseId(UUID.fromString(exerciseUUID));
+        exerciseSet.setParentUuid(UUID.fromString(exerciseUUID));
         exerciseSet.setNumber(Integer.parseInt(setNumer));
         exerciseSet.setRepetitions(Integer.parseInt(repetitions));
         exerciseSet.setWeight(Double.parseDouble(weight));

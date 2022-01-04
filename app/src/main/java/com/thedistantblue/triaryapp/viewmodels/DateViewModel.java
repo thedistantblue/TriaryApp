@@ -16,7 +16,7 @@ public class DateViewModel extends BaseObservable {
     public void setDate(Dates dates) {
         this.date = dates;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        dateName = format.format(dates.getDatesDate());
+        dateName = format.format(dates.getDate());
     }
 
     @Bindable

@@ -27,7 +27,7 @@ public interface TrainingDao extends BaseDao<Training> {
     @Delete
     Completable delete(Training training);
 
-    @Query("SELECT * from training_table where trainingUUID = :trainingId")
+    @Query("SELECT * from training_table where uuid = :trainingId")
     Single<Training> findById(String trainingId);
 
     @Query("SELECT * FROM training_table")

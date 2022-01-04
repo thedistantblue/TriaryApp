@@ -4,6 +4,7 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Relation;
 
+import com.thedistantblue.triaryapp.entities.EntityConstants;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 
@@ -17,6 +18,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class DatesWithExercise {
     @Embedded private Dates dates;
-    @Relation(parentColumn = Dates.UUID_FIELD_NAME, entityColumn = Exercise.DATES_UUID_FIELD_NAME)
+    @Relation(parentColumn = EntityConstants.UUID_FIELD, entityColumn = EntityConstants.PARENT_UUID_FIELD)
     private List<Exercise> exerciseList;
 }

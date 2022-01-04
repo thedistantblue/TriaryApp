@@ -1,11 +1,9 @@
 package com.thedistantblue.triaryapp.entities.base;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
@@ -24,27 +22,24 @@ import lombok.NoArgsConstructor;
 @Entity(tableName = DatabaseConstants.TRAINING_TABLE,
         foreignKeys = @ForeignKey(entity = User.class,
                                   parentColumns = User.ID_FIELD_NAME,
-                                  childColumns = Training.USER_ID_FIELD_NAME,
+                                  childColumns = EntityConstants.PARENT_UUID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class Training implements Serializable {
 
-    public static final String UUID_FIELD_NAME = "trainingUUID";
-    public static final String USER_ID_FIELD_NAME = "userId";
-
     @NonNull
     @PrimaryKey
-    private UUID trainingUUID;
-    private long userId;
+    private UUID uuid;
+    private long parentUuid;
     private String trainingName;
 
     @Ignore
-    public Training(@NotNull UUID trainingUUID, long userId) {
-        this.trainingUUID = trainingUUID;
-        this.userId = userId;
+    public Training(@NotNull UUID uuid, long parentUuid) {
+        this.uuid = uuid;
+        this.parentUuid = parentUuid;
     }
 
     @Ignore
-    public Training(long userId) {
-        this(UUID.randomUUID(), userId);
+    public Training(long parentUuid) {
+        this(UUID.randomUUID(), parentUuid);
     }
 }

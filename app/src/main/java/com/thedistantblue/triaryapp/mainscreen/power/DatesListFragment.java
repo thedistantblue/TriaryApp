@@ -60,7 +60,7 @@ public class DatesListFragment extends TitledFragment {
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         initDaos();
         withAutoDispose(
-                trainingWithDatesDao.findById(training.getTrainingUUID().toString())
+                trainingWithDatesDao.findById(training.getUuid().toString())
                                     .subscribe(this::initDatesList));
     }
 

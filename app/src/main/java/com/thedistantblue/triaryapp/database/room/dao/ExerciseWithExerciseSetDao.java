@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.core.Single;
 @Dao
 public interface ExerciseWithExerciseSetDao extends ReadOnlyDao<ExerciseWithExerciseSet> {
     @Transaction
-    @Query("SELECT * from exercise_table where exerciseUUID = :exerciseId")
+    @Query("SELECT * from exercise_table where uuid = :exerciseId")
     Single<ExerciseWithExerciseSet> findById(String exerciseId);
 
     @Transaction

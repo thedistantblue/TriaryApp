@@ -1,7 +1,6 @@
 package com.thedistantblue.triaryapp.entities.base;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -21,32 +20,27 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.EXERCISE_TABLE,
-        foreignKeys = @ForeignKey(entity = Dates.class,
-                                  parentColumns = Dates.UUID_FIELD_NAME,
-                                  childColumns = Exercise.DATES_UUID_FIELD_NAME,
+        foreignKeys = @ForeignKey(entity = Training.class,
+                                  parentColumns = EntityConstants.UUID_FIELD,
+                                  childColumns = EntityConstants.PARENT_UUID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class Exercise implements Serializable {
 
-    public static final String UUID_FIELD_NAME = "exerciseUUID";
-    public static final String DATES_UUID_FIELD_NAME = "datesId";
-
     @NonNull
     @PrimaryKey
-    private UUID exerciseUUID;
-    private UUID datesId;
-    private String exerciseName = "";
-    private String exerciseComments = "";
+    private UUID uuid;
+    private UUID parentUuid;
+    private String name = "";
+    private String comments = "";
 
     @Ignore
-    public Exercise(@NotNull UUID exerciseUUID, UUID datesId) {
-        this.exerciseUUID = exerciseUUID;
-        this.datesId = datesId;
+    public Exercise(@NotNull UUID uuid, UUID parentUuid) {
+        this.uuid = uuid;
+        this.parentUuid = parentUuid;
     }
 
     @Ignore
-    // Упражнение будет теперь привязывается не к дате, а к тренировке
-    @Deprecated
-    public Exercise(UUID datesId) {
-        this(UUID.randomUUID(), datesId);
+    public Exercise(UUID parentUuid) {
+        this(UUID.randomUUID(), parentUuid);
     }
 }

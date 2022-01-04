@@ -116,7 +116,7 @@ public class ExerciseListFragment extends TitledFragment {
     }
 
     private void createNewExerciseWithSets() {
-        newExercise = new Exercise(dates.getDatesUUID());
+        newExercise = new Exercise(dates.getUuid());
         newExerciseSets.clear();
         CountDownLatch countDownLatch = new CountDownLatch(5);
         new CallbackThread(countDownLatch, this, getActivity());
@@ -127,7 +127,7 @@ public class ExerciseListFragment extends TitledFragment {
 
     private void createExercises(CountDownLatch countDownLatch) {
         for (int i = 1; i <= 5; i++) {
-            ExerciseSet exerciseSet = new ExerciseSet(newExercise.getExerciseUUID());
+            ExerciseSet exerciseSet = new ExerciseSet(newExercise.getUuid());
             exerciseSet.setNumber(i);
             withAutoDispose(
                     exerciseSetDao.create(exerciseSet).subscribe(() -> {
@@ -146,7 +146,7 @@ public class ExerciseListFragment extends TitledFragment {
         initDaos();
         dates = (Dates) getArguments().getSerializable(DATES_KEY);
         withAutoDispose(
-                datesWithExerciseDao.findById(dates.getDatesUUID().toString())
+                datesWithExerciseDao.findById(dates.getUuid().toString())
                                     .subscribe(this::initExerciseList));
     }
 
@@ -172,7 +172,7 @@ public class ExerciseListFragment extends TitledFragment {
         super.onResume();
         ((MainScreenActivity) getActivity()).setTitle(R.string.training_exercises_fragment_name);
         withAutoDispose(
-                datesWithExerciseDao.findById(dates.getDatesUUID().toString())
+                datesWithExerciseDao.findById(dates.getUuid().toString())
                                     .subscribe(datesWithExercise -> {
                                         exerciseList = datesWithExercise.getExerciseList();
                                         exerciseAdapter.setExerciseList(exerciseList);
@@ -191,10 +191,10 @@ public class ExerciseListFragment extends TitledFragment {
 
         public void bind(final Exercise exercise) {
             withAutoDispose(
-                    exerciseWithExerciseSetDao.findById(exercise.getExerciseUUID().toString())
+                    exerciseWithExerciseSetDao.findById(exercise.getUuid().toString())
                                               .subscribe(exerciseWithExerciseSet -> {
                                                   this.exerciseItemCardBinding.executePendingBindings();
-                                                  this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getExerciseName());
+                                                  this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getName());
                                                   this.exerciseItemCardBinding.exerciseCard.setOnClickListener(v -> ((MainScreenActivity) getActivity())
                                                           .switchFragment(ExerciseFragment.newInstance(exerciseWithExerciseSet.getExercise(), new ArrayList<>(exerciseWithExerciseSet.getExerciseSetList()))));
                                               }));

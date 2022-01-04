@@ -54,8 +54,8 @@ public class DatesFragment extends TitledFragment {
         super.onCreate(savedInstanceState);
         initDaos();
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
-        dates = new Dates(training.getTrainingUUID());
-        dates.setDatesTrainingUUID(training.getTrainingUUID());
+        dates = new Dates(training.getUuid());
+        dates.setParentUuid(training.getUuid());
     }
 
     private void initDaos() {
@@ -97,7 +97,7 @@ public class DatesFragment extends TitledFragment {
 
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DateFragment.EXTRA_DATE);
-            dates.setDatesDate(date.getTime());
+            dates.setDate(date.getTime());
             dateTextView.setText(TriaryDateFormat.getFormattedDate(date.getTime()));
         }
     }
