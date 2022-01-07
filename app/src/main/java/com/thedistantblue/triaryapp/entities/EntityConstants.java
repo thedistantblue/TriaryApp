@@ -9,4 +9,9 @@ public class EntityConstants {
     public static final String UUID_FIELD_NAME = "name"; // for future to unify entity fields with id
     public static final String UUID_FIELD = "uuid";
     public static final String PARENT_UUID_FIELD = "parentUuid";
+
+    // MANY-TO-MANY
+    public static final String EXERCISE_ID = "exerciseId";
+    public static final String PACK_ID = "packId";
+    public static final String DATE_ID = "dateId";
 }

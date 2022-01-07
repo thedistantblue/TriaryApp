@@ -19,12 +19,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity(tableName = DatabaseConstants.EXERCISE_PACK_TABLE,
+@Entity(tableName = DatabaseConstants.PACK_TABLE,
         foreignKeys = @ForeignKey(entity = Training.class,
                                   parentColumns = EntityConstants.UUID_FIELD,
                                   childColumns = EntityConstants.PARENT_UUID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
-public class ExercisePack implements Serializable {
+public class Pack implements Serializable {
 
     @NonNull
     @PrimaryKey
@@ -32,13 +32,13 @@ public class ExercisePack implements Serializable {
     private UUID parentUuid;
 
     @Ignore
-    public ExercisePack(@NotNull UUID uuid, UUID parentUuid) {
+    public Pack(@NotNull UUID uuid, UUID parentUuid) {
         this.uuid = uuid;
         this.parentUuid = parentUuid;
     }
 
     @Ignore
-    public ExercisePack(UUID parentUuid) {
+    public Pack(UUID parentUuid) {
         this(UUID.randomUUID(), parentUuid);
     }
 }
