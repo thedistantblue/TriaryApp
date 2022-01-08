@@ -13,6 +13,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Deprecated
 @Data
 @NoArgsConstructor
 @Entity

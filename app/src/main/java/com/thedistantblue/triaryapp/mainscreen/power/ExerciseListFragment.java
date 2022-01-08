@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.DATES_KEY;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -64,8 +66,6 @@ public class ExerciseListFragment extends TitledFragment {
             }
         }
     }
-
-    private static final String DATES_KEY = "dates";
 
     private ExerciseAdapter exerciseAdapter;
     private DatesWithExerciseDao datesWithExerciseDao;

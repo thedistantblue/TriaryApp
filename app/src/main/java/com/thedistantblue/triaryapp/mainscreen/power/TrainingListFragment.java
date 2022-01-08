@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingDetailsDao;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
@@ -41,6 +42,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
 
     private User user;
     private TrainingDao trainingDao;
+    private TrainingDetailsDao trainingDetailsDao;
     private TrainingListItemAdapter trainingAdapter;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
@@ -70,8 +72,9 @@ public class TrainingListFragment extends AutoDisposableFragment {
     }
 
     private void initDaos() {
-        this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).userWithTrainingAndRunningDao();
         this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
+        this.trainingDetailsDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDetailsDao();
+        this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).userWithTrainingAndRunningDao();
     }
 
     @Override
@@ -137,9 +140,12 @@ public class TrainingListFragment extends AutoDisposableFragment {
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
 
             trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), PowerTrainingDetailActivity.class);
-                intent.putExtra(TRAINING_KEY, training);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle());
+                withAutoDispose(trainingDetailsDao.findById(training.getUuid().toString())
+                                                  .subscribe(trainingDetails -> {
+                                                      Intent intent = new Intent(getActivity(), PowerTrainingDetailActivity.class);
+                                                      intent.putExtra(TRAINING_KEY, trainingDetails);
+                                                      startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle());
+                                                  }));
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(v -> {
                 //todo добавить диалог для редактирования

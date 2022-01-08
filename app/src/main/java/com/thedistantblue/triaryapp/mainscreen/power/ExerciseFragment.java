@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.EXERCISE_KEY;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,6 @@ import java.util.List;
 
 public class ExerciseFragment extends TitledFragment {
 
-    private static final String EXERCISE_KEY = "exercise";
     private static final String EXERCISE_LIST_KEY = "exerciseList";
 
     private ExerciseFragmentLayoutBinding binding;

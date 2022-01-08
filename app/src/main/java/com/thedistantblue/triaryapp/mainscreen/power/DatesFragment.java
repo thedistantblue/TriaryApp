@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.TRAINING_KEY;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +29,6 @@ public class DatesFragment extends TitledFragment {
 
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
-    private static final String TRAINING_KEY = "training";
     private TextView dateTextView;
     private Button datesButton;
     private Button confirmButton;

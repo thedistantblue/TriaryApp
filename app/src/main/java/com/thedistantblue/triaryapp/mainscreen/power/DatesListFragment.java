@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.TRAINING_KEY;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
+import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
 import com.thedistantblue.triaryapp.entities.base.Dates;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
@@ -31,8 +34,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class DatesListFragment extends TitledFragment {
-
-    private static final String TRAINING_KEY = "training_key";
 
     private DatesAdapter datesAdapter;
     private List<Dates> datesList = new ArrayList<>();
@@ -79,10 +80,10 @@ public class DatesListFragment extends TitledFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater,
-                                                                                                                  R.layout.dates_list_fragment_layout,
-                                                                                                                  parent,
-                                                                                                                  false);
+        DatesListFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater,
+                                                                         R.layout.dates_list_fragment_layout,
+                                                                         parent,
+                                                                         false);
 
         datesAdapter = new DatesAdapter(datesList, getActivity());
         binding.datesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
