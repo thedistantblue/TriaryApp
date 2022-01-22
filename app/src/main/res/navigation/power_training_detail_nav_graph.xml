@@ -44,7 +44,7 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="training"
-            app:argType="com.thedistantblue.triaryapp.entities.composite.TrainingDetails" />
+            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
     </fragment>
     <fragment
         android:id="@+id/powerExerciseCreationFragment"
@@ -67,7 +67,7 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="training"
-            app:argType="com.thedistantblue.triaryapp.entities.composite.TrainingDetails" />
+            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
     </fragment>
     <fragment
         android:id="@+id/powerExercisePackCreationFragment"
@@ -97,7 +97,7 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="training"
-            app:argType="com.thedistantblue.triaryapp.entities.composite.TrainingDetails" />
+            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
     </fragment>
     <fragment
         android:id="@+id/powerDateCreationFragment"
