@@ -24,28 +24,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.EXERCISE_SET_TABLE,
         foreignKeys = @ForeignKey(entity = Exercise.class,
-                                  parentColumns = EntityConstants.UUID_FIELD,
-                                  childColumns = EntityConstants.PARENT_UUID_FIELD,
+                                  parentColumns = EntityConstants.EXERCISE_ID_FIELD,
+                                  childColumns = EntityConstants.EXERCISE_ID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class ExerciseSet implements Serializable, Parcelable {
 
     @NonNull
     @PrimaryKey
-    private UUID uuid;
-    private UUID parentUuid;
+    private UUID exerciseSetId;
+    private UUID exerciseId;
     private int number;
     private int repetitions;
     private double weight;
 
     @Ignore
-    public ExerciseSet(UUID parentUuid) {
-        this(UUID.randomUUID(), parentUuid);
+    public ExerciseSet(UUID exerciseId) {
+        this(UUID.randomUUID(), exerciseId);
     }
 
     @Ignore
-    public ExerciseSet(@NotNull UUID uuid, UUID parentUuid) {
-        this.uuid = uuid;
-        this.parentUuid = parentUuid;
+    public ExerciseSet(@NotNull UUID exerciseSetId, UUID exerciseId) {
+        this.exerciseSetId = exerciseSetId;
+        this.exerciseId = exerciseId;
     }
 
     @Ignore

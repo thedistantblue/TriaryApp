@@ -16,17 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.ExerciseItemCardBinding;
 import com.thedistantblue.triaryapp.databinding.ExerciseListFragmentLayoutBinding;
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
-import com.thedistantblue.triaryapp.entities.composite.DatesWithExercise;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.ItemTouchHelperAdapter;
@@ -68,17 +66,16 @@ public class ExerciseListFragment extends TitledFragment {
     }
 
     private ExerciseAdapter exerciseAdapter;
-    private DatesWithExerciseDao datesWithExerciseDao;
     private ExerciseDao exerciseDao;
     private ExerciseSetDao exerciseSetDao;
     private ExerciseWithExerciseSetDao exerciseWithExerciseSetDao;
-    private Dates dates;
+    private Day dates;
     private List<Exercise> exerciseList = new ArrayList<>();
 
     private Exercise newExercise;
     private final ArrayList<ExerciseSet> newExerciseSets = new ArrayList<>();
 
-    public static ExerciseListFragment newInstance(Dates dates) {
+    public static ExerciseListFragment newInstance(Day dates) {
         Bundle args = new Bundle();
         args.putSerializable(DATES_KEY, dates);
 
@@ -116,7 +113,7 @@ public class ExerciseListFragment extends TitledFragment {
     }
 
     private void createNewExerciseWithSets() {
-        newExercise = new Exercise(dates.getUuid());
+        newExercise = new Exercise(dates.getDayId());
         newExerciseSets.clear();
         CountDownLatch countDownLatch = new CountDownLatch(5);
         new CallbackThread(countDownLatch, this, getActivity());
@@ -127,7 +124,7 @@ public class ExerciseListFragment extends TitledFragment {
 
     private void createExercises(CountDownLatch countDownLatch) {
         for (int i = 1; i <= 5; i++) {
-            ExerciseSet exerciseSet = new ExerciseSet(newExercise.getUuid());
+            ExerciseSet exerciseSet = new ExerciseSet(newExercise.getExerciseId());
             exerciseSet.setNumber(i);
             withAutoDispose(
                     exerciseSetDao.create(exerciseSet).subscribe(() -> {
@@ -144,10 +141,7 @@ public class ExerciseListFragment extends TitledFragment {
 
     private void init() {
         initDaos();
-        dates = (Dates) getArguments().getSerializable(DATES_KEY);
-        withAutoDispose(
-                datesWithExerciseDao.findById(dates.getUuid().toString())
-                                    .subscribe(this::initExerciseList));
+        dates = (Day) getArguments().getSerializable(DATES_KEY);
     }
 
     private void initDaos() {
@@ -155,29 +149,14 @@ public class ExerciseListFragment extends TitledFragment {
                                           .exerciseDao();
         exerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                              .exerciseSetDao();
-        datesWithExerciseDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                                   .datesWithExerciseDao();
         exerciseWithExerciseSetDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                          .exerciseWithExerciseSetDao();
-    }
-
-    private void initExerciseList(DatesWithExercise datesWithExercise) {
-        exerciseList = datesWithExercise.getExerciseList();
-        exerciseAdapter.setExerciseList(exerciseList);
-        exerciseAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         ((MainScreenActivity) getActivity()).setTitle(R.string.training_exercises_fragment_name);
-        withAutoDispose(
-                datesWithExerciseDao.findById(dates.getUuid().toString())
-                                    .subscribe(datesWithExercise -> {
-                                        exerciseList = datesWithExercise.getExerciseList();
-                                        exerciseAdapter.setExerciseList(exerciseList);
-                                        exerciseAdapter.notifyDataSetChanged();
-                                    }));
     }
 
     private class ExerciseHolder extends RecyclerView.ViewHolder {
@@ -191,7 +170,7 @@ public class ExerciseListFragment extends TitledFragment {
 
         public void bind(final Exercise exercise) {
             withAutoDispose(
-                    exerciseWithExerciseSetDao.findById(exercise.getUuid().toString())
+                    exerciseWithExerciseSetDao.findById(exercise.getExerciseId().toString())
                                               .subscribe(exerciseWithExerciseSet -> {
                                                   this.exerciseItemCardBinding.executePendingBindings();
                                                   this.exerciseItemCardBinding.getViewModel().exerciseName.set(exerciseWithExerciseSet.getExercise().getName());

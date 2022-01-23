@@ -5,10 +5,10 @@ import androidx.room.Junction;
 import androidx.room.Relation;
 
 import com.thedistantblue.triaryapp.entities.EntityConstants;
-import com.thedistantblue.triaryapp.entities.base.DatePackCrossRef;
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.cross.DayPackCrossRef;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
-import com.thedistantblue.triaryapp.entities.base.ExercisePackCrossRef;
+import com.thedistantblue.triaryapp.entities.cross.ExercisePackCrossRef;
 import com.thedistantblue.triaryapp.entities.base.Pack;
 
 import java.util.Collection;
@@ -22,16 +22,16 @@ public class PackDetails {
     @Embedded private Pack pack;
 
     @Relation(
-            parentColumn = EntityConstants.PACK_ID,
-            entityColumn = EntityConstants.EXERCISE_ID,
+            parentColumn = EntityConstants.PACK_ID_FIELD,
+            entityColumn = EntityConstants.EXERCISE_ID_FIELD,
             associateBy = @Junction(ExercisePackCrossRef.class)
     )
     public Collection<Exercise> exercises;
 
     @Relation(
-            parentColumn = EntityConstants.PACK_ID,
-            entityColumn = EntityConstants.DATE_ID,
-            associateBy = @Junction(DatePackCrossRef.class)
+            parentColumn = EntityConstants.PACK_ID_FIELD,
+            entityColumn = EntityConstants.DAY_ID_FIELD,
+            associateBy = @Junction(DayPackCrossRef.class)
     )
-    public Collection<Dates> dates;
+    public Collection<Day> dates;
 }

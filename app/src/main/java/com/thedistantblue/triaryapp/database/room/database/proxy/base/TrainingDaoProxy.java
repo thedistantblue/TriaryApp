@@ -4,6 +4,7 @@ import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.base.Training;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -32,6 +33,11 @@ public class TrainingDaoProxy implements TrainingDao {
     @Override
     public Single<Training> findById(String trainingId) {
         return RxConfigurator.configureThreading(trainingDao.findById(trainingId));
+    }
+
+    @Override
+    public Single<List<Training>> findAllById(Collection<String> ids) {
+        return RxConfigurator.configureThreading(trainingDao.findAllById(ids));
     }
 
     @Override

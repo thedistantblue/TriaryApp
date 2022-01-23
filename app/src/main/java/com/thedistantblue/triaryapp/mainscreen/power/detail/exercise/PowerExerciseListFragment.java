@@ -52,7 +52,7 @@ public class PowerExerciseListFragment extends AutoDisposableFragment {
 
     private void init() {
         Collection<String> exercisesIds = training.getExerciseList().stream()
-                                                .map(exercise -> exercise.getUuid().toString())
+                                                .map(exercise -> exercise.getExerciseId().toString())
                                                 .collect(Collectors.toSet());
         withAutoDispose(exerciseDetailsDao.findAllById(exercisesIds)
                                           .subscribe(details -> {
@@ -103,7 +103,7 @@ public class PowerExerciseListFragment extends AutoDisposableFragment {
         public PowerExerciseHolder(@NonNull TrainingDetailExerciseListItemLayoutBinding view) {
             super(view);
             this.binding = view;
-            this.binding.setViewModel(new PowerExerciseItemViewModel());
+            this.binding.setViewModel(new PowerExerciseItemViewModel(null));
         }
 
         @Override

@@ -15,12 +15,11 @@ import io.reactivex.rxjava3.core.Single;
 @Dao
 public interface ExerciseDetailsDao extends ReadOnlyDao<ExerciseDetails> {
     @Transaction
-    @Query("SELECT * from exercise_table where uuid = :exerciseId")
+    @Query("SELECT * from exercise_table where exerciseId = :exerciseId")
     Single<ExerciseDetails> findById(String exerciseId);
 
     @Transaction
-    @Query("SELECT * from exercise_table where uuid in (:ids)")
-    @Override
+    @Query("SELECT * from exercise_table where exerciseId in (:ids)")
     Single<List<ExerciseDetails>> findAllById(Collection<String> ids);
 
     @Transaction

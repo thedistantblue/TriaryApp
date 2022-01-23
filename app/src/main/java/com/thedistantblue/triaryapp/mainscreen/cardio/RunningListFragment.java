@@ -24,8 +24,6 @@ import com.thedistantblue.triaryapp.databinding.RunningListFragmentLayoutBinding
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
-import com.thedistantblue.triaryapp.mainscreen.power.TrainingFragment;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
@@ -53,7 +51,7 @@ public class RunningListFragment extends AutoDisposableFragment {
     @Override
     public void onResume() {
         super.onResume();
-        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserId()))
                                                      .subscribe(user -> runningAdapter.setObjectsList(user.getRunningList())));
     }
 
@@ -91,7 +89,7 @@ public class RunningListFragment extends AutoDisposableFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserId()))
                                                      .subscribe(user -> runningAdapter.setObjectsList(user.getRunningList())));
     }
 

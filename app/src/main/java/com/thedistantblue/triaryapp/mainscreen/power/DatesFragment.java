@@ -14,9 +14,9 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.DayDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.mainscreen.utils.DateFragment;
@@ -33,8 +33,8 @@ public class DatesFragment extends TitledFragment {
     private Button datesButton;
     private Button confirmButton;
     private Training training;
-    private Dates dates;
-    private DatesDao datesDao;
+    private Day dates;
+    private DayDao datesDao;
 
     public static DatesFragment newInstance(Training training) {
         Bundle args = new Bundle();
@@ -55,13 +55,13 @@ public class DatesFragment extends TitledFragment {
         super.onCreate(savedInstanceState);
         initDaos();
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
-        dates = new Dates(training.getUuid());
-        dates.setParentUuid(training.getUuid());
+        dates = new Day(training.getTrainingId());
+        dates.setTrainingId(training.getTrainingId());
     }
 
     private void initDaos() {
         datesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                       .datesDao();
+                                       .dayDao();
     }
 
     @Override

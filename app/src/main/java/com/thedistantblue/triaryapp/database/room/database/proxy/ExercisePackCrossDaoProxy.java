@@ -1,9 +1,10 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy;
 
-import com.thedistantblue.triaryapp.database.room.dao.ExercisePackCrossDao;
+import com.thedistantblue.triaryapp.database.room.dao.cross.ExercisePackCrossDao;
 import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
-import com.thedistantblue.triaryapp.entities.base.ExercisePackCrossRef;
+import com.thedistantblue.triaryapp.entities.cross.ExercisePackCrossRef;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -17,6 +18,11 @@ public class ExercisePackCrossDaoProxy implements ExercisePackCrossDao {
     @Override
     public Single<ExercisePackCrossRef> findById(String exerciseId) {
         return RxConfigurator.configureThreading(exercisePackCrossDao.findById(exerciseId));
+    }
+
+    @Override
+    public Single<List<ExercisePackCrossRef>> findAllById(Collection<String> ids) {
+        return RxConfigurator.configureThreading(exercisePackCrossDao.findAllById(ids));
     }
 
     @Override

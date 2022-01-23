@@ -30,21 +30,20 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="training"
-            app:argType="com.thedistantblue.triaryapp.entities.composite.TrainingDetails" />
+            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
     </fragment>
     <fragment
         android:id="@+id/powerExerciseListFragment"
-        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.PowerExerciseListFragment"
-        android:label="PowerExerciseListFragment"
-        tools:layout="@layout/training_detail_exercise_list_layout">
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.PowerExerciseListFragmentCompose"
+        android:label="PowerExerciseListFragmentCompose">
         <action
             android:id="@+id/action_powerExerciseListFragment_to_powerExerciseCreationFragment"
             app:destination="@id/powerExerciseCreationFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
-            android:name="training"
-            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
+                android:name="trainingDetails"
+                app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
     </fragment>
     <fragment
         android:id="@+id/powerExerciseCreationFragment"

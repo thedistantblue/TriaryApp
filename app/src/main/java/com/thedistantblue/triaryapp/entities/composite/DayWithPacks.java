@@ -5,8 +5,8 @@ import androidx.room.Junction;
 import androidx.room.Relation;
 
 import com.thedistantblue.triaryapp.entities.EntityConstants;
-import com.thedistantblue.triaryapp.entities.base.Dates;
-import com.thedistantblue.triaryapp.entities.base.ExercisePackCrossRef;
+import com.thedistantblue.triaryapp.entities.base.Day;
+import com.thedistantblue.triaryapp.entities.cross.ExercisePackCrossRef;
 import com.thedistantblue.triaryapp.entities.base.Pack;
 
 import java.util.Collection;
@@ -16,11 +16,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DateWithPacks {
-    @Embedded private Dates dates;
+public class DayWithPacks {
+    @Embedded private Day day;
+
     @Relation(
-            parentColumn = EntityConstants.DATE_ID,
-            entityColumn = EntityConstants.PACK_ID,
+            parentColumn = EntityConstants.DAY_ID_FIELD,
+            entityColumn = EntityConstants.PACK_ID_FIELD,
             associateBy = @Junction(ExercisePackCrossRef.class)
     )
     public Collection<Pack> packs;

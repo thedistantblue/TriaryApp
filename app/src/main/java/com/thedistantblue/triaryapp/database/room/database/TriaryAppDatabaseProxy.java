@@ -1,15 +1,14 @@
 package com.thedistantblue.triaryapp.database.room.database;
 
-import com.thedistantblue.triaryapp.database.room.dao.DateExerciseCrossDao;
-import com.thedistantblue.triaryapp.database.room.dao.DatePackCrossDao;
-import com.thedistantblue.triaryapp.database.room.dao.DatesWithExerciseDao;
-import com.thedistantblue.triaryapp.database.room.dao.ExercisePackCrossDao;
+import com.thedistantblue.triaryapp.database.room.dao.DayDao;
+import com.thedistantblue.triaryapp.database.room.dao.cross.DayExerciseCrossDao;
+import com.thedistantblue.triaryapp.database.room.dao.cross.DayPackCrossDao;
+import com.thedistantblue.triaryapp.database.room.dao.cross.ExercisePackCrossDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseWithExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao;
-import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDaysDao;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDetailsDao;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
-import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
@@ -17,14 +16,13 @@ import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
 import com.thedistantblue.triaryapp.database.room.database.proxy.DateExerciseCrossDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.DatePackCrossDaoProxy;
-import com.thedistantblue.triaryapp.database.room.database.proxy.DatesWithExerciseDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.ExercisePackCrossDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.ExerciseWithExerciseSetDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.ExerciseDetailsDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.TrainingWithDatesDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.TrainingDetailsDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.UserWithTrainingAndRunningDaoProxy;
-import com.thedistantblue.triaryapp.database.room.database.proxy.base.DatesDaoProxy;
+import com.thedistantblue.triaryapp.database.room.database.proxy.base.DayDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.base.ExerciseDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.base.ExerciseSetDaoProxy;
 import com.thedistantblue.triaryapp.database.room.database.proxy.base.RunningDaoProxy;
@@ -38,8 +36,8 @@ public class TriaryAppDatabaseProxy implements TriaryAppDatabase {
     private final TriaryAppRoomDatabase triaryAppDatabase;
 
     @Override
-    public DatesDao datesDao() {
-        return new DatesDaoProxy(triaryAppDatabase.datesDao());
+    public DayDao dayDao() {
+        return new DayDaoProxy(triaryAppDatabase.dayDao());
     }
 
     @Override
@@ -73,18 +71,13 @@ public class TriaryAppDatabaseProxy implements TriaryAppDatabase {
     }
 
     @Override
-    public TrainingWithDatesDao trainingWithDatesDao() {
+    public TrainingWithDaysDao trainingWithDatesDao() {
         return new TrainingWithDatesDaoProxy(triaryAppDatabase.trainingWithDatesDao());
     }
 
     @Override
     public TrainingDetailsDao trainingDetailsDao() {
         return new TrainingDetailsDaoProxy(triaryAppDatabase.trainingDetailsDao());
-    }
-
-    @Override
-    public DatesWithExerciseDao datesWithExerciseDao() {
-        return new DatesWithExerciseDaoProxy(triaryAppDatabase.datesWithExerciseDao());
     }
 
     @Override
@@ -103,12 +96,12 @@ public class TriaryAppDatabaseProxy implements TriaryAppDatabase {
     }
 
     @Override
-    public DateExerciseCrossDao dateExerciseCrossDao() {
+    public DayExerciseCrossDao dateExerciseCrossDao() {
         return new DateExerciseCrossDaoProxy(triaryAppDatabase.dateExerciseCrossDao());
     }
 
     @Override
-    public DatePackCrossDao datePackCrossDao() {
+    public DayPackCrossDao datePackCrossDao() {
         return new DatePackCrossDaoProxy(triaryAppDatabase.datePackCrossDao());
     }
 }

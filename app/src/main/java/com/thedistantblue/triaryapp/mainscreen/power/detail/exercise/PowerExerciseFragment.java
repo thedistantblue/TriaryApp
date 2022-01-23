@@ -48,8 +48,8 @@ public class PowerExerciseFragment extends AutoDisposableFragment {
     }
 
     public void createExercise(Exercise.Builder exerciseBuilder) {
-        Exercise exercise = exerciseBuilder.setUuid(UUID.randomUUID())
-                                           .setParentUuid(training.getUuid())
+        Exercise exercise = exerciseBuilder.setExerciseId(UUID.randomUUID())
+                                           .setTrainingId(training.getTrainingId())
                                            .build();
         withAutoDispose(exerciseDao.create(exercise)
                                    .subscribe(() -> powerTrainingDetailActivity.onBackPressed()));

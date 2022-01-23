@@ -18,7 +18,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ExerciseWithExerciseSet {
-    @Embedded private Exercise exercise = new Exercise();
-    @Relation(parentColumn = EntityConstants.UUID_FIELD, entityColumn = EntityConstants.PARENT_UUID_FIELD)
+    @Embedded private Exercise exercise;
+
+    @Relation(parentColumn = EntityConstants.EXERCISE_ID_FIELD,
+              entityColumn = EntityConstants.EXERCISE_ID_FIELD
+    )
     private List<ExerciseSet> exerciseSetList = new ArrayList<>();
 }

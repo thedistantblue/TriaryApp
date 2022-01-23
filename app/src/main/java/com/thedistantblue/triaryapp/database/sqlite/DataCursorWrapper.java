@@ -3,7 +3,7 @@ package com.thedistantblue.triaryapp.database.sqlite;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.entities.base.Running;
@@ -42,18 +42,18 @@ public class DataCursorWrapper extends CursorWrapper {
         //Training training = new Training(Long.parseLong(uuid));
         training.setTrainingName(name);
         //training.setUserId(UUID.fromString(userUUID));
-        training.setParentUuid(Long.parseLong(userUUID));
+        training.setUserId(Long.parseLong(userUUID));
         //training.setTrainingDate(date); // Здесь надо будет переработать
         return training;
     }
 
-    public Dates getDates() {
+    public Day getDates() {
         String trainingUUID = getString(getColumnIndex(DatabaseScheme.DateTable.Columns.UUID_TRAINING));
         String uuid = getString(getColumnIndex(DatabaseScheme.DateTable.Columns.UUID));
         long dates = getLong(getColumnIndex(DatabaseScheme.DateTable.Columns.Dates));
 
-        Dates d = new Dates(UUID.fromString(uuid), UUID.fromString(trainingUUID));
-        d.setParentUuid(UUID.fromString(trainingUUID));
+        Day d = new Day(UUID.fromString(uuid), UUID.fromString(trainingUUID));
+        d.setTrainingId(UUID.fromString(trainingUUID));
         d.setDate(dates);
 
         return d;
@@ -67,7 +67,7 @@ public class DataCursorWrapper extends CursorWrapper {
 
         Exercise exercise = new Exercise(UUID.fromString(uuid), UUID.fromString(datesUUID));
         exercise.setName(name);
-        exercise.setParentUuid(UUID.fromString(datesUUID));
+        exercise.setTrainingId(UUID.fromString(datesUUID));
         exercise.setComments(comments);
         return exercise;
     }
@@ -80,7 +80,7 @@ public class DataCursorWrapper extends CursorWrapper {
         String weight = getString(getColumnIndex(DatabaseScheme.SetTable.Columns.Weight));
 
         ExerciseSet exerciseSet = new ExerciseSet(UUID.fromString(uuid), UUID.fromString(exerciseUUID));
-        exerciseSet.setParentUuid(UUID.fromString(exerciseUUID));
+        exerciseSet.setExerciseId(UUID.fromString(exerciseUUID));
         exerciseSet.setNumber(Integer.parseInt(setNumer));
         exerciseSet.setRepetitions(Integer.parseInt(repetitions));
         exerciseSet.setWeight(Double.parseDouble(weight));

@@ -1,21 +1,5 @@
 package com.thedistantblue.triaryapp.database.sqlite;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import com.thedistantblue.triaryapp.entities.base.Dates;
-import com.thedistantblue.triaryapp.entities.base.Exercise;
-import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
-import com.thedistantblue.triaryapp.entities.base.Running;
-import com.thedistantblue.triaryapp.entities.base.Training;
-import com.thedistantblue.triaryapp.entities.base.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class LocalDAO { //implements DAO {
 
 /*    private static DAO mDao;
@@ -36,11 +20,11 @@ public class LocalDAO { //implements DAO {
         return cv;
     }
 
-    private static ContentValues getDatesContentValues(Dates dates) {
+    private static ContentValues getDatesContentValues(Day dates) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseScheme.DateTable.Columns.UUID_TRAINING, String.valueOf(dates.getDatesTrainingUUID()));
         cv.put(DatabaseScheme.DateTable.Columns.UUID, String.valueOf(dates.getDatesUUID()));
-        cv.put(DatabaseScheme.DateTable.Columns.Dates, dates.getDatesDate());
+        cv.put(DatabaseScheme.DateTable.Columns.Day, dates.getDatesDate());
         return cv;
     }
 
@@ -60,7 +44,7 @@ public class LocalDAO { //implements DAO {
         cv.put(DatabaseScheme.ExerciseTable.Columns.UUID_TRAINING, exercise.getDatesId().toString());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Name, exercise.getExerciseName());
         cv.put(DatabaseScheme.ExerciseTable.Columns.Comments, exercise.getExerciseComments());
-        cv.put(DatabaseScheme.ExerciseTable.Columns.Dates, exercise.getDatesId().toString());
+        cv.put(DatabaseScheme.ExerciseTable.Columns.Day, exercise.getDatesId().toString());
         return cv;
     }
 
@@ -109,7 +93,7 @@ public class LocalDAO { //implements DAO {
     }
 
     @Override
-    public void addDates(Dates dates) {
+    public void addDates(Day dates) {
         ContentValues cv = getDatesContentValues(dates);
         mDatabase.insert(DatabaseScheme.DateTable.NAME, null, cv);
     }
@@ -260,12 +244,12 @@ public class LocalDAO { //implements DAO {
     }
 
     @Override
-    public List<Exercise> getExercisesList(Dates dates) {
+    public List<Exercise> getExercisesList(Day dates) {
         List<Exercise> exercisesList = new ArrayList<>();
         String uuid = dates.getDatesUUID().toString();
         DataCursorWrapper dcw = this.queryData(
                 DatabaseScheme.ExerciseTable.NAME,
-                DatabaseScheme.ExerciseTable.Columns.Dates + " =?",
+                DatabaseScheme.ExerciseTable.Columns.Day + " =?",
                 new String[] {uuid}
         );
 
@@ -333,9 +317,9 @@ public class LocalDAO { //implements DAO {
     }
 
     @Override
-    public List<Dates> getDates(Training training) {
+    public List<Day> getDates(Training training) {
         String uuid = String.valueOf(training.getTrainingUUID());
-        List<Dates> datesList = new ArrayList<>();
+        List<Day> datesList = new ArrayList<>();
         DataCursorWrapper dcw = this.queryData(
                 DatabaseScheme.DateTable.NAME,
                 DatabaseScheme.DateTable.Columns.UUID_TRAINING + " =?",
@@ -345,7 +329,7 @@ public class LocalDAO { //implements DAO {
         try {
             dcw.moveToFirst();
             while (!dcw.isAfterLast()) {
-                Dates dates = dcw.getDates();
+                Day dates = dcw.getDates();
                 dates.setDatesExerciseList(getExercisesList(dates));
                 datesList.add(dates);
                 dcw.moveToNext();
@@ -513,7 +497,7 @@ public class LocalDAO { //implements DAO {
 
 
     @Override
-    public void deleteDate(Dates dates) {
+    public void deleteDate(Day dates) {
         String uuid = dates.getDatesUUID().toString();
 
         mDatabase.delete(

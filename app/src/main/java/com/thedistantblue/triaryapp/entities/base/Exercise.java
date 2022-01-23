@@ -21,25 +21,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.EXERCISE_TABLE,
         foreignKeys = @ForeignKey(entity = Training.class,
-                                  parentColumns = EntityConstants.UUID_FIELD,
-                                  childColumns = EntityConstants.PARENT_UUID_FIELD,
+                                  parentColumns = EntityConstants.TRAINING_ID_FIELD,
+                                  childColumns = EntityConstants.TRAINING_ID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class Exercise implements Serializable {
 
     @NoArgsConstructor
     public static class Builder {
-        private UUID uuid;
-        private UUID parentUuid;
+        private UUID exerciseId;
+        private UUID trainingId;
         private String name;
         private String comments;
 
-        public Builder setUuid(UUID uuid) {
-            this.uuid = uuid;
+        public Builder setExerciseId(UUID exerciseId) {
+            this.exerciseId = exerciseId;
             return this;
         }
 
-        public Builder setParentUuid(UUID parentUuid) {
-            this.parentUuid = parentUuid;
+        public Builder setTrainingId(UUID trainingId) {
+            this.trainingId = trainingId;
             return this;
         }
 
@@ -55,8 +55,8 @@ public class Exercise implements Serializable {
 
         public Exercise build() {
             Exercise exercise = new Exercise();
-            exercise.setUuid(this.uuid);
-            exercise.setParentUuid(this.parentUuid);
+            exercise.setExerciseId(this.exerciseId);
+            exercise.setTrainingId(this.trainingId);
             exercise.setName(this.name);
             exercise.setComments(this.comments);
             return exercise;
@@ -65,20 +65,25 @@ public class Exercise implements Serializable {
 
     @NonNull
     @PrimaryKey
-    private UUID uuid;
-    private UUID parentUuid;
+    private UUID exerciseId;
+    private UUID trainingId;
+
+    // В связи с новой архитектурой упражнение может быть в нескольких датах,
+    // и дата теперь не является владельцем упражнений
+    @Deprecated
     private UUID dateId;
+
     private String name = "";
     private String comments = "";
 
     @Ignore
-    public Exercise(@NotNull UUID uuid, UUID parentUuid) {
-        this.uuid = uuid;
-        this.parentUuid = parentUuid;
+    public Exercise(@NotNull UUID exerciseId, UUID trainingId) {
+        this.exerciseId = exerciseId;
+        this.trainingId = trainingId;
     }
 
     @Ignore
-    public Exercise(UUID parentUuid) {
-        this(UUID.randomUUID(), parentUuid);
+    public Exercise(UUID trainingId) {
+        this(UUID.randomUUID(), trainingId);
     }
 }

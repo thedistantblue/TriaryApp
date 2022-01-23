@@ -42,7 +42,7 @@ public class TrainingFragment extends TitledFragment {
         boolean creationRequired = training == null;
         args.putSerializable(IS_CREATE_KEY, creationRequired);
         if (creationRequired) {
-            training = new Training(user.getUserID());
+            training = new Training(user.getUserId());
         }
         args.putSerializable(TRAINING_KEY, training);
 

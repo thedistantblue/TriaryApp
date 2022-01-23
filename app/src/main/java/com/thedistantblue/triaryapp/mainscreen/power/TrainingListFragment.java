@@ -59,7 +59,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
     public void onResume() {
         super.onResume();
         if (user != null) {
-            withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+            withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserId()))
                                                          .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
         }
     }
@@ -85,7 +85,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
         binding.trainingRecyclerView.setAdapter(this.trainingAdapter);
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.trainingAddButton.setOnClickListener(v -> {
-            new PowerTrainingCreationDialog(this, trainingDao, user.getUserID())
+            new PowerTrainingCreationDialog(this, trainingDao, user.getUserId())
                     .show(getChildFragmentManager(), PowerTrainingCreationDialog.TAG);
         });
 
@@ -100,7 +100,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (user != null) {
-            withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
+            withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserId()))
                                                          .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
         }
     }
@@ -140,7 +140,7 @@ public class TrainingListFragment extends AutoDisposableFragment {
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
 
             trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
-                withAutoDispose(trainingDetailsDao.findById(training.getUuid().toString())
+                withAutoDispose(trainingDetailsDao.findById(training.getTrainingId().toString())
                                                   .subscribe(trainingDetails -> {
                                                       Intent intent = new Intent(getActivity(), PowerTrainingDetailActivity.class);
                                                       intent.putExtra(TRAINING_KEY, trainingDetails);

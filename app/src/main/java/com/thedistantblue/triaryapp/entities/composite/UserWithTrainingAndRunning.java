@@ -19,8 +19,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class UserWithTrainingAndRunning {
     @Embedded private User user;
-    @Relation(parentColumn = User.ID_FIELD_NAME, entityColumn = EntityConstants.PARENT_UUID_FIELD)
+
+    @Relation(parentColumn = EntityConstants.USER_ID_FIELD,
+              entityColumn = EntityConstants.USER_ID_FIELD
+    )
     private List<Training> trainingList;
-    @Relation(parentColumn = User.ID_FIELD_NAME, entityColumn = Running.USER_ID_FIELD_NAME)
+
+    @Relation(parentColumn = EntityConstants.USER_ID_FIELD,
+              entityColumn = EntityConstants.USER_ID_FIELD
+    )
     private List<Running> runningList;
 }

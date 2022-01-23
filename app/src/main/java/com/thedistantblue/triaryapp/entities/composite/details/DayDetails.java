@@ -6,33 +6,32 @@ import androidx.room.Relation;
 
 import com.thedistantblue.triaryapp.entities.EntityConstants;
 import com.thedistantblue.triaryapp.entities.cross.DayExerciseCrossRef;
+import com.thedistantblue.triaryapp.entities.cross.DayPackCrossRef;
 import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
-import com.thedistantblue.triaryapp.entities.cross.ExercisePackCrossRef;
 import com.thedistantblue.triaryapp.entities.base.Pack;
 
 import java.util.Collection;
-import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ExerciseDetails {
-    @Embedded private Exercise exercise;
+public class DayDetails {
+    @Embedded private Day day;
 
     @Relation(
-            parentColumn = EntityConstants.EXERCISE_ID_FIELD,
-            entityColumn = EntityConstants.PACK_ID_FIELD,
-            associateBy = @Junction(ExercisePackCrossRef.class)
-    )
-    public List<Pack> packs;
-
-    @Relation(
-            parentColumn = EntityConstants.EXERCISE_ID_FIELD,
-            entityColumn = EntityConstants.DAY_ID_FIELD,
+            parentColumn = EntityConstants.DAY_ID_FIELD,
+            entityColumn = EntityConstants.EXERCISE_ID_FIELD,
             associateBy = @Junction(DayExerciseCrossRef.class)
     )
-    public List<Day> days;
+    public Collection<Exercise> exercises;
+
+    @Relation(
+            parentColumn = EntityConstants.DAY_ID_FIELD,
+            entityColumn = EntityConstants.PACK_ID_FIELD,
+            associateBy = @Junction(DayPackCrossRef.class)
+    )
+    public Collection<Pack> packs;
 }

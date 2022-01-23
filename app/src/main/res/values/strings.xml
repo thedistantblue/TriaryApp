@@ -74,7 +74,7 @@
     <!-- Exercise pack list -->
     <string name="training_detail_exercise_pack_add_button">Add pack</string>
 
-    <!-- Dates list -->
+    <!-- Day list -->
     <string name="training_detail_date_add_button">Add date</string>
 
 </resources>
