@@ -25,6 +25,11 @@ public class ExerciseDetailsDaoProxy implements ExerciseDetailsDao {
     }
 
     @Override
+    public Single<List<ExerciseDetails>> findAllByTrainingId(String trainingId) {
+        return RxConfigurator.configureThreading(exerciseDetailsDao.findAllByTrainingId(trainingId));
+    }
+
+    @Override
     public Single<List<ExerciseDetails>> findAll() {
         return RxConfigurator.configureThreading(exerciseDetailsDao.findAll());
     }

@@ -88,6 +88,9 @@ dependencies {
     // When using a AppCompat theme
     implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
 
+    implementation "androidx.compose.runtime:runtime:1.0.5"
+    implementation "androidx.compose.runtime:runtime-rxjava3:1.0.5"
+
     // JAX-B dependencies for JDK 9+
     //implementation "javax.xml.bind:jaxb-api:2.2.12"
     //implementation "com.sun.xml.bind:jaxb-core:2.2.11"

@@ -23,6 +23,10 @@ public interface ExerciseDetailsDao extends ReadOnlyDao<ExerciseDetails> {
     Single<List<ExerciseDetails>> findAllById(Collection<String> ids);
 
     @Transaction
+    @Query("SELECT * from exercise_table where trainingId = :trainingId")
+    Single<List<ExerciseDetails>> findAllByTrainingId(String trainingId);
+
+    @Transaction
     @Query("SELECT * from exercise_table")
     Single<List<ExerciseDetails>> findAll();
 }
