@@ -50,7 +50,7 @@ class PowerExerciseListFragmentCompose: Fragment() {
     }
 
     private fun doNavigate() {
-        val directions = PowerExerciseListFragmentComposeDirections.actionPowerExerciseListFragmentToPowerExerciseCreationFragment(Training(1))
+        val directions = PowerExerciseListFragmentComposeDirections.actionPowerExerciseListFragmentToPowerExerciseCreationFragment()
         Navigation.findNavController(composeView).navigate(directions)
     }
 }

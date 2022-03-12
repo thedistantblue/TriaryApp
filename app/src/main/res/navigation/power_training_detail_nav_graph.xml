@@ -48,12 +48,7 @@
     <fragment
         android:id="@+id/powerExerciseFragmentCompose"
         android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.PowerExerciseFragmentCompose"
-        android:label="PowerExerciseFragmentCompose"
-        tools:layout="@layout/training_detail_exercise_layout">
-        <argument
-            android:name="training"
-            app:argType="com.thedistantblue.triaryapp.entities.base.Training" />
-    </fragment>
+        android:label="PowerExerciseFragmentCompose" />
     <fragment
         android:id="@+id/powerExercisePackListFragment"
         android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.PowerExercisePackListFragment"

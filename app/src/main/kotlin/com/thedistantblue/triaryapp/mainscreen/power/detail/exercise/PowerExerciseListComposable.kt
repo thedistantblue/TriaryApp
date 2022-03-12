@@ -22,8 +22,10 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.mainscreen.power.detail.PowerTrainingDetailFragmentDirections
 
 @Composable
@@ -39,7 +41,7 @@ fun PowerExerciseListScreen(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                text = { Text(text = "Create Power Exercise") },
+                text = { Text(text = stringResource(R.string.training_detail_exercise_add_button)) },
                 onClick = navFunction
             )
         }
