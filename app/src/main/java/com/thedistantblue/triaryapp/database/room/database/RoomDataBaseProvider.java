@@ -19,8 +19,8 @@ public class RoomDataBaseProvider {
                                                  .build();
             triaryAppDatabaseWithProxy = new TriaryAppDatabaseProxy(database);
 
-            int dataBaseVersion = database.getOpenHelper().getWritableDatabase().getVersion();
-            Log.d("DB_VERSION: ", String.valueOf(dataBaseVersion));
+            //int dataBaseVersion = database.getOpenHelper().getWritableDatabase().getVersion();
+            //Log.d("DB_VERSION: ", String.valueOf(dataBaseVersion));
         }
         return triaryAppDatabaseWithProxy;
     }

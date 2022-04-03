@@ -7,22 +7,19 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider
-import com.thedistantblue.triaryapp.entities.base.Training
+import com.thedistantblue.triaryapp.entities.base.Exercise
 import com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails
+import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseListScreen
 
 class PowerExerciseListFragmentCompose: Fragment() {
 
-    lateinit var exerciseDetailsDao: ExerciseDetailsDao
-    lateinit var trainingDetails: TrainingDetails
-    lateinit var lifecycleOwner: LifecycleOwner
     lateinit var composeView: View
+    lateinit var lifecycleOwner: LifecycleOwner
+    lateinit var trainingDetails: TrainingDetails
+    lateinit var exerciseDetailsDao: ExerciseDetailsDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +29,14 @@ class PowerExerciseListFragmentCompose: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        //val navHostFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.tab_power_nav_host) as NavHostFragment?
-
         return ComposeView(requireActivity()).apply {
             setContent {
-                PowerExerciseListScreen("trainingDetails.training.trainingId",
+                PowerExerciseListScreen(trainingDetails.training.trainingId.toString(),
                                         exerciseDetailsDao,
-                                        lifecycleOwner) {
-                    doNavigate()
-                }
+                                        lifecycleOwner,
+                                        ::doNavigateToCreate,
+                                        ::doNavigateToUpdate
+                )
             }
         }
     }
@@ -49,8 +45,17 @@ class PowerExerciseListFragmentCompose: Fragment() {
         composeView = view
     }
 
-    private fun doNavigate() {
-        val directions = PowerExerciseListFragmentComposeDirections.actionPowerExerciseListFragmentToPowerExerciseCreationFragment()
+    private fun doNavigateToCreate() {
+        val directions =
+            PowerExerciseListFragmentComposeDirections
+                .actionPowerExerciseListFragmentToPowerExerciseCreationFragment(null, trainingDetails.training.trainingId.toString())
+        Navigation.findNavController(composeView).navigate(directions)
+    }
+
+    private fun doNavigateToUpdate(exercise: Exercise) {
+        val directions =
+            PowerExerciseListFragmentComposeDirections
+                .actionPowerExerciseListFragmentToPowerExerciseCreationFragment(exercise, trainingDetails.training.trainingId.toString())
         Navigation.findNavController(composeView).navigate(directions)
     }
 }

@@ -100,7 +100,7 @@ public class ExerciseViewModel extends BaseObservable {
         fifth.setRepetitions(Integer.parseInt(fifthSet.getRepetitions().get()));
         fifth.setWeight(Double.parseDouble(fifthSet.getWeight().get()));
 
-        exercise.setComments(exerciseComments.get());
+        exercise.setDescription(exerciseComments.get());
 
         doSave();
     }

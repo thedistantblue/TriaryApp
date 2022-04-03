@@ -68,7 +68,7 @@ public class DataCursorWrapper extends CursorWrapper {
         Exercise exercise = new Exercise(UUID.fromString(uuid), UUID.fromString(datesUUID));
         exercise.setName(name);
         exercise.setTrainingId(UUID.fromString(datesUUID));
-        exercise.setComments(comments);
+        exercise.setDescription(comments);
         return exercise;
     }
 

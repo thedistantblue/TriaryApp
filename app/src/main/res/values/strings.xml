@@ -68,8 +68,12 @@
 
     <!-- Exercise list -->
     <string name="training_detail_exercise_add_button">Add exercise</string>
-    <string name="training_detail_exercise_creation_dialog_message">Create exercise</string>
-    <string name="training_detail_exercise_creation_dialog_name_input_hint">Exercise name</string>
+
+    <!-- Exercise -->
+    <string name="training_detail_exercise_create_exercise">Create exercise</string>
+    <string name="training_detail_exercise_update_exercise">Update exercise</string>
+    <string name="training_detail_exercise_name_hint">Exercise name</string>
+    <string name="training_detail_exercise_description_hint">Exercise description</string>
 
     <!-- Exercise pack list -->
     <string name="training_detail_exercise_pack_add_button">Add pack</string>

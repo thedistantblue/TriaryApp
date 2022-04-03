@@ -31,7 +31,7 @@ public class Exercise implements Serializable {
         private UUID exerciseId;
         private UUID trainingId;
         private String name;
-        private String comments;
+        private String description;
 
         public Builder setExerciseId(UUID exerciseId) {
             this.exerciseId = exerciseId;
@@ -48,8 +48,8 @@ public class Exercise implements Serializable {
             return this;
         }
 
-        public Builder setComments(String comments) {
-            this.comments = comments;
+        public Builder setDescription(String description) {
+            this.description = description;
             return this;
         }
 
@@ -58,7 +58,7 @@ public class Exercise implements Serializable {
             exercise.setExerciseId(this.exerciseId);
             exercise.setTrainingId(this.trainingId);
             exercise.setName(this.name);
-            exercise.setComments(this.comments);
+            exercise.setDescription(this.description);
             return exercise;
         }
     }
@@ -67,14 +67,8 @@ public class Exercise implements Serializable {
     @PrimaryKey
     private UUID exerciseId;
     private UUID trainingId;
-
-    // В связи с новой архитектурой упражнение может быть в нескольких датах,
-    // и дата теперь не является владельцем упражнений
-    @Deprecated
-    private UUID dateId;
-
     private String name = "";
-    private String comments = "";
+    private String description = "";
 
     @Ignore
     public Exercise(@NotNull UUID exerciseId, UUID trainingId) {

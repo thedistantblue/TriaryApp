@@ -68,8 +68,12 @@
 
     <!-- Список упражнений -->
     <string name="training_detail_exercise_add_button">Добавить упражнение</string>
-    <string name="training_detail_exercise_creation_dialog_message">Создать упражнение</string>
-    <string name="training_detail_exercise_creation_dialog_name_input_hint">Название упражнения</string>
+
+    <!-- Упражнение -->
+    <string name="training_detail_exercise_create_exercise">Создать упражнение</string>
+    <string name="training_detail_exercise_update_exercise">Обновить упражнение</string>
+    <string name="training_detail_exercise_name_hint">Название упражнения</string>
+    <string name="training_detail_exercise_description_hint">Описание упражнения</string>
 
     <!-- Список наборов упражнений -->
     <string name="training_detail_exercise_pack_add_button">Добавить набор</string>
