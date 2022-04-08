@@ -35,4 +35,16 @@ public class ExerciseDetails {
             associateBy = @Junction(DayExerciseCrossRef.class)
     )
     public List<Day> days;
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public List<Pack> getPacks() {
+        return packs;
+    }
+
+    public List<Day> getDays() {
+        return days;
+    }
 }

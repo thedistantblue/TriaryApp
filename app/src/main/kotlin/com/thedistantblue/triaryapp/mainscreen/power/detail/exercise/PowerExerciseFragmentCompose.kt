@@ -32,9 +32,9 @@ class PowerExerciseFragmentCompose : Fragment() {
         return ComposeView(requireActivity()).apply {
             setContent {
                 if (exercise == null) {
-                    PowerExerciseScreen(::createFunction)
+                    PowerExerciseScreen(::createFunction, trainingId = trainingId)
                 } else {
-                    PowerExerciseScreen(::saveFunction)
+                    PowerExerciseScreen(::saveFunction, exercise = exercise)
                 }
             }
         }

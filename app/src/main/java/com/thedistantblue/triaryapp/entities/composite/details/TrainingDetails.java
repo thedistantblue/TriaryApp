@@ -26,4 +26,20 @@ public class TrainingDetails implements Serializable {
     private List<Pack> packList;
     @Relation(parentColumn = EntityConstants.TRAINING_ID_FIELD, entityColumn = EntityConstants.DAY_ID_FIELD)
     private List<Day> datesList;
+
+    public Training getTraining() {
+        return training;
+    }
+
+    public List<Exercise> getExerciseList() {
+        return exerciseList;
+    }
+
+    public List<Pack> getPackList() {
+        return packList;
+    }
+
+    public List<Day> getDatesList() {
+        return datesList;
+    }
 }

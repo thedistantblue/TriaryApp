@@ -18,7 +18,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Entity(tableName = DatabaseConstants.EXERCISE_TABLE,
         foreignKeys = @ForeignKey(entity = Training.class,
                                   parentColumns = EntityConstants.TRAINING_ID_FIELD,
@@ -79,5 +78,42 @@ public class Exercise implements Serializable {
     @Ignore
     public Exercise(UUID trainingId) {
         this(UUID.randomUUID(), trainingId);
+    }
+
+    public Exercise() {
+
+    }
+
+    @NonNull
+    public UUID getExerciseId() {
+        return exerciseId;
+    }
+
+    public UUID getTrainingId() {
+        return trainingId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setExerciseId(@NonNull UUID exerciseId) {
+        this.exerciseId = exerciseId;
+    }
+
+    public void setTrainingId(UUID trainingId) {
+        this.trainingId = trainingId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

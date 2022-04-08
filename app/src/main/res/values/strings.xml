@@ -70,6 +70,8 @@
     <string name="training_detail_exercise_add_button">Add exercise</string>
 
     <!-- Exercise -->
+    <string name="training_detail_exercise_created_toast">Exercise successfully created!</string>
+    <string name="training_detail_exercise_updated_toast">Exercise successfully updated!</string>
     <string name="training_detail_exercise_create_exercise">Create exercise</string>
     <string name="training_detail_exercise_update_exercise">Update exercise</string>
     <string name="training_detail_exercise_name_hint">Exercise name</string>

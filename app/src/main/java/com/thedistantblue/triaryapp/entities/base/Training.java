@@ -42,4 +42,17 @@ public class Training implements Serializable {
     public Training(long userId) {
         this(UUID.randomUUID(), userId);
     }
+
+    @NonNull
+    public UUID getTrainingId() {
+        return trainingId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public String getTrainingName() {
+        return trainingName;
+    }
 }
