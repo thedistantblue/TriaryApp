@@ -1,18 +1,21 @@
 package com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose
 
+import android.content.res.Resources
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.unit.dp
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.entities.composite.details.ExerciseDetails
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.*
@@ -36,7 +39,8 @@ fun PowerExerciseListScreen(
                 text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
                 onClick = navigateToCreate
             )
-        }
+        },
+        backgroundColor = MaterialTheme.colors.background
     )
 }
 
@@ -60,6 +64,7 @@ private fun ExerciseList(trainingId: String,
 
     LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp,
                                               vertical = 8.dp),
+               verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         items(exercisesRemember) { item ->
             ExerciseListItem(item, navigateToUpdate)
@@ -75,8 +80,10 @@ private fun ExerciseListItem(exerciseDetails: ExerciseDetails, navigateToUpdate:
     }
 
     Card(
-        shape = RoundedCornerShape(8.dp),
-        onClick = onClickNavigateToUpdate
+        shape = RoundedCornerShape(4.dp),
+        onClick = onClickNavigateToUpdate,
+        backgroundColor = Color.DarkGray,
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
