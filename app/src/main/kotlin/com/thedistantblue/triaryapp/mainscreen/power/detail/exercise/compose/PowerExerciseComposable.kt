@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.entities.base.Exercise
+import com.thedistantblue.triaryapp.theme.TriaryAppTheme
 import java.util.*
 
 @Composable
@@ -49,14 +50,16 @@ fun PowerExerciseScreen(exerciseFunction: (Exercise, () -> Unit) -> Unit,
         }
     }
 
-    Column(
+    TriaryAppTheme {
+        Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(R.string.training_detail_exercise_name_hint)) })
-        Box(modifier = Modifier.height(5.dp))
-        TextField(value = description, onValueChange = { description = it }, label = { Text(stringResource(R.string.training_detail_exercise_description_hint)) })
-        Box(modifier = Modifier.height(5.dp))
-        Button(onClick = onClickExerciseFunction) { Text(text = buttonText) }
+        ) {
+            TextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(R.string.training_detail_exercise_name_hint)) })
+            Box(modifier = Modifier.height(5.dp))
+            TextField(value = description, onValueChange = { description = it }, label = { Text(stringResource(R.string.training_detail_exercise_description_hint)) })
+            Box(modifier = Modifier.height(5.dp))
+            Button(onClick = onClickExerciseFunction) { Text(text = buttonText) }
+        }
     }
 }
