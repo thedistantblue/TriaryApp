@@ -8,29 +8,26 @@ import android.widget.Toast
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavType
-import androidx.navigation.Navigation
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider
-import com.thedistantblue.triaryapp.database.room.database.TriaryAppDatabase
 import com.thedistantblue.triaryapp.entities.base.Exercise
-import com.thedistantblue.triaryapp.entities.base.Pack
 import com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.ExerciseList
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseScreen
 import com.thedistantblue.triaryapp.theme.TriaryAppTheme
 import java.util.*
-import kotlin.io.path.createTempFile
 
 class PowerExerciseListFragmentCompose: Fragment() {
 
@@ -56,30 +53,18 @@ class PowerExerciseListFragmentCompose: Fragment() {
             setContent {
                 val navController = rememberNavController()
                 TriaryAppTheme {
-                    NavHost(navController = navController, startDestination = "power_exercise_list") {
-                        composable("power_exercise_list") {
-                            Scaffold(
-                                    content = {
-                                        ExerciseList(trainingId.toString(),
-                                                     exerciseDetailsDao,
-                                                     lifecycleOwner,
-                                                     navController
-                                        )
-                                    },
-                                    floatingActionButton = {
-                                        ExtendedFloatingActionButton(
-                                                text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
-                                                onClick = { navController.navigate("power_exercise/create") }
-                                        )
-                                    },
-                            )
-                        }
-                        composable("power_exercise/{exerciseId}") {
-                            val exerciseId = it.arguments?.getString("exerciseId")
-                            PowerExerciseScreen(exerciseDao, ::saveFunction, trainingId, exerciseId)
-                        }
-                        composable("power_exercise/create") {
-                            PowerExerciseScreen(exerciseDao, ::createFunction, trainingId, null)
+                    NavHost(navController = navController, startDestination = "power_exercise_list_route") {
+                        navigation(startDestination = "power_exercise_list", route = "power_exercise_list_route") {
+                            composable("power_exercise_list") {
+                                ListComposable(navController)
+                            }
+                            composable("power_exercise/{exerciseId}") {
+                                val exerciseId = it.arguments?.getString("exerciseId")
+                                PowerExerciseScreen(exerciseDao, ::saveFunction, trainingId, exerciseId)
+                            }
+                            composable("power_exercise/create") {
+                                PowerExerciseScreen(exerciseDao, ::createFunction, trainingId, null)
+                            }
                         }
                     }
                 }
@@ -89,6 +74,24 @@ class PowerExerciseListFragmentCompose: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         composeView = view
+    }
+
+    @Composable
+    private fun ListComposable(navController: NavController) {
+        Scaffold(
+                content = {
+                    ExerciseList(trainingId.toString(), exerciseDetailsDao,
+                                 lifecycleOwner,
+                                 navController
+                    )
+                },
+                floatingActionButton = {
+                    ExtendedFloatingActionButton(
+                            text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
+                            onClick = { navController.navigate("power_exercise/create") }
+                    )
+                },
+        )
     }
 
     private fun createFunction(exercise: Exercise) {
