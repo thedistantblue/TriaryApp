@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import com.thedistantblue.triaryapp.R
-import com.thedistantblue.triaryapp.theme.components.TriaryAppCard
+import com.thedistantblue.triaryapp.theme.components.TriaryAppSwipeToDismissCard
 
 @Composable
 fun PowerExerciseListComposable(navController: NavController,
@@ -69,8 +69,8 @@ fun ExerciseList(trainingId: String,
 @Composable
 private fun ExerciseListItem(exerciseDetails: ExerciseDetails, navController: NavController) {
     val exerciseId = exerciseDetails.exercise.exerciseId.toString()
-    TriaryAppCard(
-        onClickAction = { navController.navigate("power_exercise/$exerciseId") }
+    TriaryAppSwipeToDismissCard(
+        onClickAction = { navController.navigate("power_exercise/$exerciseId") },
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
