@@ -14,9 +14,7 @@ import com.thedistantblue.triaryapp.R
 
 @Composable
 fun PowerTrainingDetailComposable(navController: NavController) {
-    Column(
-
-    ) {
+    Column {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
