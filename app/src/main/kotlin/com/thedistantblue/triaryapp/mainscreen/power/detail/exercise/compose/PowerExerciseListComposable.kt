@@ -12,42 +12,18 @@ import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.entities.composite.details.ExerciseDetails
 import androidx.compose.ui.Alignment
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.*
-import com.thedistantblue.triaryapp.R
+import androidx.navigation.NavController
 import com.thedistantblue.triaryapp.entities.base.Exercise
-import com.thedistantblue.triaryapp.theme.TriaryAppTheme
 import com.thedistantblue.triaryapp.theme.components.TriaryAppCard
 
 @Composable
-fun PowerExerciseListScreen(
-        trainingId: String,
-        exerciseDao: ExerciseDetailsDao,
-        lifecycleOwner: LifecycleOwner,
-        navigateToCreate: () -> Unit,
-        navigateToUpdate: (Exercise) -> Unit,
+fun ExerciseList(trainingId: String,
+                 exerciseDao: ExerciseDetailsDao,
+                 lifecycleOwner: LifecycleOwner,
+                 navController: NavController
 ) {
-    TriaryAppTheme {
-        Scaffold(
-            content = {
-                ExerciseList(trainingId, exerciseDao, lifecycleOwner, navigateToUpdate)
-            },
-            floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
-                    onClick = navigateToCreate
-                )
-            },
-        )
-    }
-}
 
-@Composable
-private fun ExerciseList(trainingId: String,
-                         exerciseDao: ExerciseDetailsDao,
-                         lifecycleOwner: LifecycleOwner,
-                         navigateToUpdate: (Exercise) -> Unit
-) {
     val exercisesRemember = remember { mutableStateListOf<ExerciseDetails>() }
 
     val observer = LifecycleEventObserver { _, event ->
@@ -61,24 +37,26 @@ private fun ExerciseList(trainingId: String,
     lifecycleOwner.lifecycle.addObserver(observer)
 
     LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp,
-                                              vertical = 8.dp),
+                                              vertical = 8.dp
+    ),
                verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         items(exercisesRemember) { item ->
-            ExerciseListItem(item, navigateToUpdate)
+            ExerciseListItem(item,
+                             navController
+            )
         }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun ExerciseListItem(exerciseDetails: ExerciseDetails, navigateToUpdate: (Exercise) -> Unit) {
-    val onClickNavigateToUpdate: () -> Unit = {
-        navigateToUpdate.invoke(exerciseDetails.exercise)
-    }
-
+private fun ExerciseListItem(exerciseDetails: ExerciseDetails, navController: NavController) {
+    val exerciseId = exerciseDetails.exercise.exerciseId.toString()
     TriaryAppCard(
-        onClickAction = onClickNavigateToUpdate,
+        onClickAction = {
+            navController.navigate("power_exercise/$exerciseId")
+        }
     ) {
         Column(
             verticalArrangement = Arrangement.Center,

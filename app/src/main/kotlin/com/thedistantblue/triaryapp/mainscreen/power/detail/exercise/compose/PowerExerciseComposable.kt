@@ -1,6 +1,5 @@
 package com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -12,42 +11,42 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.thedistantblue.triaryapp.R
+import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
 import com.thedistantblue.triaryapp.entities.base.Exercise
 import com.thedistantblue.triaryapp.theme.TriaryAppTheme
 import java.util.*
 
 @Composable
-fun PowerExerciseScreen(exerciseFunction: (Exercise, () -> Unit) -> Unit,
-                        trainingId: String? = null,
-                        exercise: Exercise? = null
+fun PowerExerciseScreen(exerciseDao: ExerciseDao,
+                        exerciseFunction: (Exercise) -> Unit,
+                        trainingId: UUID,
+                        exerciseId: String? = null
 ) {
-    val localExercise = exercise ?: Exercise()
-    trainingId?.let {
-        localExercise.exerciseId = UUID.randomUUID()
-        localExercise.trainingId = UUID.fromString(it)
-    }
-
-    var name by remember { mutableStateOf(localExercise.name) }
-    var description by remember { mutableStateOf(localExercise.description) }
-    val createToastText = stringResource(R.string.training_detail_exercise_created_toast)
-    val updateToastText = stringResource(R.string.training_detail_exercise_updated_toast)
     val createButtonText = stringResource(R.string.training_detail_exercise_create_exercise)
     val updateButtonText = stringResource(R.string.training_detail_exercise_update_exercise)
-    val buttonText = exercise?.let { updateButtonText } ?: run { createButtonText }
 
-    val context = LocalContext.current
+    var localExercise = Exercise(UUID.randomUUID(), trainingId)
+
+    var name by remember { mutableStateOf(localExercise.name) }
+    var buttonText by remember { mutableStateOf(createButtonText) }
+    var description by remember { mutableStateOf(localExercise.description) }
+
+    exerciseId?.let { id ->
+        exerciseDao.findById(id).subscribe { exercise ->
+            localExercise = exercise
+            buttonText = updateButtonText
+            name = localExercise.name
+            description = localExercise.description
+        }
+    }
+
     val onClickExerciseFunction: () -> Unit = {
         localExercise.name = name
         localExercise.description = description
-        exerciseFunction.invoke(localExercise) {
-            exercise?.let {
-                Toast.makeText(context, updateToastText , Toast.LENGTH_SHORT).show()
-            } ?: Toast.makeText(context, createToastText, Toast.LENGTH_SHORT).show()
-        }
+        exerciseFunction.invoke(localExercise)
     }
 
     TriaryAppTheme {

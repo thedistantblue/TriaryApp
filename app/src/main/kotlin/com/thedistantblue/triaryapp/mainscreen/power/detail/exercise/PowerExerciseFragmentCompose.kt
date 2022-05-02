@@ -28,28 +28,4 @@ class PowerExerciseFragmentCompose : Fragment() {
         trainingId = PowerExerciseFragmentComposeArgs.fromBundle(requireArguments()).trainingId
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return ComposeView(requireActivity()).apply {
-            setContent {
-                if (exercise == null) {
-                    PowerExerciseScreen(::createFunction, trainingId = trainingId)
-                } else {
-                    PowerExerciseScreen(::saveFunction, exercise = exercise)
-                }
-            }
-        }
-    }
-
-    private fun createFunction(exercise: Exercise, callback: () -> Unit) {
-        exerciseDao.create(exercise).subscribe {
-            callback.invoke()
-        }
-    }
-
-    private fun saveFunction(exercise: Exercise, callback: () -> Unit) {
-        exerciseDao.save(exercise).subscribe {
-            callback.invoke()
-        }
-    }
-
 }
