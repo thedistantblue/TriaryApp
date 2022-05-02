@@ -25,19 +25,15 @@ fun PowerExerciseListComposable(navController: NavController,
                                 lifecycleOwner: LifecycleOwner
 ) {
     Scaffold(
-            content = {
-                ExerciseList(trainingId,
-                             exerciseDetailsDao,
-                             lifecycleOwner,
-                             navController
-                )
-            },
-            floatingActionButton = {
-                ExtendedFloatingActionButton(
-                        text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
-                        onClick = { navController.navigate("power_exercise/create") }
-                )
-            },
+        content = {
+            ExerciseList(trainingId, exerciseDetailsDao, lifecycleOwner, navController)
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
+                onClick = { navController.navigate("power_exercise/create") }
+            )
+        },
     )
 }
 
@@ -60,15 +56,11 @@ fun ExerciseList(trainingId: String,
     }
     lifecycleOwner.lifecycle.addObserver(observer)
 
-    LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp,
-                                              vertical = 8.dp
-    ),
+    LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         items(exercisesRemember) { item ->
-            ExerciseListItem(item,
-                             navController
-            )
+            ExerciseListItem(item, navController)
         }
     }
 }
@@ -78,9 +70,7 @@ fun ExerciseList(trainingId: String,
 private fun ExerciseListItem(exerciseDetails: ExerciseDetails, navController: NavController) {
     val exerciseId = exerciseDetails.exercise.exerciseId.toString()
     TriaryAppCard(
-        onClickAction = {
-            navController.navigate("power_exercise/$exerciseId")
-        }
+        onClickAction = { navController.navigate("power_exercise/$exerciseId") }
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
