@@ -19,10 +19,10 @@ import com.thedistantblue.triaryapp.entities.base.Exercise
 import java.util.*
 
 @Composable
-fun PowerExerciseScreen(exerciseDao: ExerciseDao,
-                        exerciseFunction: (Exercise) -> Unit,
-                        trainingId: UUID,
-                        exerciseId: String? = null
+fun PowerExerciseComposable(exerciseDao: ExerciseDao,
+                            exerciseFunction: (Exercise) -> Unit,
+                            trainingId: UUID,
+                            exerciseId: String? = null
 ) {
     val createButtonText = stringResource(R.string.training_detail_exercise_create_exercise)
     val updateButtonText = stringResource(R.string.training_detail_exercise_update_exercise)

@@ -34,12 +34,4 @@ public class PowerTrainingDetailActivity extends AppCompatActivity {
         }
     }
 
-    //todo сразу выкидывает на главный экран после компоузов, будет исправлено, когда вся навигация тут
-    // перейдет на компоуз
-//    @Override
-//    public void onBackPressed() {
-//        if (!navController.popBackStack()) {
-//            super.onBackPressed();
-//        }
-//    }
 }
