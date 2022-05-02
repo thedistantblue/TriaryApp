@@ -11,11 +11,35 @@ import androidx.compose.ui.unit.dp
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.entities.composite.details.ExerciseDetails
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 
 import androidx.lifecycle.*
 import androidx.navigation.NavController
-import com.thedistantblue.triaryapp.entities.base.Exercise
+import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.theme.components.TriaryAppCard
+
+@Composable
+fun PowerExerciseListComposable(navController: NavController,
+                                trainingId: String,
+                                exerciseDetailsDao: ExerciseDetailsDao,
+                                lifecycleOwner: LifecycleOwner
+) {
+    Scaffold(
+            content = {
+                ExerciseList(trainingId,
+                             exerciseDetailsDao,
+                             lifecycleOwner,
+                             navController
+                )
+            },
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                        text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
+                        onClick = { navController.navigate("power_exercise/create") }
+                )
+            },
+    )
+}
 
 @Composable
 fun ExerciseList(trainingId: String,

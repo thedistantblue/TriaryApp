@@ -5,15 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,7 +20,7 @@ import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider
 import com.thedistantblue.triaryapp.entities.base.Exercise
 import com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails
-import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.ExerciseList
+import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseListComposable
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseScreen
 import com.thedistantblue.triaryapp.theme.TriaryAppTheme
 import java.util.*
@@ -54,18 +50,7 @@ class PowerExerciseListFragmentCompose: Fragment() {
                 val navController = rememberNavController()
                 TriaryAppTheme {
                     NavHost(navController = navController, startDestination = "power_exercise_list_route") {
-                        navigation(startDestination = "power_exercise_list", route = "power_exercise_list_route") {
-                            composable("power_exercise_list") {
-                                ListComposable(navController)
-                            }
-                            composable("power_exercise/{exerciseId}") {
-                                val exerciseId = it.arguments?.getString("exerciseId")
-                                PowerExerciseScreen(exerciseDao, ::saveFunction, trainingId, exerciseId)
-                            }
-                            composable("power_exercise/create") {
-                                PowerExerciseScreen(exerciseDao, ::createFunction, trainingId, null)
-                            }
-                        }
+                        powerExerciseListRoute(navController = navController)
                     }
                 }
             }
@@ -76,22 +61,18 @@ class PowerExerciseListFragmentCompose: Fragment() {
         composeView = view
     }
 
-    @Composable
-    private fun ListComposable(navController: NavController) {
-        Scaffold(
-                content = {
-                    ExerciseList(trainingId.toString(), exerciseDetailsDao,
-                                 lifecycleOwner,
-                                 navController
-                    )
-                },
-                floatingActionButton = {
-                    ExtendedFloatingActionButton(
-                            text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
-                            onClick = { navController.navigate("power_exercise/create") }
-                    )
-                },
-        )
+    private fun NavGraphBuilder.powerExerciseListRoute(navController: NavController) {
+        navigation(startDestination = "power_exercise_list", route = "power_exercise_list_route") {
+            composable("power_exercise_list") {
+                PowerExerciseListComposable(navController, trainingId.toString(), exerciseDetailsDao, lifecycleOwner)
+            }
+            composable("power_exercise/{exerciseId}") {
+                PowerExerciseScreen(exerciseDao, ::saveFunction, trainingId, it.arguments?.getString("exerciseId"))
+            }
+            composable("power_exercise/create") {
+                PowerExerciseScreen(exerciseDao, ::createFunction, trainingId, null)
+            }
+        }
     }
 
     private fun createFunction(exercise: Exercise) {
