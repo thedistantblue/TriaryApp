@@ -70,7 +70,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
     private fun NavGraphBuilder.powerExerciseListRoute(navController: NavController) {
         navigation(startDestination = EXERCISE_LIST, route = EXERCISE_LIST_ROUTE) {
             composable(EXERCISE_LIST) {
-                PowerExerciseListComposable(navController, trainingId.toString(), exerciseDetailsDao, lifecycleOwner)
+                PowerExerciseListComposable(navController, trainingId.toString(), exerciseDetailsDao, exerciseDao, lifecycleOwner)
             }
             composable(EXERCISE_UPDATE) {
                 PowerExerciseComposable(exerciseDao, ::saveFunction, trainingId, it.arguments?.getString("exerciseId"))
