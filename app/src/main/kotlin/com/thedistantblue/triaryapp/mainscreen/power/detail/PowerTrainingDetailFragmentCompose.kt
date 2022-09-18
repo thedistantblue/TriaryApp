@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -26,21 +27,24 @@ import com.thedistantblue.triaryapp.theme.TriaryAppTheme
 import com.thedistantblue.triaryapp.utils.BundleKeyConstants
 import java.util.*
 
+
 class PowerTrainingDetailFragmentCompose: Fragment() {
 
+    private lateinit var trainingId: UUID
     private lateinit var composeView: View
+    private lateinit var exerciseDao: ExerciseDao
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var trainingDetails: TrainingDetails
-    private lateinit var exerciseDao: ExerciseDao
     private lateinit var exerciseDetailsDao: ExerciseDetailsDao
-    private lateinit var trainingId: UUID
+    private lateinit var viewModel: Lazy<PowerTrainingDetailViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val database = RoomDataBaseProvider.getDatabaseWithProxy(requireActivity())
-        exerciseDao = database.exerciseDao()
-        exerciseDetailsDao = database.exerciseDetailsDao()
-        lifecycleOwner = this
+        this.lifecycleOwner = this
+        this.exerciseDao = database.exerciseDao()
+        this.exerciseDetailsDao = database.exerciseDetailsDao()
+        this.viewModel = viewModels { ViewModelFactory.getFactory(exerciseDao, exerciseDetailsDao) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,13 +74,13 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
     private fun NavGraphBuilder.powerExerciseListRoute(navController: NavController) {
         navigation(startDestination = EXERCISE_LIST, route = EXERCISE_LIST_ROUTE) {
             composable(EXERCISE_LIST) {
-                PowerExerciseListComposable(navController, trainingId.toString(), exerciseDetailsDao, exerciseDao, lifecycleOwner)
+                PowerExerciseListComposable(navController, trainingId.toString(), viewModel.value)
             }
             composable(EXERCISE_UPDATE) {
-                PowerExerciseComposable(exerciseDao, ::saveFunction, trainingId, it.arguments?.getString("exerciseId"))
+                PowerExerciseComposable(exerciseDao, ::saveFunction, trainingId, navController, it.arguments?.getString("exerciseId"))
             }
             composable(EXERCISE_CREATE) {
-                PowerExerciseComposable(exerciseDao, ::createFunction, trainingId, null)
+                PowerExerciseComposable(exerciseDao, ::createFunction, trainingId, navController, null)
             }
         }
     }
@@ -109,14 +113,15 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         }
     }
 
-    private fun createFunction(exercise: Exercise) {
+    private fun createFunction(exercise: Exercise, navController: NavController) {
         exerciseDao.create(exercise).subscribe {
             val createToastText = R.string.training_detail_exercise_created_toast
             Toast.makeText(requireActivity(), createToastText, Toast.LENGTH_SHORT).show()
+            navController.navigate(EXERCISE_LIST)
         }
     }
 
-    private fun saveFunction(exercise: Exercise) {
+    private fun saveFunction(exercise: Exercise, navController: NavController) {
         exerciseDao.save(exercise).subscribe {
             val updateToastText = R.string.training_detail_exercise_updated_toast
             Toast.makeText(requireActivity(), updateToastText, Toast.LENGTH_SHORT).show()

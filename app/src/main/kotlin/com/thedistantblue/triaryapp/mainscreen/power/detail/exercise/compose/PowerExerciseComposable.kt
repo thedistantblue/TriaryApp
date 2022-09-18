@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
 import com.thedistantblue.triaryapp.entities.base.Exercise
@@ -20,8 +21,9 @@ import java.util.*
 
 @Composable
 fun PowerExerciseComposable(exerciseDao: ExerciseDao,
-                            exerciseFunction: (Exercise) -> Unit,
+                            exerciseFunction: (Exercise, NavController) -> Unit,
                             trainingId: UUID,
+                            navController: NavController,
                             exerciseId: String? = null
 ) {
     val createButtonText = stringResource(R.string.training_detail_exercise_create_exercise)
@@ -45,7 +47,7 @@ fun PowerExerciseComposable(exerciseDao: ExerciseDao,
     val onClickExerciseFunction: () -> Unit = {
         localExercise.name = name
         localExercise.description = description
-        exerciseFunction.invoke(localExercise)
+        exerciseFunction.invoke(localExercise, navController)
     }
 
     Column(

@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,9 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 
 import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
+import com.thedistantblue.triaryapp.mainscreen.power.detail.PowerTrainingDetailViewModel
 import com.thedistantblue.triaryapp.theme.components.TriaryAppSwipeToDismissCard
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -26,13 +30,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun PowerExerciseListComposable(navController: NavController,
                                 trainingId: String,
-                                exerciseDetailsDao: ExerciseDetailsDao,
-                                exerciseDao: ExerciseDao,
-                                lifecycleOwner: LifecycleOwner
+                                viewModel: PowerTrainingDetailViewModel
 ) {
     Scaffold(
         content = {
-            ExerciseList(trainingId, exerciseDetailsDao, exerciseDao, lifecycleOwner, navController)
+            ExerciseList(navController, trainingId, viewModel)
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
@@ -43,54 +45,45 @@ fun PowerExerciseListComposable(navController: NavController,
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
-fun ExerciseList(trainingId: String,
-                 exerciseDetailsDao: ExerciseDetailsDao,
-                 exerciseDao: ExerciseDao,
-                 lifecycleOwner: LifecycleOwner,
-                 navController: NavController
+fun ExerciseList(navController: NavController,
+                 trainingId: String,
+                 viewModel: PowerTrainingDetailViewModel
 ) {
-
     val exercisesRemember = remember { mutableStateListOf<ExerciseDetails>() }
 
-    val observer = LifecycleEventObserver { _, event ->
-        if (event == Lifecycle.Event.ON_RESUME) {
-            exerciseDetailsDao.findAllByTrainingId(trainingId).subscribe { exercises ->
-                exercisesRemember.clear()
-                exercisesRemember.addAll(exercises)
-            }
-        }
+    viewModel.getExercises(trainingId) {
+        exercisesRemember.clear()
+        exercisesRemember.addAll(it)
     }
-    lifecycleOwner.lifecycle.addObserver(observer)
 
     LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         items(exercisesRemember) { item ->
-            ExerciseListItem(exercisesRemember, exerciseDao, item, navController)
+            ExerciseListItem(exercisesRemember, item, navController, viewModel)
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.S)
 @OptIn(ExperimentalMaterialApi::class,
        DelicateCoroutinesApi::class
 )
 @Composable
 private fun ExerciseListItem(exercises: SnapshotStateList<ExerciseDetails>,
-                             exerciseDao: ExerciseDao,
                              exerciseDetails: ExerciseDetails,
-                             navController: NavController
+                             navController: NavController,
+                             viewModel: PowerTrainingDetailViewModel
 ) {
     val exerciseId = exerciseDetails.exercise.exerciseId.toString()
     TriaryAppSwipeToDismissCard(
             onClickAction = { navController.navigate("power_exercise/$exerciseId") },
             onDismissedToEndAction = {},
             onDismissedToStartAction = {
-                exercises.remove(exerciseDetails)
-                exerciseDao.delete(exerciseDetails.exercise).subscribe {
-                    GlobalScope.launch {
-                        asd(it)
-                    }
+                viewModel.deleteExercise(exerciseDetails.exercise) {
+                    exercises.remove(exerciseDetails)
                 }
             }
     ) {
@@ -101,9 +94,4 @@ private fun ExerciseListItem(exercises: SnapshotStateList<ExerciseDetails>,
             Text(text = exerciseDetails.exercise.name)
         }
     }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-private suspend fun asd(dismissState: DismissState) {
-    dismissState.snapTo(DismissValue.DismissedToStart)
 }
