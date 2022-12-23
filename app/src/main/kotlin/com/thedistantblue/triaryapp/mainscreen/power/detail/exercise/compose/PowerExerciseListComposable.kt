@@ -21,6 +21,7 @@ import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.theme.components.TriaryAppSwipeToDismissCard
 import kotlinx.coroutines.DelicateCoroutinesApi
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun PowerExerciseListComposable(navController: NavController,
                                 trainingId: String,
@@ -28,7 +29,7 @@ fun PowerExerciseListComposable(navController: NavController,
 ) {
     Scaffold(
         content = {
-            ExerciseList(navController, trainingId, viewModel)
+            ExerciseList(navController, trainingId, viewModel, it)
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
@@ -43,9 +44,9 @@ fun PowerExerciseListComposable(navController: NavController,
 @Composable
 fun ExerciseList(navController: NavController,
                  trainingId: String,
-                 viewModel: PowerExerciseListViewModel
+                 viewModel: PowerExerciseListViewModel,
+                 padding: PaddingValues
 ) {
-    val exercisesRemember = remember { mutableStateListOf<ExerciseDetails>() }
     val uiState by viewModel.uiState.collectAsState()
 
     viewModel.getExercises(trainingId)
@@ -53,30 +54,28 @@ fun ExerciseList(navController: NavController,
     LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        items(uiState.size) { item ->
-            ExerciseListItem(exercisesRemember, uiState.get(item), navController, viewModel)
+        items(items = uiState, key = {
+            it.exercise.exerciseId
+        }) {
+            ExerciseListItem(it, navController, viewModel)
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.S)
-@OptIn(ExperimentalMaterialApi::class,
-       DelicateCoroutinesApi::class
-)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun ExerciseListItem(exercises: SnapshotStateList<ExerciseDetails>,
-                             exerciseDetails: ExerciseDetails,
-                             navController: NavController,
-                             viewModel: PowerExerciseListViewModel
+private fun ExerciseListItem(
+        exerciseDetails: ExerciseDetails,
+        navController: NavController,
+        viewModel: PowerExerciseListViewModel
 ) {
     val exerciseId = exerciseDetails.exercise.exerciseId.toString()
     TriaryAppSwipeToDismissCard(
             onClickAction = { navController.navigate("power_exercise/$exerciseId") },
             onDismissedToEndAction = {},
             onDismissedToStartAction = {
-                viewModel.deleteExercise(exerciseDetails.exercise) {
-                    exercises.remove(exerciseDetails)
-                }
+                viewModel.deleteExercise(exerciseDetails.exercise)
             }
     ) {
         Column(

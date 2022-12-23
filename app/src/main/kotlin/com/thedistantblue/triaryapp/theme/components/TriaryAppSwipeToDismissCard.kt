@@ -34,7 +34,6 @@ fun TriaryAppSwipeToDismissCard(
     onDismissedToStartAction: (DismissState) -> Unit,
     content: @Composable () -> Unit
 ) {
-    val context = LocalContext.current
     val dismissState = rememberDismissState()
     val coroutineScope = rememberCoroutineScope()
 

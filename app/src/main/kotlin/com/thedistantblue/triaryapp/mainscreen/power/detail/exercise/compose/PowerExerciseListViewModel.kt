@@ -14,18 +14,18 @@ class PowerExerciseListViewModel(
         private val exerciseDetailsDao: ExerciseDetailsDao
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow(listOf<ExerciseDetails>())
-    val uiState: StateFlow<List<ExerciseDetails>> = _uiState.asStateFlow()
+    private val uiStateFlow = MutableStateFlow(listOf<ExerciseDetails>())
+    val uiState: StateFlow<List<ExerciseDetails>> = uiStateFlow.asStateFlow()
 
     fun getExercises(trainingId: String) {
         exerciseDetailsDao.findAllByTrainingId(trainingId).subscribe { exercises ->
-            _uiState.value = exercises;
+            uiStateFlow.value = exercises;
         }
     }
 
-    fun deleteExercise(exercise: Exercise,
-                       subscriber: () -> Unit
-    ) {
-        exerciseDao.delete(exercise).subscribe(subscriber)
+    fun deleteExercise(exercise: Exercise) {
+        exerciseDao.delete(exercise).subscribe {
+            getExercises(exercise.trainingId.toString())
+        }
     }
 }
