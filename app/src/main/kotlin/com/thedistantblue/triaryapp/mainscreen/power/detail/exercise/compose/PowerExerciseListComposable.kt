@@ -11,26 +11,20 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.unit.dp
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.entities.composite.details.ExerciseDetails
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 
 import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.thedistantblue.triaryapp.R
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
-import com.thedistantblue.triaryapp.mainscreen.power.detail.PowerTrainingDetailViewModel
 import com.thedistantblue.triaryapp.theme.components.TriaryAppSwipeToDismissCard
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun PowerExerciseListComposable(navController: NavController,
                                 trainingId: String,
-                                viewModel: PowerTrainingDetailViewModel
+                                viewModel: PowerExerciseListViewModel
 ) {
     Scaffold(
         content = {
@@ -49,20 +43,18 @@ fun PowerExerciseListComposable(navController: NavController,
 @Composable
 fun ExerciseList(navController: NavController,
                  trainingId: String,
-                 viewModel: PowerTrainingDetailViewModel
+                 viewModel: PowerExerciseListViewModel
 ) {
     val exercisesRemember = remember { mutableStateListOf<ExerciseDetails>() }
+    val uiState by viewModel.uiState.collectAsState()
 
-    viewModel.getExercises(trainingId) {
-        exercisesRemember.clear()
-        exercisesRemember.addAll(it)
-    }
+    viewModel.getExercises(trainingId)
 
     LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        items(exercisesRemember) { item ->
-            ExerciseListItem(exercisesRemember, item, navController, viewModel)
+        items(uiState.size) { item ->
+            ExerciseListItem(exercisesRemember, uiState.get(item), navController, viewModel)
         }
     }
 }
@@ -75,7 +67,7 @@ fun ExerciseList(navController: NavController,
 private fun ExerciseListItem(exercises: SnapshotStateList<ExerciseDetails>,
                              exerciseDetails: ExerciseDetails,
                              navController: NavController,
-                             viewModel: PowerTrainingDetailViewModel
+                             viewModel: PowerExerciseListViewModel
 ) {
     val exerciseId = exerciseDetails.exercise.exerciseId.toString()
     TriaryAppSwipeToDismissCard(

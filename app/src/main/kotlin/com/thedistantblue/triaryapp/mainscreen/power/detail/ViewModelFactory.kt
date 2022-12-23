@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
+import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseListViewModel
 
 class ViewModelFactory {
     companion object {
@@ -14,7 +15,7 @@ class ViewModelFactory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                    return PowerTrainingDetailViewModel(exerciseDao, exerciseDetailsDao) as T
+                    return PowerExerciseListViewModel(exerciseDao, exerciseDetailsDao) as T
                 }
             }
         }

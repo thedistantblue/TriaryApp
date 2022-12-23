@@ -23,6 +23,7 @@ import com.thedistantblue.triaryapp.entities.base.Exercise
 import com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseComposable
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseListComposable
+import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.PowerExerciseListViewModel
 import com.thedistantblue.triaryapp.theme.TriaryAppTheme
 import com.thedistantblue.triaryapp.utils.BundleKeyConstants
 import java.util.*
@@ -36,7 +37,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var trainingDetails: TrainingDetails
     private lateinit var exerciseDetailsDao: ExerciseDetailsDao
-    private lateinit var viewModel: Lazy<PowerTrainingDetailViewModel>
+    private lateinit var viewModel: Lazy<PowerExerciseListViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
