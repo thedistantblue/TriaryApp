@@ -62,6 +62,7 @@
     <!---->
     <!-- Training details -->
     <!---->
+    <string name="training_details">Training details</string>
     <string name="training_detail_exercise_list">Exercises</string>
     <string name="training_detail_exercise_pack_list">Packs of exercises</string>
     <string name="training_detail_dates_list">Training dates</string>

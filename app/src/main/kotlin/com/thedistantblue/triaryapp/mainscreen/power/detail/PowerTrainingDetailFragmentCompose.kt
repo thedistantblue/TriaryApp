@@ -1,10 +1,12 @@
 package com.thedistantblue.triaryapp.mainscreen.power.detail
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -48,6 +50,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         this.viewModel = viewModels { ViewModelFactory.getFactory(exerciseDao, exerciseDetailsDao) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return ComposeView(requireActivity()).apply {
             setContent {
@@ -72,6 +75,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         trainingId = trainingDetails.training.trainingId
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun NavGraphBuilder.powerExerciseListRoute(navController: NavController) {
         navigation(startDestination = EXERCISE_LIST, route = EXERCISE_LIST_ROUTE) {
             composable(EXERCISE_LIST) {
@@ -118,7 +122,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         exerciseDao.create(exercise).subscribe {
             val createToastText = R.string.training_detail_exercise_created_toast
             Toast.makeText(requireActivity(), createToastText, Toast.LENGTH_SHORT).show()
-            navController.navigate(EXERCISE_LIST)
+            navController.popBackStack()
         }
     }
 
