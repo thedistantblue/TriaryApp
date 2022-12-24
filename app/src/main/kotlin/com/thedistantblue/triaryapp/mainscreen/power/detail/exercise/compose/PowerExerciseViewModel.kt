@@ -13,10 +13,37 @@ class PowerExerciseViewModel(
 
     private val uiStateFlow = MutableStateFlow(Exercise())
     val uiState: StateFlow<Exercise> = uiStateFlow.asStateFlow()
+    var currentExercise = uiStateFlow.value
+
+    fun updateExerciseName(name: String) {
+        currentExercise = Exercise(currentExercise.exerciseId,
+                                   currentExercise.trainingId,
+                                   name,
+                                   currentExercise.description)
+        uiStateFlow.value = currentExercise
+    }
+
+    fun updateExerciseDescription(description: String) {
+        currentExercise = Exercise(currentExercise.exerciseId,
+                                   currentExercise.trainingId,
+                                   currentExercise.name,
+                                   description)
+        uiStateFlow.value = currentExercise
+    }
 
     fun getExercise(exerciseId: String) {
-        exerciseDao.findById(exerciseId).subscribe { exercise ->
-            uiStateFlow.value = exercise
+        currentExercise.exerciseId?.let {
+            if (it.toString() != exerciseId) {
+                exerciseDao.findById(exerciseId).subscribe { exercise ->
+                    currentExercise = exercise
+                    uiStateFlow.value = currentExercise
+                }
+            }
+        } ?: run {
+            exerciseDao.findById(exerciseId).subscribe { exercise ->
+                currentExercise = exercise
+                uiStateFlow.value = currentExercise
+            }
         }
     }
 

@@ -100,7 +100,6 @@ public class Exercise implements Serializable {
 
     }
 
-    @NonNull
     public UUID getExerciseId() {
         return exerciseId;
     }
