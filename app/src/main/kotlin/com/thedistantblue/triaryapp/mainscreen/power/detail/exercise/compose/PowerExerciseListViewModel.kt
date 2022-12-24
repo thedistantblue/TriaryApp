@@ -19,7 +19,7 @@ class PowerExerciseListViewModel(
 
     fun getExercises(trainingId: String) {
         exerciseDetailsDao.findAllByTrainingId(trainingId).subscribe { exercises ->
-            uiStateFlow.value = exercises;
+            uiStateFlow.value = exercises
         }
     }
 

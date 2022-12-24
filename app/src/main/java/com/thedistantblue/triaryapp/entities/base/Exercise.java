@@ -80,6 +80,22 @@ public class Exercise implements Serializable {
         this(UUID.randomUUID(), trainingId);
     }
 
+    @Ignore
+    public Exercise(UUID trainingId, String name, String description) {
+        this.exerciseId = UUID.randomUUID();
+        this.trainingId = trainingId;
+        this.name = name;
+        this.description = description;
+    }
+
+    @Ignore
+    public Exercise(UUID exerciseId, UUID trainingId, String name, String description) {
+        this.exerciseId = exerciseId;
+        this.trainingId = trainingId;
+        this.name = name;
+        this.description = description;
+    }
+
     public Exercise() {
 
     }

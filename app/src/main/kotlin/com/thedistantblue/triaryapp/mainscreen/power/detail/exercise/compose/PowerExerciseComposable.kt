@@ -1,65 +1,115 @@
 package com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.room.Update
 import com.thedistantblue.triaryapp.R
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
 import com.thedistantblue.triaryapp.entities.base.Exercise
 import java.util.*
 
 @Composable
-fun PowerExerciseComposable(exerciseDao: ExerciseDao,
-                            exerciseFunction: (Exercise, NavController) -> Unit,
-                            trainingId: UUID,
+fun PowerExerciseComposable(trainingId: UUID,
                             navController: NavController,
-                            exerciseId: String? = null
+                            exerciseId: String? = null,
+                            viewModel: PowerExerciseViewModel
 ) {
-    val createButtonText = stringResource(R.string.training_detail_exercise_create_exercise)
-    val updateButtonText = stringResource(R.string.training_detail_exercise_update_exercise)
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsState()
 
-    var localExercise = Exercise(UUID.randomUUID(), trainingId)
+    if (exerciseId == null) {
+        CreateExerciseComposable { name, description ->
+            val exercise = Exercise(trainingId, name, description)
+            viewModel.createExercise(exercise)
+            navController.popBackStack()
+            Toast.makeText(context, R.string.training_detail_exercise_created_toast, Toast.LENGTH_SHORT).show()
+        }
+    } else {
+        viewModel.getExercise(exerciseId)
+        UpdateExerciseComposable(uiState) { name, description ->
+            val exercise = Exercise(UUID.fromString(exerciseId), trainingId, name, description)
+            viewModel.saveExercise(exercise)
+            navController.popBackStack()
+            Toast.makeText(context, R.string.training_detail_exercise_updated_toast, Toast.LENGTH_SHORT).show()
+        }
 
-    var name by remember { mutableStateOf(localExercise.name) }
-    var buttonText by remember { mutableStateOf(createButtonText) }
-    var description by remember { mutableStateOf(localExercise.description) }
+    }
+}
 
-    exerciseId?.let { id ->
-        exerciseDao.findById(id).subscribe { exercise ->
-            localExercise = exercise
-            buttonText = updateButtonText
-            name = localExercise.name
-            description = localExercise.description
+@Composable
+fun CreateExerciseComposable(onClickExerciseFunction: (String, String) -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+
+    Column(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+           verticalArrangement = Arrangement.Center,
+           horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(value = name,
+                  textStyle = TextStyle.Default.copy(color = Color.White),
+                  onValueChange = { name = it },
+                  label = { Text(stringResource(R.string.training_detail_exercise_name_hint)) })
+        Box(modifier = Modifier.height(5.dp))
+        TextField(value = description,
+                  textStyle = TextStyle.Default.copy(color = Color.White),
+                  onValueChange = { description = it },
+                  label = { Text(stringResource(R.string.training_detail_exercise_description_hint)) })
+        Box(modifier = Modifier.height(5.dp))
+        Button(onClick = {
+            onClickExerciseFunction(name, description)
+        }) {
+            Text(text = stringResource(R.string.training_detail_exercise_create_exercise))
         }
     }
+}
 
-    val onClickExerciseFunction: () -> Unit = {
-        localExercise.name = name
-        localExercise.description = description
-        exerciseFunction.invoke(localExercise, navController)
-    }
+@Composable
+fun UpdateExerciseComposable(uiState: Exercise,
+                             onClickExerciseFunction: (String, String) -> Unit
+) {
+    var name = uiState.name
+    var description = uiState.description
+    var uiStateRemember by remember { mutableStateOf(uiState) }
 
-    Column(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+           verticalArrangement = Arrangement.Center,
+           horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(R.string.training_detail_exercise_name_hint)) })
+        TextField(value = uiStateRemember.name,
+                  textStyle = TextStyle.Default.copy(color = Color.White),
+                  onValueChange = {
+                      uiStateRemember = Exercise(uiState.exerciseId, uiState.trainingId, it, description)
+                  },
+                  label = { Text(stringResource(R.string.training_detail_exercise_name_hint)) })
         Box(modifier = Modifier.height(5.dp))
-        TextField(value = description, onValueChange = { description = it }, label = { Text(stringResource(R.string.training_detail_exercise_description_hint)) })
+        TextField(value = uiStateRemember.description,
+                  textStyle = TextStyle.Default.copy(color = Color.White),
+                  onValueChange = {
+                      uiStateRemember = Exercise(uiState.exerciseId, uiState.trainingId, name, it)
+                  },
+                  label = { Text(stringResource(R.string.training_detail_exercise_description_hint)) })
         Box(modifier = Modifier.height(5.dp))
-        Button(onClick = onClickExerciseFunction) { Text(text = buttonText) }
+        Button(onClick = {
+            onClickExerciseFunction(name, description)
+        }) {
+            Text(text = stringResource(R.string.training_detail_exercise_update_exercise))
+        }
     }
 
 }
