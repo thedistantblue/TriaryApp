@@ -81,9 +81,8 @@ fun CreateExerciseComposable(onClickExerciseFunction: (String, String) -> Unit) 
 fun UpdateExerciseComposable(uiState: Exercise,
                              onClickExerciseFunction: (String, String) -> Unit
 ) {
-    var name = uiState.name
-    var description = uiState.description
-    var uiStateRemember by remember { mutableStateOf(uiState) }
+    var name by remember { mutableStateOf(uiState.name) }
+    var description by remember { mutableStateOf(uiState.description) }
 
     Column(modifier = Modifier
             .fillMaxWidth()
@@ -91,18 +90,14 @@ fun UpdateExerciseComposable(uiState: Exercise,
            verticalArrangement = Arrangement.Center,
            horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextField(value = uiStateRemember.name,
+        TextField(value = name,
                   textStyle = TextStyle.Default.copy(color = Color.White),
-                  onValueChange = {
-                      uiStateRemember = Exercise(uiState.exerciseId, uiState.trainingId, it, description)
-                  },
+                  onValueChange = { name = it },
                   label = { Text(stringResource(R.string.training_detail_exercise_name_hint)) })
         Box(modifier = Modifier.height(5.dp))
-        TextField(value = uiStateRemember.description,
+        TextField(value = description,
                   textStyle = TextStyle.Default.copy(color = Color.White),
-                  onValueChange = {
-                      uiStateRemember = Exercise(uiState.exerciseId, uiState.trainingId, name, it)
-                  },
+                  onValueChange = { description = it },
                   label = { Text(stringResource(R.string.training_detail_exercise_description_hint)) })
         Box(modifier = Modifier.height(5.dp))
         Button(onClick = {
