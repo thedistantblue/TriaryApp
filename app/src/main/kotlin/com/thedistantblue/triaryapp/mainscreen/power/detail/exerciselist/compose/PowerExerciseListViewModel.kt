@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose
+package com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compose
 
 import androidx.lifecycle.ViewModel
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao

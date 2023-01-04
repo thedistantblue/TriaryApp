@@ -1,4 +1,4 @@
-package com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose
+package com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compose
 
 import android.os.Build
 import androidx.annotation.RequiresApi
