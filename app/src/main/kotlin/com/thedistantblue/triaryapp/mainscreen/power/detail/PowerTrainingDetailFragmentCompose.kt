@@ -17,7 +17,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
+import com.thedistantblue.triaryapp.database.room.dao.PackDao
+import com.thedistantblue.triaryapp.database.room.dao.details.ExerciseDetailsDao
+import com.thedistantblue.triaryapp.database.room.dao.details.PackDetailsDao
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider
 import com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails
 import com.thedistantblue.triaryapp.mainscreen.power.detail.date.compose.PowerExerciseDateViewModel
@@ -30,6 +32,7 @@ import com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compose
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compose.PowerExerciseListViewModelFactory
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.compose.PowerExercisePackViewModel
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.compose.PowerExercisePackViewModelFactory
+import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepacklist.compose.PowerExercisePackListComposable
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepacklist.compose.PowerExercisePackListViewModel
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepacklist.compose.PowerExercisePackListViewModelFactory
 import com.thedistantblue.triaryapp.theme.TriaryAppTheme
@@ -40,17 +43,20 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
 
     private lateinit var trainingId: UUID
     private lateinit var composeView: View
-    private lateinit var exerciseDao: ExerciseDao
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var trainingDetails: TrainingDetails
+
+    private lateinit var exerciseDao: ExerciseDao
     private lateinit var exerciseDetailsDao: ExerciseDetailsDao
+    private lateinit var packDao: PackDao
+    private lateinit var packDetailsDao: PackDetailsDao
 
     private lateinit var dateViewModel: Lazy<PowerExerciseDateViewModel>
     private lateinit var dateListViewModel: Lazy<PowerExerciseDateListViewModel>
     private lateinit var exerciseViewModel: Lazy<PowerExerciseViewModel>
     private lateinit var exerciseListViewModel: Lazy<PowerExerciseListViewModel>
     private lateinit var exercisePackViewModel: Lazy<PowerExercisePackViewModel>
-    private lateinit var exercisePackListViewModel: Lazy<PowerExercisePackListViewModel>
+    private lateinit var packListViewModel: Lazy<PowerExercisePackListViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +64,8 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         this.lifecycleOwner = this
         this.exerciseDao = database.exerciseDao()
         this.exerciseDetailsDao = database.exerciseDetailsDao()
+        this.packDao = database.packDao()
+        this.packDetailsDao = database.packDetailsDao()
         initViewModels()
     }
 
@@ -67,7 +75,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         this.exerciseViewModel = viewModels { PowerExerciseViewModelFactory.getFactory(exerciseDao) }
         this.exerciseListViewModel = viewModels { PowerExerciseListViewModelFactory.getFactory(exerciseDao, exerciseDetailsDao) }
         this.exercisePackViewModel = viewModels { PowerExercisePackViewModelFactory.getFactory() }
-        this.exercisePackListViewModel = viewModels { PowerExercisePackListViewModelFactory.getFactory() }
+        this.packListViewModel = viewModels { PowerExercisePackListViewModelFactory.getFactory(packDao, packDetailsDao) }
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -116,10 +124,11 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun NavGraphBuilder.powerExercisePackListRoute(navController: NavController) {
         navigation(startDestination = PACK_LIST, route = EXERCISE_PACK_LIST_ROUTE) {
             composable(PACK_LIST) {
-
+                PowerExercisePackListComposable(navController, trainingId.toString(), packListViewModel.value)
             }
             composable(PACK_UPDATE) {
 

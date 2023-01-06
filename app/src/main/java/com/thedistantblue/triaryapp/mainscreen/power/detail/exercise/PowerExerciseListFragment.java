@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao;
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao;
+import com.thedistantblue.triaryapp.database.room.dao.details.ExerciseDetailsDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingDetailExerciseListItemLayoutBinding;
 import com.thedistantblue.triaryapp.databinding.TrainingDetailExerciseListLayoutBinding;

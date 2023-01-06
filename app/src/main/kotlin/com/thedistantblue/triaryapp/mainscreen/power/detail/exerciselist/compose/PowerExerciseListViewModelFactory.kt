@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
+import com.thedistantblue.triaryapp.database.room.dao.details.ExerciseDetailsDao
 
 class PowerExerciseListViewModelFactory {
     companion object {

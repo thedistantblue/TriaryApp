@@ -2,7 +2,7 @@ package com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compos
 
 import androidx.lifecycle.ViewModel
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao
+import com.thedistantblue.triaryapp.database.room.dao.details.ExerciseDetailsDao
 import com.thedistantblue.triaryapp.entities.base.Exercise
 import com.thedistantblue.triaryapp.entities.composite.details.ExerciseDetails
 import kotlinx.coroutines.flow.MutableStateFlow

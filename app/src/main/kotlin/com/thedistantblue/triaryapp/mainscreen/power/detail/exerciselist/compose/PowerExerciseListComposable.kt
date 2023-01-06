@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import com.thedistantblue.triaryapp.R
+import com.thedistantblue.triaryapp.mainscreen.power.detail.EXERCISE_CREATE
 import com.thedistantblue.triaryapp.theme.components.TriaryAppSwipeToDismissCard
 
 @RequiresApi(Build.VERSION_CODES.S)
@@ -55,7 +56,7 @@ fun PowerExerciseListComposable(navController: NavController,
             floatingActionButton = {
                 ExtendedFloatingActionButton(
                         text = { Text(stringResource(R.string.training_detail_exercise_add_button)) },
-                        onClick = { navController.navigate("power_exercise/create") }
+                        onClick = { navController.navigate(EXERCISE_CREATE) }
                 )
             },
     )

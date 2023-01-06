@@ -12,6 +12,7 @@ import com.thedistantblue.triaryapp.entities.cross.ExercisePackCrossRef;
 import com.thedistantblue.triaryapp.entities.base.Pack;
 
 import java.util.Collection;
+import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,24 @@ public class PackDetails {
             entityColumn = EntityConstants.EXERCISE_ID_FIELD,
             associateBy = @Junction(ExercisePackCrossRef.class)
     )
-    public Collection<Exercise> exercises;
+    public List<Exercise> exercises;
 
     @Relation(
             parentColumn = EntityConstants.PACK_ID_FIELD,
             entityColumn = EntityConstants.DAY_ID_FIELD,
             associateBy = @Junction(DayPackCrossRef.class)
     )
-    public Collection<Day> dates;
+    public List<Day> dates;
+
+    public Pack getPack() {
+        return this.pack;
+    }
+
+    public List<Exercise> getExercises() {
+        return this.exercises;
+    }
+
+    public List<Day> getDates() {
+        return this.dates;
+    }
 }

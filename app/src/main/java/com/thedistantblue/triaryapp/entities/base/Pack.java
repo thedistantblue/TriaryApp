@@ -14,11 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 @Entity(tableName = DatabaseConstants.PACK_TABLE,
         foreignKeys = @ForeignKey(entity = Training.class,
                                   parentColumns = EntityConstants.TRAINING_ID_FIELD,
@@ -30,6 +25,17 @@ public class Pack implements Serializable {
     @PrimaryKey
     private UUID packId;
     private UUID trainingId;
+    private String name = "";
+    private String description = "";
+
+    public Pack() {
+
+    }
+
+    @Ignore
+    public Pack(UUID trainingId) {
+        this(UUID.randomUUID(), trainingId);
+    }
 
     @Ignore
     public Pack(@NotNull UUID packId, UUID trainingId) {
@@ -38,7 +44,43 @@ public class Pack implements Serializable {
     }
 
     @Ignore
-    public Pack(UUID trainingId) {
-        this(UUID.randomUUID(), trainingId);
+    public Pack(@NotNull UUID packId, UUID trainingId, String name, String description) {
+        this.packId = packId;
+        this.trainingId = trainingId;
+        this.name = name;
+        this.description = description;
+    }
+
+    @NonNull
+    public UUID getPackId() {
+        return packId;
+    }
+
+    public void setPackId(@NonNull UUID packId) {
+        this.packId = packId;
+    }
+
+    public UUID getTrainingId() {
+        return trainingId;
+    }
+
+    public void setTrainingId(UUID trainingId) {
+        this.trainingId = trainingId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

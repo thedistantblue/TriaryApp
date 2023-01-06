@@ -1,6 +1,6 @@
 package com.thedistantblue.triaryapp.database.room.database.proxy;
 
-import com.thedistantblue.triaryapp.database.room.dao.ExerciseDetailsDao;
+import com.thedistantblue.triaryapp.database.room.dao.details.ExerciseDetailsDao;
 import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.composite.details.ExerciseDetails;
 
