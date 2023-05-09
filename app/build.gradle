@@ -36,6 +36,7 @@ android {
     dataBinding {
         enabled true
     }
+    namespace 'com.thedistantblue.triaryapp'
     //namespace 'com.thedistantblue.triaryapp'
 }
 
