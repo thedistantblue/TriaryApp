@@ -81,6 +81,14 @@
     <!-- Exercise pack list -->
     <string name="training_detail_exercise_pack_add_button">Add pack</string>
 
+    <!-- Exercise pack -->
+    <string name="training_detail_pack_created_toast">Pack successfully created!</string>
+    <string name="training_detail_pack_updated_toast">Pack successfully updated!</string>
+    <string name="training_detail_pack_create_exercise">Create Pack</string>
+    <string name="training_detail_pack_update_exercise">Update Pack</string>
+    <string name="training_detail_pack_name_hint">Pack name</string>
+    <string name="training_detail_pack_description_hint">Pack description</string>
+
     <!-- Day list -->
     <string name="training_detail_date_add_button">Add date</string>
 

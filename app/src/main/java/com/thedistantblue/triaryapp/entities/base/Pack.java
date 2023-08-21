@@ -33,6 +33,14 @@ public class Pack implements Serializable {
     }
 
     @Ignore
+    public Pack(UUID trainingId, String name, String description) {
+        this.packId = UUID.randomUUID();
+        this.trainingId = trainingId;
+        this.name = name;
+        this.description = description;
+    }
+
+    @Ignore
     public Pack(UUID trainingId) {
         this(UUID.randomUUID(), trainingId);
     }

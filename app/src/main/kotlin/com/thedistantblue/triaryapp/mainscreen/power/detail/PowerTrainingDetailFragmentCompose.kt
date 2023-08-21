@@ -30,6 +30,7 @@ import com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose.*
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compose.PowerExerciseListComposable
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compose.PowerExerciseListViewModel
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exerciselist.compose.PowerExerciseListViewModelFactory
+import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.compose.PowerExercisePackComposable
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.compose.PowerExercisePackViewModel
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.compose.PowerExercisePackViewModelFactory
 import com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepacklist.compose.PowerExercisePackListComposable
@@ -55,7 +56,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
     private lateinit var dateListViewModel: Lazy<PowerExerciseDateListViewModel>
     private lateinit var exerciseViewModel: Lazy<PowerExerciseViewModel>
     private lateinit var exerciseListViewModel: Lazy<PowerExerciseListViewModel>
-    private lateinit var exercisePackViewModel: Lazy<PowerExercisePackViewModel>
+    private lateinit var packViewModel: Lazy<PowerExercisePackViewModel>
     private lateinit var packListViewModel: Lazy<PowerExercisePackListViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +75,7 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
         this.dateListViewModel = viewModels { PowerExerciseDateListViewModelFactory.getFactory() }
         this.exerciseViewModel = viewModels { PowerExerciseViewModelFactory.getFactory(exerciseDao) }
         this.exerciseListViewModel = viewModels { PowerExerciseListViewModelFactory.getFactory(exerciseDao, exerciseDetailsDao) }
-        this.exercisePackViewModel = viewModels { PowerExercisePackViewModelFactory.getFactory() }
+        this.packViewModel = viewModels { PowerExercisePackViewModelFactory.getFactory(packDao) }
         this.packListViewModel = viewModels { PowerExercisePackListViewModelFactory.getFactory(packDao, packDetailsDao) }
     }
 
@@ -131,10 +132,16 @@ class PowerTrainingDetailFragmentCompose: Fragment() {
                 PowerExercisePackListComposable(navController, trainingId.toString(), packListViewModel.value)
             }
             composable(PACK_UPDATE) {
-
+                PowerExercisePackComposable(trainingId,
+                                            navController,
+                                            it.arguments?.getString("packId"),
+                                            packViewModel.value)
             }
             composable(PACK_CREATE) {
-
+                PowerExercisePackComposable(trainingId,
+                                            navController,
+                                            null,
+                                            packViewModel.value)
             }
         }
     }

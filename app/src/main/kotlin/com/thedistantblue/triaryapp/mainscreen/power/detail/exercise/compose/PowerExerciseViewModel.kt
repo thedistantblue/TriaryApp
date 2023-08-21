@@ -10,7 +10,7 @@ class PowerExerciseViewModel(
         private val exerciseDao: ExerciseDao
 ): ViewModel() {
     val uiState: MutableState<Exercise> = mutableStateOf(Exercise())
-    var currentExercise = uiState.value
+    private var currentExercise = uiState.value
 
     fun updateExerciseName(name: String) {
         currentExercise = Exercise(currentExercise.exerciseId,

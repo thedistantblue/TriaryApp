@@ -81,6 +81,14 @@
     <!-- Список наборов упражнений -->
     <string name="training_detail_exercise_pack_add_button">Добавить набор</string>
 
+    <!-- Набор упражнений -->
+    <string name="training_detail_pack_created_toast">Набор успешно создан!</string>
+    <string name="training_detail_pack_updated_toast">Набор успешно обновлен!</string>
+    <string name="training_detail_pack_create_exercise">Создать Набор</string>
+    <string name="training_detail_pack_update_exercise">Обновить Набор</string>
+    <string name="training_detail_pack_name_hint">Название набора</string>
+    <string name="training_detail_pack_description_hint">Описание набора</string>
+
     <!-- Список дат -->
     <string name="training_detail_date_add_button">Добавить дату</string>
 
