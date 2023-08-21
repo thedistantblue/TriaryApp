@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tab_power_nav_graph"
+    app:startDestination="@id/trainingListFragment">
+
+    <fragment
+        android:id="@+id/trainingListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.TrainingListFragment"
+        android:label="TrainingListFragment" >
+        <action
+            android:id="@+id/action_trainingListFragment_to_datesListFragment"
+            app:destination="@id/datesListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/datesListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.DatesListFragment"
+        android:label="DatesListFragment" >
+        <action
+            android:id="@+id/action_datesListFragment_to_datesFragment"
+            app:destination="@id/datesFragment" />
+        <action
+            android:id="@+id/action_datesListFragment_to_trainingFragment"
+            app:destination="@id/trainingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/datesFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.DatesFragment"
+        android:label="DatesFragment" >
+        <action
+            android:id="@+id/action_datesFragment_to_datesListFragment"
+            app:destination="@id/datesListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainingFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.TrainingFragment"
+        android:label="TrainingFragment" />
+</navigation>

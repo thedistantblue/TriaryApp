@@ -47,7 +47,7 @@ public class RunningFragment extends TitledFragment {
         boolean creationRequired = running == null;
         args.putSerializable(IS_CREATE_KEY, creationRequired);
         if (creationRequired) {
-            running = new Running(user.getUserID());
+            running = new Running(user.getUserId());
         }
         args.putSerializable(RUNNING_KEY, running);
 

@@ -4,6 +4,7 @@ import com.thedistantblue.triaryapp.database.room.dao.UserDao;
 import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.base.User;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -32,6 +33,11 @@ public class UserDaoProxy implements UserDao {
     @Override
     public Single<User> findById(String userId) {
         return RxConfigurator.configureThreading(userDao.findById(userId));
+    }
+
+    @Override
+    public Single<List<User>> findAllById(Collection<String> ids) {
+        return RxConfigurator.configureThreading(userDao.findAllById(ids));
     }
 
     @Override

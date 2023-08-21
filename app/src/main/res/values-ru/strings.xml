@@ -44,4 +44,52 @@
     <string name="running_time">Время бега, минуты</string>
     <string name="calories_lost">Потеряно калорий</string>
     <string name="main_screen_fragment_workouts">Тренировки</string>
+    <string name="settings_profile_title">Профиль</string>
+
+    <!-- Кнопки диалога -->
+    <string name="dialog_ok">Ок</string>
+
+    <!-- Действия -->
+    <string name="action_create">Создать</string>
+    <string name="action_cancel">Отмена</string>
+
+    <!-- Список силовых тренировок -->
+    <string name="training_list_training_add_button">Добавить тренировку</string>
+    <string name="training_list_training_creation_dialog_message">Создать тренировку</string>
+    <string name="training_list_training_creation_dialog_name_input_hint">Название тренировки</string>
+    <string name="training_list_training_creation_dialog_description_input_hint">Описание тренировки</string>
+
+    <!---->
+    <!-- Детали тренировки -->
+    <!---->
+    <string name="training_details">Training details</string>
+    <string name="training_detail_exercise_list">Упражнения</string>
+    <string name="training_detail_exercise_pack_list">Наборы упражнений</string>
+    <string name="training_detail_dates_list">Даты тренировки</string>
+
+    <!-- Список упражнений -->
+    <string name="training_detail_exercise_add_button">Добавить упражнение</string>
+
+    <!-- Упражнение -->
+    <string name="training_detail_exercise_created_toast">Упражнение успешно создано!</string>
+    <string name="training_detail_exercise_updated_toast">Упражнение успешно обновлено!</string>
+    <string name="training_detail_exercise_create_exercise">Создать упражнение</string>
+    <string name="training_detail_exercise_update_exercise">Обновить упражнение</string>
+    <string name="training_detail_exercise_name_hint">Название упражнения</string>
+    <string name="training_detail_exercise_description_hint">Описание упражнения</string>
+
+    <!-- Список наборов упражнений -->
+    <string name="training_detail_exercise_pack_add_button">Добавить набор</string>
+
+    <!-- Набор упражнений -->
+    <string name="training_detail_pack_created_toast">Набор успешно создан!</string>
+    <string name="training_detail_pack_updated_toast">Набор успешно обновлен!</string>
+    <string name="training_detail_pack_create_exercise">Создать Набор</string>
+    <string name="training_detail_pack_update_exercise">Обновить Набор</string>
+    <string name="training_detail_pack_name_hint">Название набора</string>
+    <string name="training_detail_pack_description_hint">Описание набора</string>
+
+    <!-- Список дат -->
+    <string name="training_detail_date_add_button">Добавить дату</string>
+
 </resources>

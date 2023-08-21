@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.USER_KEY;
+
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -7,10 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.UserDao;
@@ -21,9 +26,11 @@ import com.thedistantblue.triaryapp.entities.base.User;
 @SuppressWarnings("ConstantConditions")
 public class MainScreenActivityImpl extends AppCompatActivity implements MainScreenActivity {
 
+    public static FragmentManager fragmentManager;
+
     private UserDao userDao;
     private ActionBar actionBar;
-    private FragmentManager fragmentManager;
+    private DrawerLayout drawerLayout;
     private NavController navController;
 
     @Override
@@ -31,9 +38,8 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen_relative_layout);
         initDaos();
-        setupActionBar();
         fragmentManager = getSupportFragmentManager();
-        //navController = Navigation.findNavController(this, R.id.fragment_container);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
         userDao.findAll().subscribeWith(ObserverFactory.createSingleObserver((userList) -> {
             if (!userList.isEmpty()) {
@@ -48,20 +54,32 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
         userDao = RoomDataBaseProvider.getDatabaseWithProxy(getApplicationContext()).userDao();
     }
 
-    private void setupActionBar() {
+    private void startApplication(@NonNull User user) {
+        MainScreenFragment mainScreenFragment = MainScreenFragment.newInstance(user);
+        Bundle args = new Bundle();
+        args.putSerializable(USER_KEY, user);
+
+        NavHostFragment navHostFragment
+                = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+        navController.setGraph(R.navigation.main_nav_graph, args);
+
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph())
+                        .setOpenableLayout(drawerLayout)
+                        .build();
+        setupActionBar(appBarConfiguration);
+
+        actionBar.setTitle(mainScreenFragment.getTitle());
+    }
+
+    private void setupActionBar(AppBarConfiguration appBarConfiguration) {
         Toolbar toolBar = findViewById(R.id.toolbar);
         toolBar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolBar);
         actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.app_name);
-    }
-
-    private void startApplication(@NonNull User user) {
-        MainScreenFragment mainScreenFragment = MainScreenFragment.newInstance(user);
-        fragmentManager.beginTransaction()
-                       .add(R.id.fragment_container, mainScreenFragment)
-                       .commit();
-        actionBar.setTitle(mainScreenFragment.getTitle());
+        NavigationUI.setupWithNavController(toolBar, navController, appBarConfiguration);
     }
 
     @Override
@@ -77,7 +95,7 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
 
         if (!fragmentPopped) {
             fragmentManager.beginTransaction()
-                           .replace(R.id.fragment_container, fragment)
+                           .replace(R.id.nav_host_fragment, fragment)
                            .addToBackStack(backStackName)
                            .commit();
         }
@@ -92,15 +110,15 @@ public class MainScreenActivityImpl extends AppCompatActivity implements MainScr
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (!(fragment instanceof MainScreenFragment)) {
-            TitledFragment titledFragment = (TitledFragment) fragment;
-            if (titledFragment != null) {
-                actionBar.setTitle(titledFragment.getTitle());
-            }
-        } else {
-            MainScreenFragment mainScreenFragment = (MainScreenFragment) fragment;
-            actionBar.setTitle(mainScreenFragment.getTitle());
+        //todo: временное решение, которое на самом деле ничего не решает
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment)
+                                                  .getChildFragmentManager()
+                                                  .getFragments()
+                                                  .get(0);
+
+        TitledFragment titledFragment = (TitledFragment) currentFragment;
+        if (titledFragment != null) {
+            actionBar.setTitle(titledFragment.getTitle());
         }
     }
 }

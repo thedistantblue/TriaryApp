@@ -1,8 +1,6 @@
 package com.thedistantblue.triaryapp.database.sqlite;
 
-import android.content.Context;
-
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
@@ -21,7 +19,7 @@ public interface DAO {
 
     void addTraining(Training training);
 
-    void addDates(Dates dates);
+    void addDates(Day dates);
 
     void addExercise(Exercise exercise);
 
@@ -39,13 +37,13 @@ public interface DAO {
 
     Exercise getExercise(Exercise exercise);
 
-    List<Exercise> getExercisesList(Dates dates);
+    List<Exercise> getExercisesList(Day dates);
 
     ExerciseSet getSet(Exercise exercise, int number);
 
     List<ExerciseSet> getSetsList(Exercise exercise);
 
-    List<Dates> getDates(Training training);
+    List<Day> getDates(Training training);
 
     Running getRunning(Running running);
 
@@ -63,7 +61,7 @@ public interface DAO {
 
     void deleteTraining(Training training);
 
-    void deleteDate(Dates dates);
+    void deleteDate(Day dates);
 
     void deleteExercise(Exercise exercise);
 

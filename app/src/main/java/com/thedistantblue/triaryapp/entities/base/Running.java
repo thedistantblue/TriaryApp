@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @Entity(tableName = DatabaseConstants.RUNNING_TABLE,
         primaryKeys = {EntityConstants.PRIMARY_KEY_FIELD_NAME, Running.UUID_FIELD_NAME},
         foreignKeys = @ForeignKey(entity = User.class,
-                                  parentColumns = User.ID_FIELD_NAME,
-                                  childColumns = Running.USER_ID_FIELD_NAME,
+                                  parentColumns = EntityConstants.USER_ID_FIELD,
+                                  childColumns = EntityConstants.USER_ID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class Running implements Serializable {
 

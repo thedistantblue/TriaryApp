@@ -10,6 +10,7 @@ import androidx.room.Update;
 import com.thedistantblue.triaryapp.database.room.dao.base.BaseDao;
 import com.thedistantblue.triaryapp.entities.base.Running;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -29,6 +30,9 @@ public interface RunningDao extends BaseDao<Running> {
 
     @Query("SELECT * from running_table where runningUUID = :runningId")
     Single<Running> findById(String runningId);
+
+    @Query("SELECT * from running_table where runningUUID in (:ids)")
+    Single<List<Running>> findAllById(Collection<String> ids);
 
     @Query("SELECT * FROM running_table")
     Single<List<Running>> findAll();

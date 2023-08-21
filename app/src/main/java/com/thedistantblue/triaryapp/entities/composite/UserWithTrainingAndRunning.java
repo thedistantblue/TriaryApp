@@ -4,6 +4,7 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Relation;
 
+import com.thedistantblue.triaryapp.entities.EntityConstants;
 import com.thedistantblue.triaryapp.entities.base.Running;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
@@ -18,8 +19,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class UserWithTrainingAndRunning {
     @Embedded private User user;
-    @Relation(parentColumn = User.ID_FIELD_NAME, entityColumn = Training.USER_ID_FIELD_NAME)
+
+    @Relation(parentColumn = EntityConstants.USER_ID_FIELD,
+              entityColumn = EntityConstants.USER_ID_FIELD
+    )
     private List<Training> trainingList;
-    @Relation(parentColumn = User.ID_FIELD_NAME, entityColumn = Running.USER_ID_FIELD_NAME)
+
+    @Relation(parentColumn = EntityConstants.USER_ID_FIELD,
+              entityColumn = EntityConstants.USER_ID_FIELD
+    )
     private List<Running> runningList;
 }

@@ -10,6 +10,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
+import com.thedistantblue.triaryapp.entities.EntityConstants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,17 +24,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.EXERCISE_SET_TABLE,
         foreignKeys = @ForeignKey(entity = Exercise.class,
-                                  parentColumns = Exercise.UUID_FIELD_NAME,
-                                  childColumns = ExerciseSet.EXERCISE_UUID_FIELD,
+                                  parentColumns = EntityConstants.EXERCISE_ID_FIELD,
+                                  childColumns = EntityConstants.EXERCISE_ID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class ExerciseSet implements Serializable, Parcelable {
 
-    public static final String UUID_FIELD_NAME = "exerciseSetUUID";
-    public static final String EXERCISE_UUID_FIELD = "exerciseId";
-
     @NonNull
     @PrimaryKey
-    private UUID exerciseSetUUID;
+    private UUID exerciseSetId;
     private UUID exerciseId;
     private int number;
     private int repetitions;
@@ -45,8 +43,8 @@ public class ExerciseSet implements Serializable, Parcelable {
     }
 
     @Ignore
-    public ExerciseSet(@NotNull UUID exerciseSetUUID, UUID exerciseId) {
-        this.exerciseSetUUID = exerciseSetUUID;
+    public ExerciseSet(@NotNull UUID exerciseSetId, UUID exerciseId) {
+        this.exerciseSetId = exerciseSetId;
         this.exerciseId = exerciseId;
     }
 

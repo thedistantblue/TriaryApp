@@ -4,6 +4,7 @@ import com.thedistantblue.triaryapp.database.room.dao.ExerciseSetDao;
 import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -32,6 +33,11 @@ public class ExerciseSetDaoProxy implements ExerciseSetDao {
     @Override
     public Single<ExerciseSet> findById(String exerciseSetId) {
         return RxConfigurator.configureThreading(exerciseSetDao.findById(exerciseSetId));
+    }
+
+    @Override
+    public Single<List<ExerciseSet>> findAllById(Collection<String> ids) {
+        return RxConfigurator.configureThreading(exerciseSetDao.findAllById(ids));
     }
 
     @Override

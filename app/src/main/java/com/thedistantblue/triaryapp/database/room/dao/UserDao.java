@@ -10,6 +10,7 @@ import androidx.room.Update;
 import com.thedistantblue.triaryapp.database.room.dao.base.BaseDao;
 import com.thedistantblue.triaryapp.entities.base.User;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -27,8 +28,11 @@ public interface UserDao extends BaseDao<User> {
     @Delete
     Completable delete(User user);
 
-    @Query("SELECT * from user_table where user_id = :userId")
+    @Query("SELECT * from user_table where userId = :userId")
     Single<User> findById(String userId);
+
+    @Query("SELECT * from user_table where userId in (:ids)")
+    Single<List<User>> findAllById(Collection<String> ids);
 
     @Query("SELECT * FROM user_table")
     Single<List<User>> findAll();

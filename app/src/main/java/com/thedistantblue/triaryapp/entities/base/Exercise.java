@@ -1,7 +1,6 @@
 package com.thedistantblue.triaryapp.entities.base;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -19,32 +18,117 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Entity(tableName = DatabaseConstants.EXERCISE_TABLE,
-        foreignKeys = @ForeignKey(entity = Dates.class,
-                                  parentColumns = Dates.UUID_FIELD_NAME,
-                                  childColumns = Exercise.DATES_UUID_FIELD_NAME,
+        foreignKeys = @ForeignKey(entity = Training.class,
+                                  parentColumns = EntityConstants.TRAINING_ID_FIELD,
+                                  childColumns = EntityConstants.TRAINING_ID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class Exercise implements Serializable {
 
-    public static final String UUID_FIELD_NAME = "exerciseUUID";
-    public static final String DATES_UUID_FIELD_NAME = "datesId";
+    @NoArgsConstructor
+    public static class Builder {
+        private UUID exerciseId;
+        private UUID trainingId;
+        private String name;
+        private String description;
+
+        public Builder setExerciseId(UUID exerciseId) {
+            this.exerciseId = exerciseId;
+            return this;
+        }
+
+        public Builder setTrainingId(UUID trainingId) {
+            this.trainingId = trainingId;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Exercise build() {
+            Exercise exercise = new Exercise();
+            exercise.setExerciseId(this.exerciseId);
+            exercise.setTrainingId(this.trainingId);
+            exercise.setName(this.name);
+            exercise.setDescription(this.description);
+            return exercise;
+        }
+    }
 
     @NonNull
     @PrimaryKey
-    private UUID exerciseUUID;
-    private UUID datesId;
-    private String exerciseName = "";
-    private String exerciseComments = "";
+    private UUID exerciseId;
+    private UUID trainingId;
+    private String name = "";
+    private String description = "";
 
     @Ignore
-    public Exercise(@NotNull UUID exerciseUUID, UUID datesId) {
-        this.exerciseUUID = exerciseUUID;
-        this.datesId = datesId;
+    public Exercise(@NotNull UUID exerciseId, UUID trainingId) {
+        this.exerciseId = exerciseId;
+        this.trainingId = trainingId;
     }
 
     @Ignore
-    public Exercise(UUID datesId) {
-        this(UUID.randomUUID(), datesId);
+    public Exercise(UUID trainingId) {
+        this(UUID.randomUUID(), trainingId);
+    }
+
+    @Ignore
+    public Exercise(UUID trainingId, String name, String description) {
+        this.exerciseId = UUID.randomUUID();
+        this.trainingId = trainingId;
+        this.name = name;
+        this.description = description;
+    }
+
+    @Ignore
+    public Exercise(UUID exerciseId, UUID trainingId, String name, String description) {
+        this.exerciseId = exerciseId;
+        this.trainingId = trainingId;
+        this.name = name;
+        this.description = description;
+    }
+
+    public Exercise() {
+
+    }
+
+    public UUID getExerciseId() {
+        return exerciseId;
+    }
+
+    public UUID getTrainingId() {
+        return trainingId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setExerciseId(@NonNull UUID exerciseId) {
+        this.exerciseId = exerciseId;
+    }
+
+    public void setTrainingId(UUID trainingId) {
+        this.trainingId = trainingId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

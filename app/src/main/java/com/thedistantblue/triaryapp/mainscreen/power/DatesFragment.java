@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.TRAINING_KEY;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +14,9 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.DayDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.mainscreen.utils.DateFragment;
@@ -27,13 +29,12 @@ public class DatesFragment extends TitledFragment {
 
     private static final int REQUEST_DATE = 0;
     private static final String DATE_DIALOG = "date";
-    private static final String TRAINING_KEY = "training";
     private TextView dateTextView;
     private Button datesButton;
     private Button confirmButton;
     private Training training;
-    private Dates dates;
-    private DatesDao datesDao;
+    private Day dates;
+    private DayDao datesDao;
 
     public static DatesFragment newInstance(Training training) {
         Bundle args = new Bundle();
@@ -54,13 +55,13 @@ public class DatesFragment extends TitledFragment {
         super.onCreate(savedInstanceState);
         initDaos();
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
-        dates = new Dates(training.getTrainingUUID());
-        dates.setDatesTrainingUUID(training.getTrainingUUID());
+        dates = new Day(training.getTrainingId());
+        dates.setTrainingId(training.getTrainingId());
     }
 
     private void initDaos() {
         datesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                       .datesDao();
+                                       .dayDao();
     }
 
     @Override
@@ -97,7 +98,7 @@ public class DatesFragment extends TitledFragment {
 
         if (requestCode == REQUEST_DATE) {
             Date date = (Date) data.getSerializableExtra(DateFragment.EXTRA_DATE);
-            dates.setDatesDate(date.getTime());
+            dates.setDate(date.getTime());
             dateTextView.setText(TriaryDateFormat.getFormattedDate(date.getTime()));
         }
     }

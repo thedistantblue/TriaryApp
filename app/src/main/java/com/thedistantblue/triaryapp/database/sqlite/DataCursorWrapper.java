@@ -3,7 +3,7 @@ package com.thedistantblue.triaryapp.database.sqlite;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 import com.thedistantblue.triaryapp.entities.base.ExerciseSet;
 import com.thedistantblue.triaryapp.entities.base.Running;
@@ -47,14 +47,14 @@ public class DataCursorWrapper extends CursorWrapper {
         return training;
     }
 
-    public Dates getDates() {
+    public Day getDates() {
         String trainingUUID = getString(getColumnIndex(DatabaseScheme.DateTable.Columns.UUID_TRAINING));
         String uuid = getString(getColumnIndex(DatabaseScheme.DateTable.Columns.UUID));
         long dates = getLong(getColumnIndex(DatabaseScheme.DateTable.Columns.Dates));
 
-        Dates d = new Dates(UUID.fromString(uuid), UUID.fromString(trainingUUID));
-        d.setDatesTrainingUUID(UUID.fromString(trainingUUID));
-        d.setDatesDate(dates);
+        Day d = new Day(UUID.fromString(uuid), UUID.fromString(trainingUUID));
+        d.setTrainingId(UUID.fromString(trainingUUID));
+        d.setDate(dates);
 
         return d;
     }
@@ -66,9 +66,9 @@ public class DataCursorWrapper extends CursorWrapper {
         String comments = getString(getColumnIndex(DatabaseScheme.ExerciseTable.Columns.Comments));
 
         Exercise exercise = new Exercise(UUID.fromString(uuid), UUID.fromString(datesUUID));
-        exercise.setExerciseName(name);
-        exercise.setDatesId(UUID.fromString(datesUUID));
-        exercise.setExerciseComments(comments);
+        exercise.setName(name);
+        exercise.setTrainingId(UUID.fromString(datesUUID));
+        exercise.setDescription(comments);
         return exercise;
     }
 

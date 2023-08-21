@@ -1,5 +1,10 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.TRAINING_KEY;
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.USER_KEY;
+
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.thedistantblue.triaryapp.R;
 import com.thedistantblue.triaryapp.database.room.dao.TrainingDao;
+import com.thedistantblue.triaryapp.database.room.dao.details.TrainingDetailsDao;
 import com.thedistantblue.triaryapp.database.room.dao.UserWithTrainingAndRunningDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.TrainingItemCardBinding;
@@ -20,7 +26,8 @@ import com.thedistantblue.triaryapp.databinding.TrainingListFragmentLayoutBindin
 import com.thedistantblue.triaryapp.entities.base.Training;
 import com.thedistantblue.triaryapp.entities.base.User;
 import com.thedistantblue.triaryapp.mainscreen.AutoDisposableFragment;
-import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
+import com.thedistantblue.triaryapp.mainscreen.power.detail.PowerTrainingDetailActivity;
+import com.thedistantblue.triaryapp.mainscreen.power.dialog.PowerTrainingCreationDialog;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemAdapter;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.ListItemHolder;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.SimpleItemTouchHelperCallback;
@@ -30,13 +37,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingListFragment extends AutoDisposableFragment {
-    private static final String USER_KEY = "user";
 
     private List<Training> trainingList = new ArrayList<>();
 
     private User user;
     private TrainingDao trainingDao;
-    private MainScreenActivity mainScreenActivity;
+    private TrainingDetailsDao trainingDetailsDao;
     private TrainingListItemAdapter trainingAdapter;
     private UserWithTrainingAndRunningDao userWithTrainingAndRunningDao;
 
@@ -52,21 +58,23 @@ public class TrainingListFragment extends AutoDisposableFragment {
     @Override
     public void onResume() {
         super.onResume();
-        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                                     .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
+        if (user != null) {
+            withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserId()))
+                                                         .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDaos();
-        this.mainScreenActivity = (MainScreenActivity) getActivity();
         user = (User) requireArguments().getSerializable(USER_KEY);
     }
 
     private void initDaos() {
-        this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).userWithTrainingAndRunningDao();
         this.trainingDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDao();
+        this.trainingDetailsDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).trainingDetailsDao();
+        this.userWithTrainingAndRunningDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity()).userWithTrainingAndRunningDao();
     }
 
     @Override
@@ -76,7 +84,10 @@ public class TrainingListFragment extends AutoDisposableFragment {
         this.trainingAdapter = new TrainingListItemAdapter(trainingDao, trainingList, this);
         binding.trainingRecyclerView.setAdapter(this.trainingAdapter);
         binding.trainingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.trainingAddButton.setOnClickListener(v -> mainScreenActivity.switchFragment(TrainingFragment.newInstance(user, null)));
+        binding.trainingAddButton.setOnClickListener(v -> {
+            new PowerTrainingCreationDialog(this, trainingDao, user.getUserId())
+                    .show(getChildFragmentManager(), PowerTrainingCreationDialog.TAG);
+        });
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((TrainingListItemAdapter) binding.trainingRecyclerView.getAdapter());
 
@@ -88,8 +99,10 @@ public class TrainingListFragment extends AutoDisposableFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserID()))
-                                                     .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
+        if (user != null) {
+            withAutoDispose(userWithTrainingAndRunningDao.findById(String.valueOf(user.getUserId()))
+                                                         .subscribe(user -> trainingAdapter.setObjectsList(user.getTrainingList())));
+        }
     }
 
     public class TrainingListItemAdapter extends ListItemAdapter<Training, TrainingHolder, TrainingDao> {
@@ -127,10 +140,15 @@ public class TrainingListFragment extends AutoDisposableFragment {
             trainingItemCardBinding.getViewModel().trainingName.set(training.getTrainingName());
 
             trainingItemCardBinding.trainingCard.setOnClickListener(v -> {
-                mainScreenActivity.switchFragment(DatesListFragment.newInstance(training));
+                withAutoDispose(trainingDetailsDao.findById(training.getTrainingId().toString())
+                                                  .subscribe(trainingDetails -> {
+                                                      Intent intent = new Intent(getActivity(), PowerTrainingDetailActivity.class);
+                                                      intent.putExtra(TRAINING_KEY, trainingDetails);
+                                                      startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle());
+                                                  }));
             });
             trainingItemCardBinding.trainingSettingsButton.setOnClickListener(v -> {
-                mainScreenActivity.switchFragment(TrainingFragment.newInstance(user, training));
+                //todo добавить диалог для редактирования
             });
         }
     }

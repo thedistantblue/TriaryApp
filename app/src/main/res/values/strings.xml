@@ -44,4 +44,52 @@
     <string name="running_time">Running time, minutes</string>
     <string name="calories_lost">Calories lost</string>
     <string name="main_screen_fragment_workouts">Workouts</string>
+    <string name="settings_profile_title">Profile</string>
+
+    <!-- Dialog buttons -->
+    <string name="dialog_ok">Ok</string>
+
+    <!-- Actions -->
+    <string name="action_create">Create</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!-- Power training list -->
+    <string name="training_list_training_add_button">Add training</string>
+    <string name="training_list_training_creation_dialog_message">Create training</string>
+    <string name="training_list_training_creation_dialog_name_input_hint">Training name</string>
+    <string name="training_list_training_creation_dialog_description_input_hint">Training description</string>
+
+    <!---->
+    <!-- Training details -->
+    <!---->
+    <string name="training_details">Training details</string>
+    <string name="training_detail_exercise_list">Exercises</string>
+    <string name="training_detail_exercise_pack_list">Packs of exercises</string>
+    <string name="training_detail_dates_list">Training dates</string>
+
+    <!-- Exercise list -->
+    <string name="training_detail_exercise_add_button">Add exercise</string>
+
+    <!-- Exercise -->
+    <string name="training_detail_exercise_created_toast">Exercise successfully created!</string>
+    <string name="training_detail_exercise_updated_toast">Exercise successfully updated!</string>
+    <string name="training_detail_exercise_create_exercise">Create exercise</string>
+    <string name="training_detail_exercise_update_exercise">Update exercise</string>
+    <string name="training_detail_exercise_name_hint">Exercise name</string>
+    <string name="training_detail_exercise_description_hint">Exercise description</string>
+
+    <!-- Exercise pack list -->
+    <string name="training_detail_exercise_pack_add_button">Add pack</string>
+
+    <!-- Exercise pack -->
+    <string name="training_detail_pack_created_toast">Pack successfully created!</string>
+    <string name="training_detail_pack_updated_toast">Pack successfully updated!</string>
+    <string name="training_detail_pack_create_exercise">Create Pack</string>
+    <string name="training_detail_pack_update_exercise">Update Pack</string>
+    <string name="training_detail_pack_name_hint">Pack name</string>
+    <string name="training_detail_pack_description_hint">Pack description</string>
+
+    <!-- Day list -->
+    <string name="training_detail_date_add_button">Add date</string>
+
 </resources>

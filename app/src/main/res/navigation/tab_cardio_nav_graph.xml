@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tab_cardio_nav_graph"
+    app:startDestination="@id/runningListFragment">
+
+    <fragment
+        android:id="@+id/runningListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.cardio.RunningListFragment"
+        android:label="RunningListFragment" >
+        <argument
+            android:name="user"
+            app:argType="com.thedistantblue.triaryapp.entities.base.User" />
+        <action
+            android:id="@+id/action_runningListFragment_to_runningFragment"
+            app:destination="@id/runningFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/runningFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.cardio.RunningFragment"
+        android:label="RunningFragment" >
+        <argument
+            android:name="running"
+            app:argType="com.thedistantblue.triaryapp.entities.base.Running" />
+        <argument
+            android:name="user"
+            app:argType="com.thedistantblue.triaryapp.entities.base.User" />
+    </fragment>
+
+</navigation>

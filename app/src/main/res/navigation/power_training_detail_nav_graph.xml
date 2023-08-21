@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/power_training_detail_nav_graph"
+    app:startDestination="@id/powerTrainingDetailFragment">
+
+    <fragment
+        android:id="@+id/powerTrainingDetailFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.PowerTrainingDetailFragmentCompose"
+        android:label="PowerTrainingDetailFragment"
+        tools:layout="@layout/training_detail_layout">
+        <argument
+            android:name="training"
+            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/powerExercisePackListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.PowerExercisePackListFragment"
+        android:label="PowerExercisePackListFragment"
+        tools:layout="@layout/training_detail_exercise_pack_list_layout">
+        <action
+            android:id="@+id/action_powerExercisePackListFragment_to_powerExercisePackCreationFragment"
+            app:destination="@id/powerExercisePackCreationFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="training"
+            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/powerExercisePackCreationFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.PowerExercisePackFragment"
+        android:label="PowerExercisePackCreationFragment"
+        tools:layout="@layout/training_detail_exercise_pack_layout">
+        <argument
+            android:name="training"
+            app:argType="com.thedistantblue.triaryapp.entities.base.Training" />
+    </fragment>
+    <fragment
+        android:id="@+id/powerDateYearListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.date.PowerDateYearListFragment"
+        android:label="PowerDateListFragment"
+        tools:layout="@layout/training_detail_year_list_layout">
+        <action
+            android:id="@+id/action_powerDateListFragment_to_powerDateCreationFragment"
+            app:destination="@id/powerDateCreationFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_powerDateYearListFragment_to_powerDateMonthListFragment"
+            app:destination="@id/powerDateMonthListFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="training"
+            app:argType="com.thedistantblue.triaryapp.entities.composite.details.TrainingDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/powerDateCreationFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.date.PowerDateFragment"
+        android:label="PowerDateCreationFragment"
+        tools:layout="@layout/training_detail_date_layout">
+        <action
+            android:id="@+id/action_powerDateCreationFragment_to_powerDateListFragment"
+            app:destination="@id/powerDateYearListFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/powerTrainingDetailFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/powerDateMonthListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.date.PowerDateMonthListFragment"
+        android:label="PowerDateMonthListFragment"
+        tools:layout="@layout/training_detail_month_list_layout">
+        <action
+            android:id="@+id/action_powerDateMonthListFragment_to_powerDateDayListFragment"
+            app:destination="@id/powerDateDayListFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/powerDateDayListFragment"
+        android:name="com.thedistantblue.triaryapp.mainscreen.power.detail.date.PowerDateDayListFragment"
+        android:label="PowerDateDayListFragment"
+        tools:layout="@layout/training_detail_day_list_layout"/>
+</navigation>

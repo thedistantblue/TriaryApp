@@ -9,6 +9,7 @@ import androidx.room.Update;
 import com.thedistantblue.triaryapp.database.room.dao.base.BaseDao;
 import com.thedistantblue.triaryapp.entities.base.Exercise;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -25,8 +26,11 @@ public interface ExerciseDao extends BaseDao<Exercise> {
     @Delete
     Completable delete(Exercise exercise);
 
-    @Query("SELECT * from exercise_table where exerciseUUID = :exerciseId")
+    @Query("SELECT * from exercise_table where exerciseId = :exerciseId")
     Single<Exercise> findById(String exerciseId);
+
+    @Query("SELECT * from exercise_table where exerciseId in (:ids)")
+    Single<List<Exercise>> findAllById(Collection<String> ids);
 
     @Query("SELECT * FROM exercise_table")
     Single<List<Exercise>> findAll();

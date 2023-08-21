@@ -1,11 +1,9 @@
 package com.thedistantblue.triaryapp.entities.base;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.thedistantblue.triaryapp.database.room.database.DatabaseConstants;
@@ -23,28 +21,38 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(tableName = DatabaseConstants.TRAINING_TABLE,
         foreignKeys = @ForeignKey(entity = User.class,
-                                  parentColumns = User.ID_FIELD_NAME,
-                                  childColumns = Training.USER_ID_FIELD_NAME,
+                                  parentColumns = EntityConstants.USER_ID_FIELD,
+                                  childColumns = EntityConstants.USER_ID_FIELD,
                                   onDelete = ForeignKey.CASCADE))
 public class Training implements Serializable {
 
-    public static final String UUID_FIELD_NAME = "trainingUUID";
-    public static final String USER_ID_FIELD_NAME = "userId";
-
     @NonNull
     @PrimaryKey
-    private UUID trainingUUID;
+    private UUID trainingId;
     private long userId;
     private String trainingName;
 
     @Ignore
-    public Training(@NotNull UUID trainingUUID, long userId) {
-        this.trainingUUID = trainingUUID;
+    public Training(@NotNull UUID trainingId, long userId) {
+        this.trainingId = trainingId;
         this.userId = userId;
     }
 
     @Ignore
     public Training(long userId) {
         this(UUID.randomUUID(), userId);
+    }
+
+    @NonNull
+    public UUID getTrainingId() {
+        return trainingId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public String getTrainingName() {
+        return trainingName;
     }
 }

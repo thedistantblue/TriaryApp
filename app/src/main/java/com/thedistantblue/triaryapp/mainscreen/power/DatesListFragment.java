@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.TRAINING_KEY;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,13 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thedistantblue.triaryapp.R;
-import com.thedistantblue.triaryapp.database.room.dao.DatesDao;
-import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDatesDao;
+import com.thedistantblue.triaryapp.database.room.dao.DayDao;
+import com.thedistantblue.triaryapp.database.room.dao.TrainingWithDaysDao;
 import com.thedistantblue.triaryapp.database.room.database.RoomDataBaseProvider;
 import com.thedistantblue.triaryapp.databinding.DateItemCardBinding;
-import com.thedistantblue.triaryapp.entities.base.Dates;
+import com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding;
+import com.thedistantblue.triaryapp.entities.base.Day;
 import com.thedistantblue.triaryapp.entities.base.Training;
-import com.thedistantblue.triaryapp.entities.composite.TrainingWithDates;
+import com.thedistantblue.triaryapp.entities.composite.TrainingWithDays;
 import com.thedistantblue.triaryapp.mainscreen.MainScreenActivity;
 import com.thedistantblue.triaryapp.mainscreen.TitledFragment;
 import com.thedistantblue.triaryapp.mainscreen.utils.recycler.touch.ItemTouchHelperAdapter;
@@ -32,13 +35,11 @@ import java.util.List;
 
 public class DatesListFragment extends TitledFragment {
 
-    private static final String TRAINING_KEY = "training_key";
-
     private DatesAdapter datesAdapter;
-    private List<Dates> datesList = new ArrayList<>();
+    private List<Day> datesList = new ArrayList<>();
     private Training training;
-    private DatesDao datesDao;
-    private TrainingWithDatesDao trainingWithDatesDao;
+    private DayDao datesDao;
+    private TrainingWithDaysDao trainingWithDatesDao;
 
     public static DatesListFragment newInstance(Training training) {
         Bundle args = new Bundle();
@@ -60,18 +61,18 @@ public class DatesListFragment extends TitledFragment {
         training = (Training) getArguments().getSerializable(TRAINING_KEY);
         initDaos();
         withAutoDispose(
-                trainingWithDatesDao.findById(training.getTrainingUUID().toString())
+                trainingWithDatesDao.findById(training.getTrainingId().toString())
                                     .subscribe(this::initDatesList));
     }
 
     private void initDaos() {
         datesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
-                                       .datesDao();
+                                       .dayDao();
         trainingWithDatesDao = RoomDataBaseProvider.getDatabaseWithProxy(getActivity())
                                                    .trainingWithDatesDao();
     }
 
-    private void initDatesList(TrainingWithDates trainingWithDates) {
+    private void initDatesList(TrainingWithDays trainingWithDates) {
         datesList = trainingWithDates.getDatesList();
         datesAdapter.setDatesList(datesList);
         datesAdapter.notifyDataSetChanged();
@@ -79,10 +80,10 @@ public class DatesListFragment extends TitledFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        com.thedistantblue.triaryapp.databinding.DatesListFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater,
-                                                                                                                  R.layout.dates_list_fragment_layout,
-                                                                                                                  parent,
-                                                                                                                  false);
+        DatesListFragmentLayoutBinding binding = DataBindingUtil.inflate(inflater,
+                                                                         R.layout.dates_list_fragment_layout,
+                                                                         parent,
+                                                                         false);
 
         datesAdapter = new DatesAdapter(datesList, getActivity());
         binding.datesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -111,7 +112,7 @@ public class DatesListFragment extends TitledFragment {
             this.dateItemCardBinding.setViewModel(new DateViewModel());
         }
 
-        public void bind(final Dates dates) {
+        public void bind(final Day dates) {
             this.dateItemCardBinding.getViewModel().setDate(dates);
             this.dateItemCardBinding.executePendingBindings();
 
@@ -122,10 +123,10 @@ public class DatesListFragment extends TitledFragment {
 
     private class DatesAdapter extends RecyclerView.Adapter<DatesHolder>
             implements ItemTouchHelperAdapter {
-        List<Dates> datesList;
+        List<Day> datesList;
         Context context;
 
-        public DatesAdapter(List<Dates> datesList, Context context) {
+        public DatesAdapter(List<Day> datesList, Context context) {
             this.datesList = datesList;
             this.context = context;
         }
@@ -134,7 +135,7 @@ public class DatesListFragment extends TitledFragment {
             return this.context;
         }
 
-        public void setDatesList(List<Dates> datesList) {
+        public void setDatesList(List<Day> datesList) {
             this.datesList = datesList;
         }
 
@@ -150,7 +151,7 @@ public class DatesListFragment extends TitledFragment {
 
         @Override
         public void onBindViewHolder(DatesHolder datesHolder, int position) {
-            Dates dates = datesList.get(position);
+            Day dates = datesList.get(position);
             datesHolder.bind(dates);
         }
 

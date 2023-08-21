@@ -1,5 +1,7 @@
 package com.thedistantblue.triaryapp.mainscreen.power;
 
+import static com.thedistantblue.triaryapp.utils.BundleKeyConstants.TRAINING_KEY;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +28,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class TrainingFragment extends TitledFragment {
 
-    private static final String TRAINING_KEY = "training";
     private static final String IS_CREATE_KEY = "isCreate";
 
     private Boolean isCreate;
@@ -41,7 +42,7 @@ public class TrainingFragment extends TitledFragment {
         boolean creationRequired = training == null;
         args.putSerializable(IS_CREATE_KEY, creationRequired);
         if (creationRequired) {
-            training = new Training(user.getUserID());
+            training = new Training(user.getUserId());
         }
         args.putSerializable(TRAINING_KEY, training);
 

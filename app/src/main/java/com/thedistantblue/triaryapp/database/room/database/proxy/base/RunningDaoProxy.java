@@ -4,6 +4,7 @@ import com.thedistantblue.triaryapp.database.room.dao.RunningDao;
 import com.thedistantblue.triaryapp.database.room.database.utils.RxConfigurator;
 import com.thedistantblue.triaryapp.entities.base.Running;
 
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -32,6 +33,11 @@ public class RunningDaoProxy implements RunningDao {
     @Override
     public Single<Running> findById(String runningId) {
         return RxConfigurator.configureThreading(runningDao.findById(runningId));
+    }
+
+    @Override
+    public Single<List<Running>> findAllById(Collection<String> ids) {
+        return RxConfigurator.configureThreading(runningDao.findAllById(ids));
     }
 
     @Override
