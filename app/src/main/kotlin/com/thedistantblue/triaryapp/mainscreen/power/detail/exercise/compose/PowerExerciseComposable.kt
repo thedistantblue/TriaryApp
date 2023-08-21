@@ -26,7 +26,7 @@ fun PowerExerciseComposable(trainingId: UUID,
                             viewModel: PowerExerciseViewModel
 ) {
     val context = LocalContext.current
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState = viewModel.uiState.value
 
     if (exerciseId == null) {
         CreateExerciseComposable { name, description ->

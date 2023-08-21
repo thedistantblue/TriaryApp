@@ -11,8 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -67,8 +65,7 @@ fun PackList(navController: NavController,
              viewModel: PowerExercisePackListViewModel,
              padding: PaddingValues
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
+    val uiState = viewModel.uiState.value
     viewModel.getPacks(trainingId)
 
     LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp,

@@ -69,14 +69,13 @@ fun ExerciseList(navController: NavController,
                  viewModel: PowerExerciseListViewModel,
                  padding: PaddingValues
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-
+    val exercises = viewModel.uiState.value
     viewModel.getExercises(trainingId)
 
     LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        items(items = uiState, key = {
+        items(items = exercises, key = {
             it.exercise.exerciseId
         }) {
             ExerciseListItem(it, navController, viewModel)

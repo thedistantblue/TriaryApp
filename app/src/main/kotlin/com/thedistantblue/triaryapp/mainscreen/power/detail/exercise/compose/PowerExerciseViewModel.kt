@@ -1,26 +1,23 @@
 package com.thedistantblue.triaryapp.mainscreen.power.detail.exercise.compose
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.thedistantblue.triaryapp.database.room.dao.ExerciseDao
 import com.thedistantblue.triaryapp.entities.base.Exercise
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class PowerExerciseViewModel(
         private val exerciseDao: ExerciseDao
 ): ViewModel() {
-
-    private val uiStateFlow = MutableStateFlow(Exercise())
-    val uiState: StateFlow<Exercise> = uiStateFlow.asStateFlow()
-    var currentExercise = uiStateFlow.value
+    val uiState: MutableState<Exercise> = mutableStateOf(Exercise())
+    var currentExercise = uiState.value
 
     fun updateExerciseName(name: String) {
         currentExercise = Exercise(currentExercise.exerciseId,
                                    currentExercise.trainingId,
                                    name,
                                    currentExercise.description)
-        uiStateFlow.value = currentExercise
+        uiState.value = currentExercise
     }
 
     fun updateExerciseDescription(description: String) {
@@ -28,7 +25,7 @@ class PowerExerciseViewModel(
                                    currentExercise.trainingId,
                                    currentExercise.name,
                                    description)
-        uiStateFlow.value = currentExercise
+        uiState.value = currentExercise
     }
 
     fun getExercise(exerciseId: String) {
@@ -36,13 +33,13 @@ class PowerExerciseViewModel(
             if (it.toString() != exerciseId) {
                 exerciseDao.findById(exerciseId).subscribe { exercise ->
                     currentExercise = exercise
-                    uiStateFlow.value = currentExercise
+                    uiState.value = currentExercise
                 }
             }
         } ?: run {
             exerciseDao.findById(exerciseId).subscribe { exercise ->
                 currentExercise = exercise
-                uiStateFlow.value = currentExercise
+                uiState.value = currentExercise
             }
         }
     }
