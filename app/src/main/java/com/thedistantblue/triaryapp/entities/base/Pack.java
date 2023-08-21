@@ -14,6 +14,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
+import lombok.Data;
+
+@Data
 @Entity(tableName = DatabaseConstants.PACK_TABLE,
         foreignKeys = @ForeignKey(entity = Training.class,
                                   parentColumns = EntityConstants.TRAINING_ID_FIELD,
@@ -59,7 +62,6 @@ public class Pack implements Serializable {
         this.description = description;
     }
 
-    @NonNull
     public UUID getPackId() {
         return packId;
     }

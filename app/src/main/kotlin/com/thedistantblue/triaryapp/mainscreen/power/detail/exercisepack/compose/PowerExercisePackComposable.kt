@@ -2,23 +2,20 @@ package com.thedistantblue.triaryapp.mainscreen.power.detail.exercisepack.compos
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.thedistantblue.triaryapp.R
 import com.thedistantblue.triaryapp.entities.base.Pack
 import com.thedistantblue.triaryapp.theme.components.NameDescriptionScreen
-import java.util.UUID
+import java.util.*
 
 @Composable
 fun PowerExercisePackComposable(trainingId: UUID,
                                 navController: NavController,
                                 packId: String? = null,
-                                viewModel: PowerExercisePackViewModel) {
+                                viewModel: PowerExercisePackViewModel
+) {
     val context = LocalContext.current
     val uiState = viewModel.uiState.value
 
@@ -53,7 +50,6 @@ fun PowerExercisePackComposable(trainingId: UUID,
             returnAndShowToast(context, navController, R.string.training_detail_pack_updated_toast)
         }
     }
-
 }
 
 private fun returnAndShowToast(context: Context, navController: NavController, toastText: Int) {

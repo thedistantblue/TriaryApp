@@ -29,9 +29,18 @@ class PowerExercisePackViewModel(
     }
 
     fun getPack(packId: String) {
-        packDao.findById(packId).subscribe { pack ->
-            currentPack = pack
-            uiState.value = currentPack
+        currentPack.packId?.let {
+            if (it.toString() != packId) {
+                packDao.findById(packId).subscribe { pack ->
+                    currentPack = pack
+                    uiState.value = currentPack
+                }
+            }
+        } ?: run {
+            packDao.findById(packId).subscribe { pack ->
+                currentPack = pack
+                uiState.value = currentPack
+            }
         }
     }
 
